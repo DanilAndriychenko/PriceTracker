@@ -84,7 +84,7 @@
             <Insets />
          </VBox.margin>
       </JFXToggleButton>
-      <JFXButton fx:id="buttonAddProduct" maxWidth="1.7976931348623157E308" prefHeight="50.0" text="Додати продукцію">
+      <JFXButton fx:id="buttonAddProduct" buttonType="RAISED" maxWidth="1.7976931348623157E308" prefHeight="50.0" ripplerFill="#557de1" style="-fx-background-color: lightgreen;" text="Додати продукцію">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

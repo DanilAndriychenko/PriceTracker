@@ -167,17 +167,17 @@ public class Controller {
         });
 
         addProduct.setOnAction(eventAddProduct -> {
-                Parent root;
-                try {
-                    root = FXMLLoader.load(getClass().getResource("addProduct.fxml"));
-                    Stage stage = new Stage();
-                    stage.setTitle("Додати продукцію");
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            Parent root;
+            try {
+                root = FXMLLoader.load(getClass().getResource("addProduct.fxml"));
+                Stage stage = new Stage();
+                stage.setTitle("Додати продукцію");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
