@@ -1,0 +1,26 @@
+
+T
+java:S1128
+"7Remove this unused import 'javafx.scene.layout.Border'.(û‘ÊÑ8ÏÛí».
+m	java:S117k"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(˜Æ¹Æ8ÕÛœî».
+Y
+java:S1128	"7Remove this unused import 'javafx.scene.control.Label'.(ö²­ÿÿÿÿÿ8ààÿì».
+`
+java:S1068">Remove this unused "COMBO_BOX_SHOP_PROMPT_TEXT" private field.(Ñ²¸ùÿÿÿÿ8­‡í».
+m	java:S117i"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÏÄÛË8šÛ’î».
+m	java:S117l"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(šëÇ8ÕÛœî».
+P
+java:S1135„"2Complete the task associated to this TODO comment.(¼…ª8ÖÑ¹ï».
+r	java:S117j"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¹€¯òûÿÿÿÿ8ÕÛœî».
+t
+java:S3776-"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(·òşÿÿÿÿ8ÖÑ¹ï».
+d
+java:S1068"BRemove this unused "COMBO_BOX_CATEGORY_PROMPT_TEXT" private field.(³Ï–Ãıÿÿÿÿ8­‡í».
+T
+java:S1135]"2Complete the task associated to this TODO comment.(¬êÈ•úÿÿÿÿ8Îıï».
+d
+java:S1126˜"AReplace this if-then-else statement by a single return statement.(í¥ÔÄùÿÿÿÿ8üï‚ğ».
+\
+java:S1068"?Remove this unused "COMBO_BOX_BRAND_PROMPT_TEXT" private field.(Œê‘à8­‡í».
+]
+java:S1068"@Remove this unused "COMBO_BOX_REGION_PROMPT_TEXT" private field.(ÿîÑ­8­‡í».

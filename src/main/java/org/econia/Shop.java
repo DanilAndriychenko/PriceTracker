@@ -2,16 +2,16 @@ package org.econia;
 
 public class Shop {
 
-    private int brand_id;
+    private int shop_id;
     private String name;
 
-    public Shop(int brand_id, String name) {
-        this.brand_id= brand_id;
+    public Shop(int shop_id, String name) {
+        this.shop_id= shop_id;
         this.name = name;
     }
 
-    public int getBrand_id() {
-        return brand_id;
+    public int getShop_id() {
+        return shop_id;
     }
 
     public String getName() {
@@ -20,6 +20,6 @@ public class Shop {
 
     @Override
     public String toString() {
-        return "Category: [id: " + brand_id + ",\tname: " + name + "];";
+        return "Shop: [id: " + shop_id + ",\tname: " + name + "];";
     }
 }

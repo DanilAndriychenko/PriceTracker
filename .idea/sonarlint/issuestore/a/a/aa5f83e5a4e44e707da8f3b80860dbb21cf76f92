@@ -1,0 +1,103 @@
+
+W
+java:S2209F"5Change this instance-reference to a static reference.(Ò±Û•üÿÿÿÿ8³ÚìÉ».
+“
+java:S1319)"wThe type of the "regionsNames" object should be an interface such as "List" rather than the implementation "ArrayList".(•¦àq8¯ê¢í».
+S
+java:S2696B"6Make the enclosing method "static" or remove this set.(ö½Àß8„ò£í».
+W
+java:S2209D"5Change this instance-reference to a static reference.(û›üŒÿÿÿÿÿ8³ÚìÉ».
+{
+java:S1104&"YMake shopArrayList a static final constant or non-public and provide accessors if needed.(«ú©ëúÿÿÿÿ8¯ê¢í».
+x
+java:S1104'"VMake shopsNames a static final constant or non-public and provide accessors if needed.(ÿ‘Âÿÿÿÿÿ8¯ê¢í».
+“
+java:S1319$"vThe type of the "brandsNames" object should be an interface such as "List" rather than the implementation "ArrayList".(çîº8¯ê¢í».
+x
+java:S1104""[Make categoriesNames a static final constant or non-public and provide accessors if needed.(è™áş8¯ê¢í».
+|
+java:S1104#"ZMake brandArrayList a static final constant or non-public and provide accessors if needed.(¼ëØìüÿÿÿÿ8¯ê¢í».
+›
+java:S1319#"yThe type of the "brandArrayList" object should be an interface such as "List" rather than the implementation "ArrayList".(¼ëØìüÿÿÿÿ8¯ê¢í».
+x
+java:S1104%"\Make checkBoxesBrands a static final constant or non-public and provide accessors if needed.(´ŠÔX8¯ê¢í».
+—
+java:S1319%"{The type of the "checkBoxesBrands" object should be an interface such as "List" rather than the implementation "ArrayList".(´ŠÔX8¯ê¢í».
+S
+java:S1444 "1Make this "public static dbProcessor" field final(ı æ‡øÿÿÿÿ8„ò£í».
+™
+java:S1319!"|The type of the "categoryArrayList" object should be an interface such as "List" rather than the implementation "ArrayList".(ÁóÄ£8¯ê¢í».
+š
+java:S1319&"xThe type of the "shopArrayList" object should be an interface such as "List" rather than the implementation "ArrayList".(«ú©ëúÿÿÿÿ8¯ê¢í».
+œ
+java:S1319("zThe type of the "regionArrayList" object should be an interface such as "List" rather than the implementation "ArrayList".(³ÀÙêúÿÿÿÿ8¯ê¢í».
+y
+java:S1104 "WMake dbProcessor a static final constant or non-public and provide accessors if needed.(ı æ‡øÿÿÿÿ8Â™¡í».
+t
+java:S1104)"XMake regionsNames a static final constant or non-public and provide accessors if needed.(•¦àq8¯ê¢í».
+t
+java:S3776@"RRefactor this method to reduce its Cognitive Complexity from 45 to the 15 allowed.(·òşÿÿÿÿ8³ÚìÉ».
+—
+java:S1319'"uThe type of the "shopsNames" object should be an interface such as "List" rather than the implementation "ArrayList".(ÿ‘Âÿÿÿÿÿ8¯ê¢í».
+t
+java:S1104$"WMake brandsNames a static final constant or non-public and provide accessors if needed.(çîº8¯ê¢í».
+z
+java:S1104!"]Make categoryArrayList a static final constant or non-public and provide accessors if needed.(ÁóÄ£8¯ê¢í».
+}
+java:S1104("[Make regionArrayList a static final constant or non-public and provide accessors if needed.(³ÀÙêúÿÿÿÿ8¯ê¢í».
+—
+java:S1319""zThe type of the "categoriesNames" object should be an interface such as "List" rather than the implementation "ArrayList".(è™áş8¯ê¢í».
+T
+java:S1444!"7Make this "public static categoryArrayList" field final(ÁóÄ£8ÎÜ¤í».
+R
+java:S1444""5Make this "public static categoriesNames" field final(è™áş8ÎÜ¤í».
+V
+java:S1444#"4Make this "public static brandArrayList" field final(¼ëØìüÿÿÿÿ8ÎÜ¤í».
+N
+java:S1444$"1Make this "public static brandsNames" field final(çîº8ÎÜ¤í».
+R
+java:S1444%"6Make this "public static checkBoxesBrands" field final(´ŠÔX8ÎÜ¤í».
+U
+java:S1444&"3Make this "public static shopArrayList" field final(«ú©ëúÿÿÿÿ8ÎÜ¤í».
+R
+java:S1444'"0Make this "public static shopsNames" field final(ÿ‘Âÿÿÿÿÿ8ÎÜ¤í».
+W
+java:S1444("5Make this "public static regionArrayList" field final(³ÀÙêúÿÿÿÿ8ÎÜ¤í».
+N
+java:S1444)"2Make this "public static regionsNames" field final(•¦àq8ÎÜ¤í».
+N
+java:S2386C",Make member "categoryArrayList" "protected".(’ÆØ¬ıÿÿÿÿ8ÎÜ¤í».
+X
+java:S2696C"6Make the enclosing method "static" or remove this set.(’ÆØ¬ıÿÿÿÿ8ÎÜ¤í».
+L
+java:S2386D"*Make member "categoriesNames" "protected".(û›üŒÿÿÿÿÿ8ÎÜ¤í».
+X
+java:S2696D"6Make the enclosing method "static" or remove this set.(û›üŒÿÿÿÿÿ8ÎÜ¤í».
+F
+java:S2386E")Make member "brandArrayList" "protected".(…ö®æ8ÎÜ¤í».
+S
+java:S2696E"6Make the enclosing method "static" or remove this set.(…ö®æ8ÎÜ¤í».
+H
+java:S2386F"&Make member "brandsNames" "protected".(Ò±Û•üÿÿÿÿ8ÎÜ¤í».
+X
+java:S2696F"6Make the enclosing method "static" or remove this set.(Ò±Û•üÿÿÿÿ8ÎÜ¤í».
+H
+java:S2386G"+Make member "checkBoxesBrands" "protected".(¹³åé8ÎÜ¤í».
+S
+java:S2696G"6Make the enclosing method "static" or remove this set.(¹³åé8ÎÜ¤í».
+J
+java:S2386H"(Make member "shopArrayList" "protected".(ˆã…ÿÿÿÿÿ8ÎÜ¤í».
+X
+java:S2696H"6Make the enclosing method "static" or remove this set.(ˆã…ÿÿÿÿÿ8ÎÜ¤í».
+B
+java:S2386I"%Make member "shopsNames" "protected".(‘ûş÷8ÎÜ¤í».
+S
+java:S2696I"6Make the enclosing method "static" or remove this set.(‘ûş÷8ÎÜ¤í».
+G
+java:S2386J"*Make member "regionArrayList" "protected".(ôëş‰8ÎÜ¤í».
+S
+java:S2696J"6Make the enclosing method "static" or remove this set.(ôëş‰8ÎÜ¤í».
+I
+java:S2386K"'Make member "regionsNames" "protected".(ƒâí’úÿÿÿÿ8ÎÜ¤í».
+X
+java:S2696K"6Make the enclosing method "static" or remove this set.(ƒâí’úÿÿÿÿ8ÎÜ¤í».

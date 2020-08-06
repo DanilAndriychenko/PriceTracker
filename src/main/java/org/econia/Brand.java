@@ -20,6 +20,6 @@ public class Brand {
 
     @Override
     public String toString() {
-        return "Category: [id: " + brand_id + ",\tname: " + name + "];";
+        return "Brand: [id: " + brand_id + ",\tname: " + name + "];";
     }
 }

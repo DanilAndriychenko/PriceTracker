@@ -15,134 +15,127 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="861.0"
-            prefWidth="1220.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.econia.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="861.0" prefWidth="1220.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.econia.Controller">
     <center>
         <LineChart BorderPane.alignment="CENTER">
             <xAxis>
-                <CategoryAxis side="BOTTOM"/>
+                <CategoryAxis side="BOTTOM" />
             </xAxis>
             <yAxis>
-                <NumberAxis side="LEFT"/>
+                <NumberAxis side="LEFT" />
             </yAxis>
         </LineChart>
     </center>
     <left>
-        <VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="250.0" BorderPane.alignment="CENTER">
+        <VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="250.0" style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
             <children>
                 <Label maxWidth="1.7976931348623157E308" text="Категорія:">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <VBox.margin>
-                        <Insets/>
+                        <Insets />
                     </VBox.margin>
                     <padding>
-                        <Insets left="10.0" right="10.0" top="10.0"/>
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <JFXComboBox fx:id="comboBoxCategory" maxWidth="1.7976931348623157E308">
                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0"/>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
                     </VBox.margin>
                 </JFXComboBox>
                 <Label layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" text="Бренд:">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <padding>
-                        <Insets left="10.0" right="10.0" top="10.0"/>
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <VBox fx:id="vBoxBrands">
                     <padding>
-                        <Insets left="10.0" top="10.0"/>
+                        <Insets left="10.0" top="10.0" />
                     </padding>
                     <children>
                     </children>
                 </VBox>
                 <Label layoutX="10.0" layoutY="77.0" maxWidth="1.7976931348623157E308" text="Магазин:">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <padding>
-                        <Insets left="10.0" right="10.0" top="10.0"/>
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <JFXComboBox fx:id="comboBoxShop" layoutX="10.0" layoutY="52.0" maxWidth="1.7976931348623157E308">
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0"/>
-                    </padding>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </VBox.margin>
                 </JFXComboBox>
                 <Label layoutX="10.0" layoutY="119.0" maxWidth="1.7976931348623157E308" text="Регіон:">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <padding>
-                        <Insets left="10.0" right="10.0" top="10.0"/>
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <JFXComboBox fx:id="comboBoxRegion" layoutX="10.0" layoutY="161.0" maxWidth="1.7976931348623157E308">
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0"/>
-                    </padding>
                     <VBox.margin>
-                        <Insets/>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
                     </VBox.margin>
                 </JFXComboBox>
                 <Label layoutX="10.0" layoutY="241.0" maxWidth="1.7976931348623157E308" text="Від:">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <padding>
-                        <Insets left="10.0" right="10.0" top="10.0"/>
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <JFXDatePicker fx:id="datePickerFrom" maxWidth="1.7976931348623157E308">
-                    <padding>
-                        <Insets bottom="10.0" left="50.0" right="50.0"/>
-                    </padding>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="50.0" right="50.0" />
+               </VBox.margin>
                 </JFXDatePicker>
                 <Label layoutX="10.0" layoutY="333.0" maxWidth="1.7976931348623157E308" text="До:">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <padding>
-                        <Insets left="10.0" right="10.0" top="10.0"/>
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <JFXDatePicker fx:id="datePickerTo" layoutX="10.0" layoutY="380.0" maxWidth="1.7976931348623157E308">
-                    <padding>
-                        <Insets bottom="10.0" left="50.0" right="50.0"/>
-                    </padding>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="50.0" right="50.0" />
+               </VBox.margin>
                 </JFXDatePicker>
-                <JFXButton fx:id="buttonTrack" buttonType="RAISED" maxWidth="1.7976931348623157E308" prefHeight="50.0"
-                           ripplerFill="#10663fca" style="-fx-background-color: lightblue;" text="Відстежити зміни"
-                           textAlignment="CENTER" underline="true">
+                <JFXButton fx:id="buttonTrack" buttonType="RAISED" maxWidth="1.7976931348623157E308" prefHeight="50.0" ripplerFill="#10663fca" style="-fx-background-color: lightblue;" text="Відстежити зміни" textAlignment="CENTER" underline="true">
                     <font>
-                        <Font name="System Bold" size="14.0"/>
+                        <Font name="System Bold" size="14.0" />
                     </font>
                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </VBox.margin>
                 </JFXButton>
             </children>
@@ -153,17 +146,17 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Close"/>
+                        <MenuItem fx:id="addProduct" mnemonicParsing="false" text="Додати продукцію" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Редагувати">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Delete"/>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Допомога">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About"/>
+                        <MenuItem mnemonicParsing="false" text="About" />
                     </items>
                 </Menu>
             </menus>

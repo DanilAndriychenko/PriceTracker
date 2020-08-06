@@ -34,9 +34,16 @@
             <version>8.0.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.6</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -45,6 +52,7 @@
                     <release>8</release>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -53,6 +61,7 @@
                     <mainClass>org.econia.App</mainClass>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

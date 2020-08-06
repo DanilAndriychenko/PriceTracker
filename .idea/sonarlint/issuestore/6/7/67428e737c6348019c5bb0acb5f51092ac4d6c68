@@ -1,0 +1,29 @@
+
+›
+java:S1319P"yThe type of the "brandArrayList" object should be an interface such as "List" rather than the implementation "ArrayList".(ƒÇğŠşÿÿÿÿ8Í¯˜É».
+
+java:S1319B"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ÒÙÜÜ8Í¯˜É».
+’
+java:S1319f"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Ş§ùÿÿÿÿ8úâ—É».
+Œ
+java:S1319t"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(”İÚ8„£×É».
+x
+java:S1104"VMake connection a static final constant or non-public and provide accessors if needed.(à¯ôüÿÿÿÿ8’ÿ‡ï».
+
+java:S1319+"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(¾ÎÚŠ8Í¯˜É».
+’
+java:S1319P"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ƒÇğŠşÿÿÿÿ8Í¯˜É».
+˜
+java:S1319:"|The type of the "categoryArrayList" object should be an interface such as "List" rather than the implementation "ArrayList".(£ÚÁ8Í¯˜É».
+’
+java:S1319X"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(¡ÂØİşÿÿÿÿ8Í¯˜É».
+Œ
+java:S1319:"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(£ÚÁ8Í¯˜É».
+’
+java:S1319|"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ÿ±ä©ûÿÿÿÿ8ƒöòÉ».
+˜
+java:S1319Š"zThe type of the "regionArrayList" object should be an interface such as "List" rather than the implementation "ArrayList".(û¶ğş8çƒúÉ».
+
+java:S1319Š"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(û¶ğş8ƒöòÉ».
+”
+java:S1319t"xThe type of the "shopArrayList" object should be an interface such as "List" rather than the implementation "ArrayList".(”İÚ8…€ØÉ».
