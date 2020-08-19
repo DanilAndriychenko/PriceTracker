@@ -4,19 +4,32 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Controller.
@@ -28,16 +41,53 @@ public class Controller {
     private static final String COMBO_BOX_REGION_PROMPT_TEXT = "Оберіть регіон";
     private static final String BRANDS_CHOOSE_CATEGORY = "Спочатку оберіть категорію ↑";
     private static final String BRANDS_CHOOSE_ALL = "Обрати всі / Скасувати";
+    private static final double FREQUENCY = 10_000.0;
 
-    public static ArrayList<Category> categoryArrayList;
-    public static ArrayList<String> categoriesNames;
-    public static ArrayList<Brand> brandArrayList;
-    public static ArrayList<String> brandsNames;
-    public static ArrayList<JFXCheckBox> checkBoxesBrands;
-    public static ArrayList<Shop> shopArrayList;
-    public static ArrayList<String> shopsNames;
-    public static ArrayList<Region> regionArrayList;
-    public static ArrayList<String> regionsNames;
+    private static List<Category> categoryArrayList;
+    private static List<String> categoriesNames;
+    private static List<Brand> brandArrayList;
+    private static List<String> brandsNames;
+    private static List<JFXCheckBox> checkBoxesBrands;
+    private static List<Shop> shopArrayList;
+    private static List<String> shopsNames;
+    private static List<Region> regionArrayList;
+    private static List<String> regionsNames;
+
+    public static List<Category> getCategoryArrayList() {
+        return categoryArrayList;
+    }
+
+    public static List<String> getCategoriesNames() {
+        return categoriesNames;
+    }
+
+    public static List<Brand> getBrandArrayList() {
+        return brandArrayList;
+    }
+
+    public static List<String> getBrandsNames() {
+        return brandsNames;
+    }
+
+    public static List<JFXCheckBox> getCheckBoxesBrands() {
+        return checkBoxesBrands;
+    }
+
+    public static List<Shop> getShopArrayList() {
+        return shopArrayList;
+    }
+
+    public static List<String> getShopsNames() {
+        return shopsNames;
+    }
+
+    public static List<Region> getRegionArrayList() {
+        return regionArrayList;
+    }
+
+    public static List<String> getRegionsNames() {
+        return regionsNames;
+    }
 
     @FXML
     public JFXComboBox<String> comboBoxCategory;
@@ -55,8 +105,16 @@ public class Controller {
     public JFXButton buttonTrack;
     @FXML
     public MenuItem addProduct;
+    @FXML
+    public Label labelResult;
+    @FXML
+    public BorderPane borderPane;
 
-    static {
+    private LineChart<Number, Number> lineChart;
+    private final NumberAxis dateAxis = new NumberAxis();
+    private final NumberAxis priceAxis = new NumberAxis();
+
+    private static void initializeLists() {
         categoryArrayList = DBProcessor.getAllCategories();
         categoriesNames = DBProcessor.getCategoriesNames(categoryArrayList);
         brandArrayList = DBProcessor.getAllBrands();
@@ -68,18 +126,8 @@ public class Controller {
         regionsNames = DBProcessor.getRegionsNames(regionArrayList);
     }
 
-    /**
-     * Initialize.
-     */
-    @FXML
-    public void initialize() {
-        //initialize DBProcessor and Lists
-
-
-        //blockAllComboBoxes while user don't choose Category
-        //set default values for comboBoxes
+    private void configurePanel(){
         comboBoxShop.setDisable(true);
-        vBoxBrands.getChildren().add(new Label(BRANDS_CHOOSE_CATEGORY));
         comboBoxRegion.setDisable(true);
         buttonTrack.setDisable(true);
         datePickerFrom.setDisable(true);
@@ -88,6 +136,22 @@ public class Controller {
         comboBoxCategory.setPromptText(COMBO_BOX_CATEGORY_PROMPT_TEXT);
         comboBoxShop.setPromptText(COMBO_BOX_SHOP_PROMPT_TEXT);
         comboBoxRegion.setPromptText(COMBO_BOX_REGION_PROMPT_TEXT);
+        vBoxBrands.getChildren().add(new Label(BRANDS_CHOOSE_CATEGORY));
+    }
+
+    /**
+     * Initialize.
+     */
+    @FXML
+    public void initialize() {
+
+        initializeLists();
+
+        configureLineChart();
+
+        //blockAllComboBoxes while user don't choose Category
+        //set default values for comboBoxes
+        configurePanel();
 
         //Category <---> SetOnAction
         comboBoxCategory.setOnAction(eventCategoryAction -> {
@@ -129,20 +193,15 @@ public class Controller {
                     for (JFXCheckBox jfxCheckBox : checkBoxesBrands) {
                         jfxCheckBox.setSelected(true);
                     }
-                    if (allDataSelected()) {
-                        buttonTrack.setDisable(false);
-                    } else if (noOneBrandIsSelected()) {
-                        buttonTrack.setDisable(true);
-                    }
                 } else {
                     for (JFXCheckBox jfxCheckBox : checkBoxesBrands) {
                         jfxCheckBox.setSelected(false);
                     }
-                    if (allDataSelected()) {
-                        buttonTrack.setDisable(false);
-                    } else if (noOneBrandIsSelected()) {
-                        buttonTrack.setDisable(true);
-                    }
+                }
+                if (allDataSelected()) {
+                    buttonTrack.setDisable(false);
+                } else if (noOneBrandIsSelected()) {
+                    buttonTrack.setDisable(true);
                 }
 
             });
@@ -166,6 +225,113 @@ public class Controller {
             }
         });
 
+        //Tuning datePickers and logic how they interact.
+        configureDatePickers();
+
+        buttonTrack.setOnAction(eventTrack -> {
+            //building query for selected parameters.
+            int catId = categoriesNames.indexOf(comboBoxCategory.getValue()) + 1;
+            ArrayList<Integer> brandIDs = new ArrayList<>();
+            for (JFXCheckBox checkBoxesBrand : checkBoxesBrands) {
+                if (checkBoxesBrand.isSelected()) {
+                    brandIDs.add(brandsNames.indexOf(checkBoxesBrand.getText()) + 1);
+                }
+            }
+            int shopId = shopsNames.indexOf(comboBoxShop.getValue()) + 1;
+            int regionId = regionsNames.indexOf(comboBoxRegion.getValue()) + 1;
+            StringBuilder brandPartOfQuery = new StringBuilder();
+            for (Integer brandID : brandIDs) {
+                brandPartOfQuery.append("brand_id = ").append(brandID).append(" OR ");
+            }
+            Date dateFrom = Date.valueOf(datePickerFrom.getValue());
+            Date dateTo = Date.valueOf(datePickerTo.getValue());
+            //@params: cat_id, shop_id, region_id, "brand_id = 1 OR brand_id = 2"
+            String query = String.format("SELECT * FROM Products WHERE cat_id = %d AND shop_id = %d AND region_id = %d AND (%s) ORDER BY product_id ASC;",
+                    catId, shopId, regionId, brandPartOfQuery.substring(0, brandPartOfQuery.toString().length() - 4));
+
+            ArrayList<Product> products = new ArrayList<>();
+            try (ResultSet resultSet = DBProcessor.connection.createStatement().executeQuery(query)) {
+                while (resultSet.next()) {
+                    Product product = new Product(resultSet.getInt("product_id"), resultSet.getInt("cat_id"),
+                            resultSet.getInt("brand_id"), resultSet.getInt("shop_id"),
+                            resultSet.getInt("region_id"), resultSet.getString("link"));
+                    products.add(product);
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            int minDate = Integer.MAX_VALUE;
+            int maxDate = Integer.MIN_VALUE;
+            lineChart.getData().clear();
+            for (Product product : products) {
+                String queryRecords = String.format("SELECT * FROM Records WHERE product_id = %d AND date >= '%s' AND date <= '%s';",
+                        product.getProduct_id(), dateFrom.toString(), dateTo.toString());
+                XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                ObservableList<XYChart.Data<Number, Number>> observableList = FXCollections.observableArrayList();
+                series.setName(brandArrayList.get(product.getBrand_id() - 1).getName());
+                try (ResultSet resultSet = DBProcessor.connection.createStatement().executeQuery(queryRecords)) {
+                    while (resultSet.next()) {
+                        String dateStr = resultSet.getDate("date").toString().replace("-", "").substring(2, 8);
+                        int date = Integer.parseInt(dateStr.substring(4, 6) + dateStr.substring(2, 4) + dateStr.substring(0, 2));
+                        observableList.add(new XYChart.Data<>(date, resultSet.getDouble("price")));
+                        if (date > maxDate) {
+                            maxDate = date;
+                        } else if (date < minDate) {
+                            minDate = date;
+                        }
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                series.setData(observableList);
+                lineChart.getData().add(series);
+            }
+            dateAxis.setLowerBound(minDate - FREQUENCY);
+            dateAxis.setUpperBound(maxDate + FREQUENCY);
+            lineChart.setTitle(comboBoxCategory.getValue());
+        });
+
+        defineActionAddProductMenuItem();
+    }
+
+    private void configureDatePickers() {
+        datePickerFrom.setDayCellFactory(d -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setDisable(item.isAfter(LocalDate.now()));
+            }
+        });
+        datePickerTo.setDayCellFactory(d -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setDisable(item.isAfter(LocalDate.now()));
+            }
+        });
+        datePickerFrom.valueProperty().addListener(datePickerFromListener -> {
+            LocalDate from = datePickerFrom.getValue();
+            datePickerTo.setDayCellFactory(d -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setDisable(item.isAfter(LocalDate.now()) || item.isBefore(from));
+                }
+            });
+        });
+        datePickerTo.valueProperty().addListener(datePickerToListener -> {
+            LocalDate to = datePickerTo.getValue();
+            datePickerFrom.setDayCellFactory(d -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setDisable(item.isAfter(to));
+                }
+            });
+        });
+    }
+
+    private void defineActionAddProductMenuItem() {
         addProduct.setOnAction(eventAddProduct -> {
             Parent root;
             try {
@@ -179,6 +345,33 @@ public class Controller {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void configureLineChart() {
+        dateAxis.setForceZeroInRange(false);
+        dateAxis.setAutoRanging(false);
+        dateAxis.setTickUnit(FREQUENCY);
+        dateAxis.setMinorTickVisible(false);
+        dateAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            //            input: 180820
+            @Override
+            public String toString(Number number) {
+                String numStr = number.toString();
+                if (numStr.length() >= 6) {
+                    return numStr.substring(0, 2) + "." + numStr.substring(2, 4) + "." + numStr.substring(4, 6);
+                } else {
+                    return null;
+                }
+            }
+
+            //            input: 18.08.20
+            @Override
+            public Number fromString(String string) {
+                return Integer.parseInt(string.replace(".", ""));
+            }
+        });
+        lineChart = new LineChart<>(dateAxis, priceAxis);
+        borderPane.setCenter(lineChart);
     }
 
     private boolean allDataSelected() {

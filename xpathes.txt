@@ -1,0 +1,9 @@
+default:
+price:      /html/body/div[1]/div[3]/div/div/div[1]/div[2]/div/div[1]/span
+
+on sale:
+price-old:  /html/body/div[1]/div[3]/div/div/div[1]/div[2]/div/div[1]/span[2]
+
+price-new:  /html/body/div[1]/div[3]/div/div/div[1]/div[2]/div/div[1]/span[1]
+
+foraXpath:  /html/body/div[1]/div[3]/div/div/div[1]/div[2]/div/div[1]

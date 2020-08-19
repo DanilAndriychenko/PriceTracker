@@ -41,7 +41,6 @@ public class AddProductController {
 
     @FXML
     public void initialize() {
-        //TODO add border to button.
         //blockAllComboBoxes while user don't choose Category
         //set default values for comboBoxes
         comboBoxBrand.setDisable(true);
@@ -54,21 +53,21 @@ public class AddProductController {
         comboBoxShop.setPromptText(COMBO_BOX_PROMPT_TEXT);
         comboBoxRegion.setPromptText(COMBO_BOX_PROMPT_TEXT);
 
-        comboBoxCategory.getItems().setAll(Controller.categoriesNames);
+        comboBoxCategory.getItems().setAll(Controller.getCategoriesNames());
 
         comboBoxCategory.setOnAction(eventCategoryAction -> {
             comboBoxBrand.setDisable(false);
 
             //Get category and get brands that compete in this category.
             String category = comboBoxCategory.getValue();
-            int categoryID = Controller.categoriesNames.indexOf(category) + 1;
+            int categoryID = Controller.getCategoriesNames().indexOf(category) + 1;
             ArrayList<Integer> brandsIDs = DBProcessor.getBrandsAccordingToCategory(categoryID);
 
             //Clear checkBoxBrand and set those brands there
             //Also set value of previous brand if new list of brands contains it.
             String brandPrev = comboBoxBrand.getValue();
             comboBoxBrand.getItems().clear();
-            for (Brand brand : Controller.brandArrayList) {
+            for (Brand brand : Controller.getBrandArrayList()) {
                 if (brandsIDs.contains(brand.getBrand_id())) {
                     comboBoxBrand.getItems().add(brand.getName());
                     if (brand.getName().equals(brandPrev)) {
@@ -80,11 +79,11 @@ public class AddProductController {
 
             comboBoxBrand.setOnAction(eventBrandAction -> {
                 comboBoxShop.setDisable(false);
-                comboBoxShop.getItems().setAll(Controller.shopsNames);
+                comboBoxShop.getItems().setAll(Controller.getShopsNames());
 
                 comboBoxShop.setOnAction(eventShopAction -> {
                     comboBoxRegion.setDisable(false);
-                    comboBoxRegion.getItems().setAll(Controller.regionsNames);
+                    comboBoxRegion.getItems().setAll(Controller.getRegionsNames());
 
                     comboBoxRegion.setOnAction(eventRegionAction -> {
                         toggleButtonSave.setDisable(false);
@@ -92,6 +91,10 @@ public class AddProductController {
                     });
                 });
             });
+        });
+
+        toggleButtonSave.setOnAction(eventToggleButton ->{
+            //TODO
         });
 
         buttonAddProduct.setOnAction(eventButton -> {
@@ -111,16 +114,16 @@ public class AddProductController {
                 comboBoxBrand.setUnFocusColor(BLACK);
                 textFieldLink.setUnFocusColor(BLACK);
 
-                int cat_id = Controller.categoriesNames.indexOf(comboBoxCategory.getValue()) + 1;
-                int brand_id = Controller.brandsNames.indexOf(comboBoxBrand.getValue()) + 1;
-                int shop_id = Controller.shopsNames.indexOf(comboBoxShop.getValue()) + 1;
-                int region_id = Controller.regionsNames.indexOf(comboBoxRegion.getValue()) + 1;
+                int catId = Controller.getCategoriesNames().indexOf(comboBoxCategory.getValue()) + 1;
+                int brandId = Controller.getBrandsNames().indexOf(comboBoxBrand.getValue()) + 1;
+                int shopId = Controller.getShopsNames().indexOf(comboBoxShop.getValue()) + 1;
+                int regionId = Controller.getRegionsNames().indexOf(comboBoxRegion.getValue()) + 1;
                 String link = textFieldLink.getText();
 
                 //check if record for this product already exists.
                 //If exist --> update link, else insert as new Product.
                 String querySelect = String.format("SELECT * FROM Products WHERE cat_id = %d AND brand_id = %d AND shop_id = %d AND region_id = %d",
-                        cat_id, brand_id, shop_id, region_id);
+                        catId, brandId, shopId, regionId);
                 int productIDSelected = getProductID(querySelect);
                 if (productIDSelected != -1) {
                     String queryUpdate = String.format("UPDATE Products SET link = '%s' WHERE product_id = %d;", link, productIDSelected);
@@ -131,7 +134,7 @@ public class AddProductController {
                     }
                 } else {
                     String queryInsert = String.format("INSERT INTO Products (cat_id, brand_id, shop_id, region_id, link) VALUES (%d, %d, %d, %d, '%s');",
-                            cat_id, brand_id, shop_id, region_id, link);
+                            catId, brandId, shopId, regionId, link);
                     try {
                         DBProcessor.connection.createStatement().executeUpdate(queryInsert);
                     } catch (SQLException throwables) {
@@ -154,6 +157,10 @@ public class AddProductController {
                     }
                     Platform.runLater(() -> labelStatus.setText(""));
                 }).start();
+
+                //clear link field
+                //TODO check this one.
+                textFieldLink.clear();
             }
         });
     }

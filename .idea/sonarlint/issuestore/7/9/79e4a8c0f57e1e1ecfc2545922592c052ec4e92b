@@ -1,4 +1,4 @@
 
-j	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(À‹¼¨8¯²ñÄ».
 m	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ì†´ƒ8—ÝîÄ».
 t	java:S116"SRename this field "brand_id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Õ–÷«ûÿÿÿÿ8ÈŠïÄ».
+j	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(À‹¼¨8¯²ñÄ».

@@ -4,8 +4,9 @@ import com.mysql.cj.jdbc.Driver;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Formatter;
+import java.util.List;
+import java.util.Locale;
 
 public class DBProcessor {
 
@@ -14,16 +15,14 @@ public class DBProcessor {
     private static final String URL =
             "jdbc:mysql://54.36.173.35:3306/econiadj_pricemonitoring?useSSL=false&serverTimezone=UTC";
 
-    private static Logger logger = Logger.getLogger(DBProcessor.class.getName());
-
     public static Connection connection;
+    private static final Formatter FORMATTER_US = new Formatter(Locale.US);
 
     static {
         try {
             DriverManager.registerDriver(new Driver());
         } catch (SQLException e) {
             String msg = "Error occurred in attempt to register driver.\n" + e.toString();
-            logger.log(Level.SEVERE, msg);
         }
         setupConnection(URL, USERNAME, PASSWORD);
     }
@@ -34,7 +33,6 @@ public class DBProcessor {
                 connection = DriverManager.getConnection(url, username, password);
             } catch (SQLException e) {
                 String msg = "Error occurred in attempt to get connection.\n" + e.toString();
-                logger.log(Level.SEVERE, msg);
             }
         }
         return connection;
@@ -55,7 +53,7 @@ public class DBProcessor {
     }
 
 
-    public static ArrayList<String> getCategoriesNames(ArrayList<Category> categoryArrayList) {
+    public static ArrayList<String> getCategoriesNames(List<Category> categoryArrayList) {
         ArrayList<String> categoriesNames = new ArrayList<>();
         for (Category category : categoryArrayList) {
             categoriesNames.add(category.getName());
@@ -77,7 +75,7 @@ public class DBProcessor {
         return brandsArrayList;
     }
 
-    public static ArrayList<String> getBrandsNames(ArrayList<Brand> brandArrayList) {
+    public static ArrayList<String> getBrandsNames(List<Brand> brandArrayList) {
         ArrayList<String> brandsNames = new ArrayList<>();
         for (Brand brand : brandArrayList) {
             brandsNames.add(brand.getName());
@@ -113,7 +111,7 @@ public class DBProcessor {
         return shopsArrayList;
     }
 
-    public static ArrayList<String> getShopsNames(ArrayList<Shop> shopArrayList) {
+    public static ArrayList<String> getShopsNames(List<Shop> shopArrayList) {
         ArrayList<String> shopsNames = new ArrayList<>();
         for (Shop shop : shopArrayList) {
             shopsNames.add(shop.getName());
@@ -135,11 +133,36 @@ public class DBProcessor {
         return regionsArrayList;
     }
 
-    public static ArrayList<String> getRegionsNames(ArrayList<Region> regionArrayList) {
+    public static ArrayList<String> getRegionsNames(List<Region> regionArrayList) {
         ArrayList<String> regionsNames = new ArrayList<>();
         for (Region region : regionArrayList) {
             regionsNames.add(region.getName());
         }
         return regionsNames;
+    }
+
+    public static ResultSet getProductsSetPartly(int beginProd, int endProd){
+        String query = String.format("SELECT product_id, shop_id, link FROM Products WHERE product_id >= %d AND product_id <= %d ORDER BY product_id ASC;", beginProd, endProd);
+        ResultSet resultSet = null;
+        Statement statement;
+        try{
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    //TODO read about using batch
+    //TODO Replace with prepared statement.
+    public static void makeRecord(int productId, Date date, Double price){
+        String query = new Formatter(Locale.US).format("INSERT INTO Records (product_id, date, price) VALUES (%d, '%s', %.2f);", productId, date.toString(), price).toString();
+        System.out.println(query);
+        try (Statement statement = connection.createStatement()){
+            statement.execute(query);
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
     }
 }
