@@ -3,7 +3,6 @@ package org.econia;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,7 +11,7 @@ import org.apache.commons.validator.routines.UrlValidator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class AddProductController {
 
@@ -33,8 +32,6 @@ public class AddProductController {
     @FXML
     public JFXTextField textFieldLink;
     @FXML
-    public JFXToggleButton toggleButtonSave;
-    @FXML
     public JFXButton buttonAddProduct;
     @FXML
     public Label labelStatus;
@@ -46,7 +43,6 @@ public class AddProductController {
         comboBoxBrand.setDisable(true);
         comboBoxShop.setDisable(true);
         comboBoxRegion.setDisable(true);
-        toggleButtonSave.setDisable(true);
         buttonAddProduct.setDisable(true);
         comboBoxCategory.setPromptText(COMBO_BOX_PROMPT_TEXT);
         comboBoxBrand.setPromptText(COMBO_BOX_PROMPT_TEXT);
@@ -61,7 +57,7 @@ public class AddProductController {
             //Get category and get brands that compete in this category.
             String category = comboBoxCategory.getValue();
             int categoryID = Controller.getCategoriesNames().indexOf(category) + 1;
-            ArrayList<Integer> brandsIDs = DBProcessor.getBrandsAccordingToCategory(categoryID);
+            List<Integer> brandsIDs = DBProcessor.getBrandsAccordingToCategory(categoryID);
 
             //Clear checkBoxBrand and set those brands there
             //Also set value of previous brand if new list of brands contains it.
@@ -85,16 +81,9 @@ public class AddProductController {
                     comboBoxRegion.setDisable(false);
                     comboBoxRegion.getItems().setAll(Controller.getRegionsNames());
 
-                    comboBoxRegion.setOnAction(eventRegionAction -> {
-                        toggleButtonSave.setDisable(false);
-                        buttonAddProduct.setDisable(false);
-                    });
+                    comboBoxRegion.setOnAction(eventRegionAction -> buttonAddProduct.setDisable(false));
                 });
             });
-        });
-
-        toggleButtonSave.setOnAction(eventToggleButton ->{
-            //TODO
         });
 
         buttonAddProduct.setOnAction(eventButton -> {
@@ -128,23 +117,19 @@ public class AddProductController {
                 if (productIDSelected != -1) {
                     String queryUpdate = String.format("UPDATE Products SET link = '%s' WHERE product_id = %d;", link, productIDSelected);
                     try {
-                        DBProcessor.connection.createStatement().executeUpdate(queryUpdate);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                        DBProcessor.getConnection().createStatement().executeUpdate(queryUpdate);
+                    } catch (SQLException throwable) {
+                        throwable.printStackTrace();
                     }
                 } else {
                     String queryInsert = String.format("INSERT INTO Products (cat_id, brand_id, shop_id, region_id, link) VALUES (%d, %d, %d, %d, '%s');",
                             catId, brandId, shopId, regionId, link);
                     try {
-                        DBProcessor.connection.createStatement().executeUpdate(queryInsert);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                        DBProcessor.getConnection().createStatement().executeUpdate(queryInsert);
+                    } catch (SQLException throwable) {
+                        throwable.printStackTrace();
                     }
                 }
-
-                //TODO enable hiding window.
-//                ((Stage) ((Button) eventButton.getSource()).getScene().getWindow()).close();
-
                 new Thread(() -> {
                     Platform.runLater(() -> {
                         labelStatus.setText("Продукт додано.");
@@ -153,34 +138,28 @@ public class AddProductController {
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
                     }
                     Platform.runLater(() -> labelStatus.setText(""));
                 }).start();
-
-                //clear link field
-                //TODO check this one.
                 textFieldLink.clear();
             }
         });
     }
 
     private int getProductID(String query) {
-        try (ResultSet resultSet = DBProcessor.connection.createStatement().executeQuery(query)) {
+        try (ResultSet resultSet = DBProcessor.getConnection().createStatement().executeQuery(query)) {
             if (resultSet.isBeforeFirst()) {
                 resultSet.next();
                 return resultSet.getInt("product_id");
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return -1;
     }
 
     private boolean dataSelectedCorrectly() {
-        if (new UrlValidator().isValid(textFieldLink.getText()) && comboBoxBrand.getValue() != null) {
-            return true;
-        }
-        return false;
+        return new UrlValidator().isValid(textFieldLink.getText()) && comboBoxBrand.getValue() != null;
     }
 }

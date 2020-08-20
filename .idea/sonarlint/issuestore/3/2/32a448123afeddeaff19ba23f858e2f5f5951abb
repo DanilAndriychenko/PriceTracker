@@ -1,14 +1,3 @@
 
 t
-java:S3776+"RRefactor this method to reduce its Cognitive Complexity from 36 to the 15 allowed.(·òşÿÿÿÿ8•ß‘¬À.
-O
-java:S1135a"2Complete the task associated to this TODO comment.(…ïœ†8•ß‘¬À.
-U
-java:S1135‘"2Complete the task associated to this TODO comment.(šŞÔşÿÿÿÿ8•ß‘¬À.
-d
-java:S2142›"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8•ß‘¬À.
-U
-java:S1135¢"2Complete the task associated to this TODO comment.(®¦¾şÿÿÿÿ8•ß‘¬À.
-d
-java:S1126µ"AReplace this if-then-else statement by a single return statement.(í¥ÔÄùÿÿÿÿ8•ß‘¬À.
-Y	java:S125’"<This block of commented-out lines of code should be removed.(ÇûºÃ8•ß‘¬À.
+java:S3776("RRefactor this method to reduce its Cognitive Complexity from 36 to the 15 allowed.(·òşÿÿÿÿ8æ’±®À.

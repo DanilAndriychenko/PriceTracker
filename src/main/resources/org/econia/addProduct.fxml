@@ -76,14 +76,6 @@
             <Insets left="10.0" right="10.0" />
          </VBox.margin>
       </JFXTextField>
-      <JFXToggleButton fx:id="toggleButtonSave" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" text="Зберегти налаштування без посилання" wrapText="true">
-         <font>
-            <Font name="System Italic" size="14.0" />
-         </font>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </JFXToggleButton>
       <JFXButton fx:id="buttonAddProduct" buttonType="RAISED" maxWidth="1.7976931348623157E308" prefHeight="50.0" ripplerFill="#557de1" style="-fx-background-color: lightgreen;" text="Додати продукцію">
          <font>
             <Font name="System Bold" size="14.0" />

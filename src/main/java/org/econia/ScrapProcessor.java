@@ -1,8 +1,6 @@
 package org.econia;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -15,17 +13,32 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.*;
+import java.net.SocketTimeoutException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-//TODO replace all xpathes
 public class ScrapProcessor {
 
     private WebDriver driver = null;
     private WebDriverWait wait = null;
+    private static final Logger logger = Logger.getLogger("ScrapProcessor Logger");
+    private int rsSize = 0;
+    private int rsLoaded = 0;
 
+    public int getRsSize() {
+        return rsSize;
+    }
+
+    public int getRsLoaded() {
+        return rsLoaded;
+    }
+
+    //TODO replace all xpath's
     private static final String SELECT_PAMPIK = "div.product-info__price-current > span";
     private static final String ANTOSHKA_PRICE_BLOCK = "product-price-block";
     private static final String ANTOSHKA_OLD_PRICE = "old-price";
@@ -52,7 +65,7 @@ public class ScrapProcessor {
     private static final String FORA_BUTTON = "/html/body/div/div/form/div[4]/div[3]/button";
     private static final String AUCHAN_OLD_PRICE = "/html/body/div[1]/main/div/div/div[1]/div[1]/section/div[2]/div[1]/div[3]/div[1]/span";
     private static final String AUCHAN_ACTUAL_PRICE = "/html/body/div[1]/main/div/div/div[1]/div[1]/section/div[2]/div[1]/div[3]/div[2]/span";
-    private static final String SELECT_ZAKAZ = "span.jsx-98027489.big-product-card__price-value";
+    private static final String SELECT_ZAKAZ = "span[data-marker-value='Price']";
     private static final String SELECT_EPICENTR_PRICE_VALUE = "span.old-price-value";
     private static final String SELECT_EPICENTR_PRICE_WRAPPER = "span.price-wrapper";
     private static final String SELECT_TAVRIAV_EX_PRICE = "span.ex-price";
@@ -63,19 +76,20 @@ public class ScrapProcessor {
     private static final String SELECT_KOPEYKA_PRICE = "li.new-prc";
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         long start = System.currentTimeMillis();
         ScrapProcessor scrapProcessor = new ScrapProcessor();
+        scrapProcessor.scrapePricesInRange(0, 1000);
 
-        scrapProcessor.scrapePricesInRange(463, 494);
+        *//*scrapProcessor.scrapePricesInRange(463, 494);
         System.out.println("Time for scraping all prices: " + (System.currentTimeMillis() - start));
 
-//        System.out.println(scrapProcessor.scrapePrice(7, "https://shop.silpo.ua/detail/748396"));
-//        System.out.println(System.currentTimeMillis() - start);
-//        start = System.currentTimeMillis();
-//        System.out.println(scrapProcessor.scrapePrice(7, "https://shop.silpo.ua/detail/748396"));
-//        System.out.println(System.currentTimeMillis() - start);
-    }
+        System.out.println(scrapProcessor.scrapePrice(7, "https://shop.silpo.ua/detail/748396"));
+        System.out.println(System.currentTimeMillis() - start);
+        start = System.currentTimeMillis();
+        System.out.println(scrapProcessor.scrapePrice(7, "https://shop.silpo.ua/detail/748396"));
+        System.out.println(System.currentTimeMillis() - start);*//*
+    }*/
 
     public ScrapProcessor() {
         setupDriver();
@@ -92,8 +106,7 @@ public class ScrapProcessor {
         One of them is that selenium shouldn't open each url in a new window.
          */
         ChromeOptions chromeOptions = new ChromeOptions();
-        //TODO add this option
-//        chromeOptions.addArguments("--headless");
+        chromeOptions.addArguments("--headless");
         /*
         Creating driver and wait based on options above.
          */
@@ -107,7 +120,7 @@ public class ScrapProcessor {
 //        If silpo never runs before, configure address and redirect to product.
         if (!driver.findElements(By.className(SILPO_ACTIVE_INPUT)).isEmpty()) {
             driver.findElement(By.className(SILPO_ACTIVE_INPUT)).sendKeys(SILPO_ADDRESS);
-            try{
+            try {
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_COMBOBOX_KIEV)));
                 driver.findElement(By.className(SILPO_COMBOBOX_KIEV)).click();
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_DELIVERY_CHECKBOX)));
@@ -119,8 +132,8 @@ public class ScrapProcessor {
                 driver.findElement(By.xpath(SILPO_SUBMIT_BUTTON)).click();
                 wait.until(ExpectedConditions.or(ExpectedConditions.presenceOfElementLocated(By.xpath(SILPO_OLD_INTEGER)),
                         ExpectedConditions.presenceOfElementLocated(By.xpath(SILPO_CURRENT_INTEGER))));
-            }catch (TimeoutException e){
-                System.err.println("Silpo: timeout exception. Price 0.0 returned.");
+            } catch (TimeoutException e) {
+                logger.log(Level.SEVERE, "Silpo: timeout exception. Price 0.0 returned.");
                 return 0.0;
             }
         }
@@ -133,33 +146,35 @@ public class ScrapProcessor {
             String currentFraction = driver.findElement(By.xpath(SILPO_CURRENT_FRACTION)).getText();
             return Double.parseDouble(currentInteger + "." + currentFraction);
         }
-        System.err.println("Silpo: price block not found. Price 0.0 returned.");
+        logger.log(Level.SEVERE, "Silpo: price block not found. Price 0.0 returned.");
         return 0.0;
     }
 
     private Double getPriceAntoshka(String url) {
         driver.navigate().to(url);
-        try{
+        try {
             wait.until(ExpectedConditions.presenceOfElementLocated(By.className(ANTOSHKA_PRICE_BLOCK)));
-        }catch (TimeoutException e){
-            System.err.println("Antoshka: timeout exception.");
+        } catch (TimeoutException e) {
+            logger.log(Level.SEVERE, "Antoshka: timeout exception.");
             return 0.0;
         }
-        if (!driver.findElements(By.className(ANTOSHKA_OLD_PRICE)).isEmpty()){
+        if (!driver.findElements(By.className(ANTOSHKA_OLD_PRICE)).isEmpty() &&
+                driver.findElements(By.className(ANTOSHKA_OLD_PRICE)).contains(driver.findElement(By.className(ANTOSHKA_OLD_PRICE)))) {
             String text = driver.findElement(By.className(ANTOSHKA_OLD_PRICE)).getText();
             return Double.parseDouble(formatText(text, 4));
-        }else if (!driver.findElements(By.className(ANTOSHKA_PRICE)).isEmpty()) {
+        } else if (!driver.findElements(By.className(ANTOSHKA_PRICE)).isEmpty() &&
+                driver.findElements(By.className(ANTOSHKA_PRICE)).contains(driver.findElement(By.className(ANTOSHKA_PRICE)))) {
             String text = driver.findElement(By.className(ANTOSHKA_PRICE)).getText();
             return Double.parseDouble(formatText(text, 4));
         }
-        System.err.println("Antoshka: price block not found. Price 0.0 returned.");
+        logger.log(Level.SEVERE, "Antoshka: price block not found. Price 0.0 returned.");
         return 0.0;
     }
 
     private Double getPriceFora(String url) {
         driver.navigate().to(url);
         if (driver.findElements(By.xpath(FORA_PRICE_BLOCK)).isEmpty()) {
-            try{
+            try {
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(FORA_INPUT)));
                 driver.findElement(By.xpath(FORA_INPUT)).click();
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(FORA_COMBOBOX)));
@@ -167,8 +182,8 @@ public class ScrapProcessor {
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(FORA_BUTTON)));
                 driver.findElement(By.xpath(FORA_BUTTON)).click();
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(FORA_PRICE_BLOCK)));
-            }catch (TimeoutException e){
-                System.err.println("Fora: timeout exception. Price 0.0 returned.");
+            } catch (TimeoutException e) {
+                logger.log(Level.SEVERE, "Fora: timeout exception. Price 0.0 returned.");
                 return 0.0;
             }
         }
@@ -179,17 +194,17 @@ public class ScrapProcessor {
             String text = driver.findElement(By.xpath(FORA_PRICE_BLOCK + "/span")).getText();
             return Double.parseDouble(formatText(text, 5));
         }
-        System.err.println("Fora: price block not found. Price 0.0 returned.");
+        logger.log(Level.SEVERE, "Fora: price block not found. Price 0.0 returned.");
         return 0.0;
     }
 
     private Double getPriceAuchan(String url) {
         driver.navigate().to(url);
-        try{
+        try {
             wait.until(ExpectedConditions.or(ExpectedConditions.presenceOfElementLocated(By.xpath(AUCHAN_OLD_PRICE)),
                     ExpectedConditions.presenceOfElementLocated(By.xpath(AUCHAN_ACTUAL_PRICE))));
-        }catch (TimeoutException e){
-            System.err.println("Auchan: timeout exception. Price 0.0 returned.");
+        } catch (TimeoutException e) {
+            logger.log(Level.SEVERE, "Auchan: timeout exception. Price 0.0 returned.");
             return 0.0;
         }
         if (!driver.findElements(By.xpath(AUCHAN_OLD_PRICE)).isEmpty()) {
@@ -199,16 +214,15 @@ public class ScrapProcessor {
             String text = driver.findElement(By.xpath(AUCHAN_ACTUAL_PRICE)).getText();
             return Double.parseDouble(formatText(text, 5));
         }
-        System.err.println("Auchan: price block not found. Price 0.0 returned.");
+        logger.log(Level.SEVERE, "Auchan: price block not found. Price 0.0 returned.");
         return 0.0;
     }
 
     private Double getPriceZakaz(Document document) {
-        Elements elements = document.select(SELECT_ZAKAZ);
-        if (elements.size() == 2) {
-            return Double.parseDouble(formatText(elements.get(1).text(), 0));
-        } else {
-            return Double.parseDouble(formatText(elements.get(0).text(), 0));
+        if (!document.select(SELECT_ZAKAZ).isEmpty()){
+            return Double.parseDouble(document.select(SELECT_ZAKAZ).text());
+        }else {
+            return 0.0;
         }
     }
 
@@ -233,7 +247,7 @@ public class ScrapProcessor {
             document = scrapeJSoup(url);
         }
         if (shopId > 15 || shopId < 1) {
-            System.err.println("Shop id is greater than 15 or smaller than 1. Price 0.0 returned.");
+            logger.log(Level.SEVERE, "Shop id is greater than 15 or smaller than 1. Price 0.0 returned.");
             return 0.0;
         }
         String text = "";
@@ -248,9 +262,9 @@ public class ScrapProcessor {
                 return getPriceAntoshka(url);
             case 3:
 //                Rozetka.
-                if (!document.select(SELECT_ROZETKA_SMALL).isEmpty()){
+                if (!document.select(SELECT_ROZETKA_SMALL).isEmpty()) {
                     text = document.select(SELECT_ROZETKA_SMALL).text();
-                }else if (!document.select(SELECT_ROZETKA_BIG).isEmpty()){
+                } else if (!document.select(SELECT_ROZETKA_BIG).isEmpty()) {
                     text = document.select(SELECT_ROZETKA_BIG).text();
                 }
                 return Double.parseDouble(formatText(text, 1));
@@ -292,8 +306,7 @@ public class ScrapProcessor {
                 } else if (!document.select(SELECT_EPICENTR_PRICE_WRAPPER).isEmpty()) {
                     return Double.parseDouble(formatText(document.select(SELECT_EPICENTR_PRICE_WRAPPER).get(0).text(), 0));
                 }
-
-                System.err.println("Epicentr: price block not found. Price 0.0 returned.");
+                logger.log(Level.SEVERE, "Epicentr: price block not found. Price 0.0 returned.");
                 return 0.0;
             case 12:
 //                Tavriav.
@@ -302,7 +315,7 @@ public class ScrapProcessor {
                 } else if (!document.select(SELECT_TAVRIAV_SALE_PRICE).isEmpty()) {
                     return Double.parseDouble(formatText(document.select(SELECT_TAVRIAV_SALE_PRICE).get(0).text(), 1));
                 }
-                System.err.println("TavriaV: price block not found. Price 0.0 returned.");
+                logger.log(Level.SEVERE, "TavriaV: price block not found. Price 0.0 returned.");
                 return 0.0;
             case 13:
 //                РОСТ.
@@ -311,14 +324,14 @@ public class ScrapProcessor {
                 } else if (!document.select(SELECT_ROST_PRICE).isEmpty()) {
                     return Double.parseDouble(document.select(SELECT_ROST_PRICE + " > span").get(0).text() + "." + document.select(SELECT_ROST_PRICE + " > sup").get(0).text());
                 }
-                System.err.println("ROST: price block not found. Price 0.0 returned.");
+                logger.log(Level.SEVERE, "ROST: price block not found. Price 0.0 returned.");
                 return 0.0;
             case 14:
 //                Kopeyka.
                 text = document.select(SELECT_KOPEYKA_FULL_ADD).select(SELECT_KOPEYKA_PRICE).get(0).text();
                 return Double.parseDouble(formatText(text, 3));
             default:
-                System.err.println("Default block: we can't be here at all. " +
+                logger.log(Level.SEVERE, "Default block: we can't be here at all. " +
                         "Problems occurred in switch, please, ensure to fix this problem. Price 0.0 returned.");
                 return 0.0;
         }
@@ -328,15 +341,20 @@ public class ScrapProcessor {
         scrapePricesInRange(0, 1000);
     }
 
-    public void scrapePricesInRange(int beginProd, int endProd){
-        ResultSet resultSet = DBProcessor.getProductsSetPartly(beginProd, endProd);
-        try {
-            while (resultSet.next()) {
-                Double price = scrapePrice(resultSet.getInt("shop_id"), resultSet.getString("link"));
-                DBProcessor.makeRecord(resultSet.getInt("product_id"), Date.valueOf(LocalDate.now()), price);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void scrapePricesInRange(int beginProd, int endProd) {
+        List<Product> products = DBProcessor.getProductsSetPartly(beginProd, endProd);
+        rsSize = products.size();
+        rsLoaded=0;
+        for (Product product : products) {
+            rsLoaded++;
+            Double price = scrapePrice(product.getShop_id(), product.getLink());
+//            System.out.print(product.getLink() + "\t");
+            DBProcessor.makeRecord(product.getProduct_id(), Date.valueOf(LocalDate.now()), price);
         }
+        rsLoaded=0;
+    }
+
+    public double getProgress() {
+        return (double)rsLoaded / rsSize;
     }
 }

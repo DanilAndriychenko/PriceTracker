@@ -15,30 +15,26 @@ public class DBProcessor {
     private static final String URL =
             "jdbc:mysql://54.36.173.35:3306/econiadj_pricemonitoring?useSSL=false&serverTimezone=UTC";
 
-    public static Connection connection;
-    private static final Formatter FORMATTER_US = new Formatter(Locale.US);
+    private static Connection connection;
+
+    public static Connection getConnection() {
+        return connection;
+    }
 
     static {
         try {
             DriverManager.registerDriver(new Driver());
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
-            String msg = "Error occurred in attempt to register driver.\n" + e.toString();
+            e.printStackTrace();
         }
-        setupConnection(URL, USERNAME, PASSWORD);
     }
 
-    private static Connection setupConnection(String url, String username, String password) {
-        if (connection == null) {
-            try {
-                connection = DriverManager.getConnection(url, username, password);
-            } catch (SQLException e) {
-                String msg = "Error occurred in attempt to get connection.\n" + e.toString();
-            }
-        }
-        return connection;
+    private DBProcessor(){
+
     }
 
-    public static ArrayList<Category> getAllCategories() {
+    public static List<Category> getAllCategories() {
         String query = "SELECT * FROM Category ORDER BY cat_id ASC;";
         ArrayList<Category> categoryArrayList = new ArrayList<>();
         try (Statement statement = connection.createStatement();
@@ -46,14 +42,14 @@ public class DBProcessor {
             while (resultSet.next()) {
                 categoryArrayList.add(new Category(resultSet.getInt("cat_id"), resultSet.getString("name")));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return categoryArrayList;
     }
 
 
-    public static ArrayList<String> getCategoriesNames(List<Category> categoryArrayList) {
+    public static List<String> getCategoriesNames(List<Category> categoryArrayList) {
         ArrayList<String> categoriesNames = new ArrayList<>();
         for (Category category : categoryArrayList) {
             categoriesNames.add(category.getName());
@@ -61,7 +57,7 @@ public class DBProcessor {
         return categoriesNames;
     }
 
-    public static ArrayList<Brand> getAllBrands() {
+    public static List<Brand> getAllBrands() {
         String query = "SELECT * FROM Brands ORDER BY brand_id ASC;";
         ArrayList<Brand> brandsArrayList = new ArrayList<>();
         try (Statement statement = connection.createStatement();
@@ -69,13 +65,13 @@ public class DBProcessor {
             while (resultSet.next()) {
                 brandsArrayList.add(new Brand(resultSet.getInt("brand_id"), resultSet.getString("name")));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return brandsArrayList;
     }
 
-    public static ArrayList<String> getBrandsNames(List<Brand> brandArrayList) {
+    public static List<String> getBrandsNames(List<Brand> brandArrayList) {
         ArrayList<String> brandsNames = new ArrayList<>();
         for (Brand brand : brandArrayList) {
             brandsNames.add(brand.getName());
@@ -83,7 +79,7 @@ public class DBProcessor {
         return brandsNames;
     }
 
-    public static ArrayList<Integer> getBrandsAccordingToCategory(int categoryID) {
+    public static List<Integer> getBrandsAccordingToCategory(int categoryID) {
         String query = "SELECT * FROM Connections WHERE cat_id = " + categoryID + " ORDER BY brand_id ASC;";
         ArrayList<Integer> brandsCat = new ArrayList<>();
         try (Statement statement = connection.createStatement();
@@ -91,13 +87,13 @@ public class DBProcessor {
             while (resultSet.next()) {
                 brandsCat.add(resultSet.getInt("brand_id"));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return brandsCat;
     }
 
-    public static ArrayList<Shop> getAllShops() {
+    public static List<Shop> getAllShops() {
         String query = "SELECT * FROM Shops ORDER BY shop_id ASC;";
         ArrayList<Shop> shopsArrayList = new ArrayList<>();
         try (Statement statement = connection.createStatement();
@@ -105,13 +101,13 @@ public class DBProcessor {
             while (resultSet.next()) {
                 shopsArrayList.add(new Shop(resultSet.getInt("shop_id"), resultSet.getString("name")));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return shopsArrayList;
     }
 
-    public static ArrayList<String> getShopsNames(List<Shop> shopArrayList) {
+    public static List<String> getShopsNames(List<Shop> shopArrayList) {
         ArrayList<String> shopsNames = new ArrayList<>();
         for (Shop shop : shopArrayList) {
             shopsNames.add(shop.getName());
@@ -119,7 +115,7 @@ public class DBProcessor {
         return shopsNames;
     }
 
-    public static ArrayList<Region> getAllRegions() {
+    public static List<Region> getAllRegions() {
         String query = "SELECT * FROM Regions ORDER BY region_id ASC;";
         ArrayList<Region> regionsArrayList = new ArrayList<>();
         try (Statement statement = connection.createStatement();
@@ -127,13 +123,13 @@ public class DBProcessor {
             while (resultSet.next()) {
                 regionsArrayList.add(new Region(resultSet.getInt("region_id"), resultSet.getString("name")));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return regionsArrayList;
     }
 
-    public static ArrayList<String> getRegionsNames(List<Region> regionArrayList) {
+    public static List<String> getRegionsNames(List<Region> regionArrayList) {
         ArrayList<String> regionsNames = new ArrayList<>();
         for (Region region : regionArrayList) {
             regionsNames.add(region.getName());
@@ -141,28 +137,37 @@ public class DBProcessor {
         return regionsNames;
     }
 
-    public static ResultSet getProductsSetPartly(int beginProd, int endProd){
-        String query = String.format("SELECT product_id, shop_id, link FROM Products WHERE product_id >= %d AND product_id <= %d ORDER BY product_id ASC;", beginProd, endProd);
-        ResultSet resultSet = null;
-        Statement statement;
-        try{
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+    public static List<Product> getProductsSetPartly(int beginProd, int endProd) {
+        ArrayList<Product> products = new ArrayList<>();
+        String query = String.format("SELECT * FROM Products WHERE product_id >= %d AND product_id <= %d ORDER BY product_id ASC;", beginProd, endProd);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)){
+            while (resultSet.next()) {
+                Product product = new Product(resultSet.getInt("product_id"), resultSet.getInt("cat_id"),
+                        resultSet.getInt("brand_id"), resultSet.getInt("shop_id"),
+                        resultSet.getInt("region_id"), resultSet.getString("link"));
+                products.add(product);
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
-        return resultSet;
+        return products;
     }
 
     //TODO read about using batch
     //TODO Replace with prepared statement.
-    public static void makeRecord(int productId, Date date, Double price){
-        String query = new Formatter(Locale.US).format("INSERT INTO Records (product_id, date, price) VALUES (%d, '%s', %.2f);", productId, date.toString(), price).toString();
-        System.out.println(query);
-        try (Statement statement = connection.createStatement()){
-            statement.execute(query);
-        }catch(SQLException throwables){
-            throwables.printStackTrace();
+    public static void makeRecord(int productId, Date date, Double price) {
+        String query;
+        try(Formatter formatter = new Formatter(Locale.US)){
+            query = formatter.format("INSERT INTO Records (product_id, date, price) VALUES (%d, '%s', %.2f);", productId, date.toString(), price).toString();
+        }
+//        System.out.println(query);
+        if (price!=0.0) {
+            try (Statement statement = connection.createStatement()) {
+                statement.execute(query);
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
         }
     }
 }

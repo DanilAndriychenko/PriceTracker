@@ -1,9 +1,7 @@
 
-R
-java:S3740ã"/Provide the parametrized type for this generic.(ÿÆåĞùÿÿÿÿ8•ß‘¬À.
-s	java:S117‚"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ë©¨÷üÿÿÿÿ8•ß‘¬À.
-
-java:S1488×"^Immediately return this expression instead of assigning it to the temporary variable "string".(áÒ‡øÿÿÿÿ8•ß‘¬À.
+O
+java:S1135½"2Complete the task associated to this TODO comment.(×À­!8¬«ŒºÀ.
 u
-java:S3776…"RRefactor this method to reduce its Cognitive Complexity from 67 to the 15 allowed.(·òşÿÿÿÿ8•ß‘¬À.
-[	java:S106œ"9Replace this use of System.out or System.err by a logger.(Ø¦ˆŞúÿÿÿÿ8•ß‘¬À.
+java:S3776İ"RRefactor this method to reduce its Cognitive Complexity from 61 to the 15 allowed.(·òşÿÿÿÿ8è–’¿À.
+i
+java:S1128"GRemove this unused import 'javafx.beans.property.SimpleDoubleProperty'.(Ğ†Üıúÿÿÿÿ8˜Çü¿À.

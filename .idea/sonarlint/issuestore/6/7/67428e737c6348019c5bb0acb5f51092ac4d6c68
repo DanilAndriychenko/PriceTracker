@@ -1,42 +1,11 @@
 
-’
-java:S1319)"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(äÇÛ‘üÿÿÿÿ8•ß‘¬À.
-’
-java:S13198"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Çëëäúÿÿÿÿ8•ß‘¬À.
-’
-java:S1319@"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(©´œ™ıÿÿÿÿ8•ß‘¬À.
-
-java:S1319N"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(½Ö€İ8•ß‘¬À.
-’
-java:S1319V"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(¡ò¨¶ıÿÿÿÿ8•ß‘¬À.
-’
-java:S1319d"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ÛÙ¥Ëûÿÿÿÿ8•ß‘¬À.
-
-java:S1319r"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Õ³ØŞ8•ß‘¬À.
-’
-java:S1319z"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ÆúƒØûÿÿÿÿ8•ß‘¬À.
-“
-java:S1319ˆ"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ĞœÏşÿÿÿÿ8•ß‘¬À.
-j
-java:S2095•"GUse try-with-resources or close this "Statement" in a "finally" clause.(‡²€·ıÿÿÿÿ8•ß‘¬À.
-e
-java:S2095 "GUse try-with-resources or close this "Formatter" in a "finally" clause.(±à´œ8•ß‘¬À.
-M
-java:S1444"0Make this "public static connection" field final(ıØÕá8•ß‘¬À.
-s
-java:S1104"VMake connection a static final constant or non-public and provide accessors if needed.(ıØÕá8•ß‘¬À.
-V
-java:S1118":Add a private constructor to hide the implicit public one.(äê^8•ß‘¬À.
-S
-java:S1854#"7Remove this useless assignment to local variable "msg".(”˜±8•ß‘¬À.
 U
-java:S1135"2Complete the task associated to this TODO comment.(ºË°ôşÿÿÿÿ8•ß‘¬À.
+java:S1135"2Complete the task associated to this TODO comment.(ºË°ôşÿÿÿÿ8Äè›®À.
+Y	java:S125¨"<This block of commented-out lines of code should be removed.(º™Î8‘Û¯¸À.
+f
+java:S1192B"IDefine a constant instead of duplicating this literal "brand_id" 3 times.(áü²°8§­¶À.
+9
+java:S3626¦"Remove this redundant jump.(ûÁİ…8×­¾À.
 P
-java:S1135"2Complete the task associated to this TODO comment.(ÜâÆÁ8•ß‘¬À.
-V	java:S106¡"9Replace this use of System.out or System.err by a logger.(Šğš8•ß‘¬À.
-J
-java:S1481"(Remove this unused "msg" local variable.(áĞÑ’ÿÿÿÿÿ8•ß‘¬À.
-D
-java:S1481#"(Remove this unused "msg" local variable.(”˜±8•ß‘¬À.
-M
-java:S1068"0Remove this unused "FORMATTER_US" private field.(Æ›­8•ß‘¬À.
+java:S1135"2Complete the task associated to this TODO comment.(ÜâÆÁ8Äè›®À.
+V	java:S106¤"9Replace this use of System.out or System.err by a logger.(Šğš8ºÆ¯¸À.

@@ -1,11 +1,14 @@
 package org.econia;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -14,13 +17,15 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
@@ -42,6 +47,8 @@ public class Controller {
     private static final String BRANDS_CHOOSE_CATEGORY = "Спочатку оберіть категорію ↑";
     private static final String BRANDS_CHOOSE_ALL = "Обрати всі / Скасувати";
     private static final double FREQUENCY = 10_000.0;
+    private static final String APP_ICON = "appIcon1.jpg";
+    private ScrapProcessor scrapProcessor;
 
     private static List<Category> categoryArrayList;
     private static List<String> categoriesNames;
@@ -106,9 +113,17 @@ public class Controller {
     @FXML
     public MenuItem addProduct;
     @FXML
-    public Label labelResult;
+    public Label timeLabel;
+    @FXML
+    public JFXProgressBar progressBar;
+    @FXML
+    public JFXButton loadButton;
     @FXML
     public BorderPane borderPane;
+    @FXML
+    public BorderPane borderPaneBottom;
+    @FXML
+    public ScrollPane scrollPane;
 
     private LineChart<Number, Number> lineChart;
     private final NumberAxis dateAxis = new NumberAxis();
@@ -126,7 +141,7 @@ public class Controller {
         regionsNames = DBProcessor.getRegionsNames(regionArrayList);
     }
 
-    private void configurePanel(){
+    private void configurePanel() {
         comboBoxShop.setDisable(true);
         comboBoxRegion.setDisable(true);
         buttonTrack.setDisable(true);
@@ -139,11 +154,83 @@ public class Controller {
         vBoxBrands.getChildren().add(new Label(BRANDS_CHOOSE_CATEGORY));
     }
 
+    private void configureLoadButton() {
+        loadButton.setDisable(true);
+        timeLabel.setVisible(false);
+        progressBar.setVisible(false);
+
+        Task<Void> taskCreateScrapeProcessorObject = new Task<Void>() {
+            @Override
+            protected Void call() {
+                scrapProcessor = new ScrapProcessor();
+                loadButton.setDisable(false);
+                return null;
+            }
+        };
+        new Thread(taskCreateScrapeProcessorObject).start();
+
+        loadButton.setOnAction(loadButtonAction -> new Thread(() -> {
+            Platform.runLater(() -> {
+                loadButton.setDisable(true);
+                timeLabel.setVisible(true);
+                progressBar.setProgress(0);
+                progressBar.setVisible(true);
+            });
+            long startTime = System.currentTimeMillis();
+            Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+                long diff = System.currentTimeMillis() - startTime;
+                long minutes = diff / 1_000 / 60;
+                long seconds = diff / 1_000 - minutes * 60;
+                timeLabel.setText("Час завантаження: " + String.format("%02d:%02d", minutes, seconds));
+                progressBar.setProgress(scrapProcessor.getProgress());
+            }), new KeyFrame(Duration.seconds(1)));
+            clock.setCycleCount(Animation.INDEFINITE);
+            Task<Void> loadPrices = new Task<Void>() {
+                @Override
+                protected Void call() {
+                    clock.play();
+                    scrapProcessor.scrapePricesInRange(0, 1000);
+                    clock.stop();
+                    return null;
+                }
+            };
+            loadPrices.run();
+            Platform.runLater(() -> {
+                progressBar.setVisible(false);
+                timeLabel.setText("Ціни на продукцію успішно завантажені.");
+                timeLabel.setTextFill(Paint.valueOf("green"));
+                timeLabel.setFont(new Font("System Bold Italic", 20));
+            });
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            Platform.runLater(() -> {
+                timeLabel.setText("");
+                timeLabel.setTextFill(Paint.valueOf("black"));
+                timeLabel.setFont(new Font("System Italic", 18));
+                timeLabel.setVisible(false);
+                loadButton.setDisable(false);
+            });
+        }).start());
+    }
+
     /**
      * Initialize.
      */
     @FXML
     public void initialize() {
+        scrollPane.fitToWidthProperty().set(true);
+        scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
+        final double SPEED = 0.1;
+        scrollPane.getContent().setOnScroll(scrollEvent -> {
+            double deltaY = scrollEvent.getDeltaY() * SPEED;
+            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
+        });
+        scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
+
+        configureLoadButton();
 
         initializeLists();
 
@@ -180,7 +267,7 @@ public class Controller {
             //Get category and get brands that compete in this category.
             String category = comboBoxCategory.getValue();
             int categoryID = categoriesNames.indexOf(category) + 1;
-            ArrayList<Integer> brandsIDs = DBProcessor.getBrandsAccordingToCategory(categoryID);
+            List<Integer> brandsIDs = DBProcessor.getBrandsAccordingToCategory(categoryID);
 
             //Create Choose All functionality.
             vBoxBrands.getChildren().clear();
@@ -250,15 +337,15 @@ public class Controller {
                     catId, shopId, regionId, brandPartOfQuery.substring(0, brandPartOfQuery.toString().length() - 4));
 
             ArrayList<Product> products = new ArrayList<>();
-            try (ResultSet resultSet = DBProcessor.connection.createStatement().executeQuery(query)) {
+            try (ResultSet resultSet = DBProcessor.getConnection().createStatement().executeQuery(query)) {
                 while (resultSet.next()) {
                     Product product = new Product(resultSet.getInt("product_id"), resultSet.getInt("cat_id"),
                             resultSet.getInt("brand_id"), resultSet.getInt("shop_id"),
                             resultSet.getInt("region_id"), resultSet.getString("link"));
                     products.add(product);
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
             }
             int minDate = Integer.MAX_VALUE;
             int maxDate = Integer.MIN_VALUE;
@@ -269,7 +356,7 @@ public class Controller {
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
                 ObservableList<XYChart.Data<Number, Number>> observableList = FXCollections.observableArrayList();
                 series.setName(brandArrayList.get(product.getBrand_id() - 1).getName());
-                try (ResultSet resultSet = DBProcessor.connection.createStatement().executeQuery(queryRecords)) {
+                try (ResultSet resultSet = DBProcessor.getConnection().createStatement().executeQuery(queryRecords)) {
                     while (resultSet.next()) {
                         String dateStr = resultSet.getDate("date").toString().replace("-", "").substring(2, 8);
                         int date = Integer.parseInt(dateStr.substring(4, 6) + dateStr.substring(2, 4) + dateStr.substring(0, 2));
@@ -280,8 +367,8 @@ public class Controller {
                             minDate = date;
                         }
                     }
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                } catch (SQLException throwable) {
+                    throwable.printStackTrace();
                 }
                 series.setData(observableList);
                 lineChart.getData().add(series);
@@ -339,6 +426,7 @@ public class Controller {
                 Stage stage = new Stage();
                 stage.setTitle("Додати продукцію");
                 stage.initModality(Modality.APPLICATION_MODAL);
+                stage.getIcons().add(new Image(getClass().getResourceAsStream(APP_ICON)));
                 stage.setScene(new Scene(root));
                 stage.show();
             } catch (IOException e) {
@@ -353,7 +441,7 @@ public class Controller {
         dateAxis.setTickUnit(FREQUENCY);
         dateAxis.setMinorTickVisible(false);
         dateAxis.setTickLabelFormatter(new StringConverter<Number>() {
-            //            input: 180820
+            //input: 180820
             @Override
             public String toString(Number number) {
                 String numStr = number.toString();
@@ -364,7 +452,7 @@ public class Controller {
                 }
             }
 
-            //            input: 18.08.20
+            //input: 18.08.20
             @Override
             public Number fromString(String string) {
                 return Integer.parseInt(string.replace(".", ""));

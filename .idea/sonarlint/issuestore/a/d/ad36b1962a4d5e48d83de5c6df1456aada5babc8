@@ -1,29 +1,18 @@
 
-U
-java:S1128"9Remove this unused import 'javafx.scene.chart.LineChart'.(‘„K8•ß‘¬À.
-W
-java:S1128":Remove this unused import 'javafx.scene.chart.NumberAxis'.(™áµœ8•ß‘¬À.
+H
+java:S1659"&Declare "rsLoaded" on a separate line.(°¬í«úÿÿÿÿ8úĞÛµÀ.
+O
+java:S1128"2Remove this unused import 'java.sql.SQLException'.(ÛïÆŸ8ÉÊ¸À.
+V
+java:S1854F"9Remove this useless assignment to local variable "start".(’Ã¼8ˆ”¶À.
 T
-java:S1135"2Complete the task associated to this TODO comment.(©°Õ’ûÿÿÿÿ8•ß‘¬À.
-U	java:S106G"9Replace this use of System.out or System.err by a logger.(¿«É½8•ß‘¬À.
-T
-java:S1135_"2Complete the task associated to this TODO comment.(î‡óÑüÿÿÿÿ8•ß‘¬À.
-T
-java:S1135s"2Complete the task associated to this TODO comment.(ªÎÍÙÿÿÿÿÿ8•ß‘¬À.
-U	java:S106{"9Replace this use of System.out or System.err by a logger.(ïÛÂÍ8•ß‘¬À.
-[	java:S106ˆ"9Replace this use of System.out or System.err by a logger.(®µÀÖıÿÿÿÿ8•ß‘¬À.
-[	java:S106‘"9Replace this use of System.out or System.err by a logger.(ğúËùÿÿÿÿÿ8•ß‘¬À.
-[	java:S106›"9Replace this use of System.out or System.err by a logger.(›ãæúÿÿÿÿ8•ß‘¬À.
-[	java:S106«"9Replace this use of System.out or System.err by a logger.(ØñŞüûÿÿÿÿ8•ß‘¬À.
-V	java:S106¶"9Replace this use of System.out or System.err by a logger.(²é8•ß‘¬À.
-V	java:S106À"9Replace this use of System.out or System.err by a logger.(¤ğû’8•ß‘¬À.
-[	java:S106Ê"9Replace this use of System.out or System.err by a logger.(îÁÕøşÿÿÿÿ8•ß‘¬À.
+java:S1135"2Complete the task associated to this TODO comment.(ô”å”ûÿÿÿÿ8‹Ç®À.
+X	java:S125J"<This block of commented-out lines of code should be removed.(˜³ÿÒ8ˆ”¶À.
+K
+java:S1128"/Remove this unused import 'java.sql.ResultSet'.(ˆóÚw8ÉÊ¸À.
 u
-java:S3776æ"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8•ß‘¬À.
-[	java:S106ì"9Replace this use of System.out or System.err by a logger.(ÁÉÁ¢úÿÿÿÿ8•ß‘¬À.
-[	java:S106¨"9Replace this use of System.out or System.err by a logger.(“Îİşÿÿÿÿ8•ß‘¬À.
-V	java:S106±"9Replace this use of System.out or System.err by a logger.(„¼´…8•ß‘¬À.
-[	java:S106º"9Replace this use of System.out or System.err by a logger.(Œ”Åùÿÿÿÿ8•ß‘¬À.
-V	java:S106Á"9Replace this use of System.out or System.err by a logger.(¬’æş8•ß‘¬À.
-X	java:S125I"<This block of commented-out lines of code should be removed.(„•Ô¢8•ß‘¬À.
-X	java:S125`"<This block of commented-out lines of code should be removed.(Ÿ—®Ç8•ß‘¬À.
+java:S3776è"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8„Ë¥¾À.
+T
+java:S1135v"2Complete the task associated to this TODO comment.(ªÎÍÙÿÿÿÿÿ8¥Ø™®À.
+G
+java:S1481F"*Remove this unused "start" local variable.(’Ã¼8ˆ”¶À.

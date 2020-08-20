@@ -2,7 +2,6 @@ package org.econia;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -14,25 +13,19 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    private static Scene scene;
+    private static final String FXML = "main.fxml";
+    private static final String APP_ICON = "appIcon1.jpg";
+    private static final String TITLE = "Моніторинг цін";
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(FXML));
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
 //        stage.setMaximized(true);
-        stage.setTitle("Моніторинг цін");
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("appIcon1.jpg")));
+        stage.setTitle(TITLE);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream(APP_ICON)));
         stage.show();
-    }
-
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
-        return fxmlLoader.load();
     }
 
     public static void main(String[] args) {
