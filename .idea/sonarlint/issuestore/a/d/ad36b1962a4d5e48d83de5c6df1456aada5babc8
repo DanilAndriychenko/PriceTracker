@@ -1,18 +1,15 @@
 
-H
-java:S1659"&Declare "rsLoaded" on a separate line.(°¬í«úÿÿÿÿ8úĞÛµÀ.
 O
-java:S1128"2Remove this unused import 'java.sql.SQLException'.(ÛïÆŸ8ÉÊ¸À.
-V
-java:S1854F"9Remove this useless assignment to local variable "start".(’Ã¼8ˆ”¶À.
-T
-java:S1135"2Complete the task associated to this TODO comment.(ô”å”ûÿÿÿÿ8‹Ç®À.
-X	java:S125J"<This block of commented-out lines of code should be removed.(˜³ÿÒ8ˆ”¶À.
-K
-java:S1128"/Remove this unused import 'java.sql.ResultSet'.(ˆóÚw8ÉÊ¸À.
+java:S1128"2Remove this unused import 'java.sql.SQLException'.(ÛïÆŸ8ÉÊ¸À.
+^
+java:S1128"<Remove this unused import 'java.net.SocketTimeoutException'.(Ú©İÔşÿÿÿÿ8¼—ÚÀ.
 u
-java:S3776è"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8„Ë¥¾À.
+java:S3776î"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8„Ë¥¾À.
+]	java:S125T"<This block of commented-out lines of code should be removed.(¶ëÏ¤ıÿÿÿÿ8÷¬šİÀ.
 T
-java:S1135v"2Complete the task associated to this TODO comment.(ªÎÍÙÿÿÿÿÿ8¥Ø™®À.
-G
-java:S1481F"*Remove this unused "start" local variable.(’Ã¼8ˆ”¶À.
+java:S1135z"2Complete the task associated to this TODO comment.(ªÎÍÙÿÿÿÿÿ8¥Ø™®À.
+K
+java:S1128"/Remove this unused import 'java.sql.ResultSet'.(ˆóÚw8ÉÊ¸À.
+T
+java:S1135)"2Complete the task associated to this TODO comment.(ô”å”ûÿÿÿÿ8‹Ç®À.
+[	java:S106Ù"9Replace this use of System.out or System.err by a logger.(­â×éûÿÿÿÿ8¼åœİÀ.

@@ -187,3 +187,5 @@ V
 &src/main/java/dateAxis/XYBarChart.java,6\4\6495828d86deaf8f1364dc4968fd26b592bed43c
 [
 +src/main/java/dateAxis/ZoomableXYChart.java,2\c\2c7924d42f430a8dbf18cdd38ea84fb88c633845
+]
+-src/main/resources/org/econia/addProduct.fxml,2\a\2a4b8eed3857055f263dd4c0f833b00daef31eeb

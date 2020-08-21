@@ -161,13 +161,39 @@ public class DBProcessor {
         try(Formatter formatter = new Formatter(Locale.US)){
             query = formatter.format("INSERT INTO Records (product_id, date, price) VALUES (%d, '%s', %.2f);", productId, date.toString(), price).toString();
         }
-//        System.out.println(query);
+        System.out.println(query);
         if (price!=0.0) {
-            try (Statement statement = connection.createStatement()) {
-                statement.execute(query);
-            } catch (SQLException throwable) {
-                throwable.printStackTrace();
+//            try (Statement statement = connection.createStatement()) {
+//                statement.execute(query);
+//            } catch (SQLException throwable) {
+//                throwable.printStackTrace();
+//            }
+        }
+    }
+
+    private static List<Integer> gaps(String date){
+        List<Integer> gaps = new ArrayList<>();
+        List<Product> products = getProductsSetPartly(0,1000);
+        List<Integer> productIDs = new ArrayList<>();
+        String query = String.format("SELECT * FROM Records WHERE date = '%s'", date);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)){
+            while (resultSet.next()) {
+                productIDs.add(resultSet.getInt("product_id"));
             }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        for (Product product : products){
+            if (!productIDs.contains(product.getProduct_id())) gaps.add(product.getProduct_id());
+        }
+        return gaps;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> gaps = gaps("2020-08-20");
+        for (Integer integer : gaps){
+            System.out.print(integer + ", ");
         }
     }
 }

@@ -181,7 +181,7 @@ public class Controller {
                 long diff = System.currentTimeMillis() - startTime;
                 long minutes = diff / 1_000 / 60;
                 long seconds = diff / 1_000 - minutes * 60;
-                timeLabel.setText("Час завантаження: " + String.format("%02d:%02d", minutes, seconds));
+                timeLabel.setText("Час завантаження: " + String.format("%02d:%02d", minutes, seconds) + " - " + scrapProcessor.getProgress()*100 + "%");
                 progressBar.setProgress(scrapProcessor.getProgress());
             }), new KeyFrame(Duration.seconds(1)));
             clock.setCycleCount(Animation.INDEFINITE);
@@ -189,7 +189,7 @@ public class Controller {
                 @Override
                 protected Void call() {
                     clock.play();
-                    scrapProcessor.scrapePricesInRange(0, 1000);
+                    scrapProcessor.scrapePricesInRange(635, 680);
                     clock.stop();
                     return null;
                 }
@@ -199,7 +199,7 @@ public class Controller {
                 progressBar.setVisible(false);
                 timeLabel.setText("Ціни на продукцію успішно завантажені.");
                 timeLabel.setTextFill(Paint.valueOf("green"));
-                timeLabel.setFont(new Font("System Bold Italic", 20));
+//                timeLabel.setFont(new Font("System Bold Italic", 20));
             });
             try {
                 Thread.sleep(3000);
@@ -369,6 +369,9 @@ public class Controller {
                     }
                 } catch (SQLException throwable) {
                     throwable.printStackTrace();
+                }
+                for (XYChart.Data<Number, Number> data : observableList){
+                    System.out.println(data);
                 }
                 series.setData(observableList);
                 lineChart.getData().add(series);
