@@ -5,13 +5,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The type Controller.
@@ -48,7 +49,7 @@ public class Controller {
     private static final String BRANDS_CHOOSE_ALL = "Обрати всі / Скасувати";
     private static final double FREQUENCY = 10_000.0;
     private static final String APP_ICON = "appIcon1.jpg";
-    private ScrapProcessor scrapProcessor;
+    private ScrapeProcessor scrapeProcessor;
 
     private static List<Category> categoryArrayList;
     private static List<String> categoriesNames;
@@ -121,7 +122,7 @@ public class Controller {
     @FXML
     public BorderPane borderPane;
     @FXML
-    public BorderPane borderPaneBottom;
+    public BorderPane borderPaneCenter;
     @FXML
     public ScrollPane scrollPane;
 
@@ -162,8 +163,18 @@ public class Controller {
         Task<Void> taskCreateScrapeProcessorObject = new Task<Void>() {
             @Override
             protected Void call() {
-                scrapProcessor = new ScrapProcessor();
-                loadButton.setDisable(false);
+                Platform.runLater(() -> {
+                    timeLabel.setText("Можливість оновлювати ціни примусово завантажується...");
+                    timeLabel.setFont(new Font("System Italic", 14));
+                    timeLabel.setVisible(true);
+                });
+                scrapeProcessor = new ScrapeProcessor();
+                Platform.runLater(() -> {
+                    timeLabel.setText("Час завантаження: 00:00 - 00,00%");
+                    timeLabel.setFont(new Font("System Italic", 18));
+                    timeLabel.setVisible(false);
+                    loadButton.setDisable(false);
+                });
                 return null;
             }
         };
@@ -181,15 +192,18 @@ public class Controller {
                 long diff = System.currentTimeMillis() - startTime;
                 long minutes = diff / 1_000 / 60;
                 long seconds = diff / 1_000 - minutes * 60;
-                timeLabel.setText("Час завантаження: " + String.format("%02d:%02d", minutes, seconds) + " - " + scrapProcessor.getProgress()*100 + "%");
-                progressBar.setProgress(scrapProcessor.getProgress());
+                if (!Double.isNaN(scrapeProcessor.getProgress())) {
+                    timeLabel.setText("Час завантаження: " + String.format("%02d:%02d", minutes, seconds) + " - " +
+                            String.format("%.2f%%", scrapeProcessor.getProgress() * 100));
+                }
+                progressBar.setProgress(scrapeProcessor.getProgress());
             }), new KeyFrame(Duration.seconds(1)));
             clock.setCycleCount(Animation.INDEFINITE);
             Task<Void> loadPrices = new Task<Void>() {
                 @Override
                 protected Void call() {
                     clock.play();
-                    scrapProcessor.scrapePricesInRange(635, 680);
+                    scrapeProcessor.scrapePricesInRange(0, 1000);
                     clock.stop();
                     return null;
                 }
@@ -199,17 +213,15 @@ public class Controller {
                 progressBar.setVisible(false);
                 timeLabel.setText("Ціни на продукцію успішно завантажені.");
                 timeLabel.setTextFill(Paint.valueOf("green"));
-//                timeLabel.setFont(new Font("System Bold Italic", 20));
             });
             try {
-                Thread.sleep(3000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
             Platform.runLater(() -> {
                 timeLabel.setText("");
                 timeLabel.setTextFill(Paint.valueOf("black"));
-                timeLabel.setFont(new Font("System Italic", 18));
                 timeLabel.setVisible(false);
                 loadButton.setDisable(false);
             });
@@ -221,6 +233,7 @@ public class Controller {
      */
     @FXML
     public void initialize() {
+
         scrollPane.fitToWidthProperty().set(true);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
         final double SPEED = 0.1;
@@ -370,9 +383,6 @@ public class Controller {
                 } catch (SQLException throwable) {
                     throwable.printStackTrace();
                 }
-                for (XYChart.Data<Number, Number> data : observableList){
-                    System.out.println(data);
-                }
                 series.setData(observableList);
                 lineChart.getData().add(series);
             }
@@ -462,7 +472,7 @@ public class Controller {
             }
         });
         lineChart = new LineChart<>(dateAxis, priceAxis);
-        borderPane.setCenter(lineChart);
+        borderPaneCenter.setCenter(lineChart);
     }
 
     private boolean allDataSelected() {

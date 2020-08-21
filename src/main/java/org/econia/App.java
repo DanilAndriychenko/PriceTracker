@@ -2,6 +2,7 @@ package org.econia;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -20,7 +21,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(FXML));
-        Scene scene = new Scene(fxmlLoader.load());
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
 //        stage.setMaximized(true);
         stage.setTitle(TITLE);

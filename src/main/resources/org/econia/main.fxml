@@ -17,121 +17,132 @@
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="861.0" prefWidth="1220.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.econia.Controller">
     <left>
-        <ScrollPane fx:id="scrollPane" style="-fx-background: lightblue; -fx-background-color: lightblue">
-            <VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="250.0" style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
-                <children>
-                    <Label maxWidth="1.7976931348623157E308" text="Категорія:">
-                        <opaqueInsets>
-                            <Insets />
-                        </opaqueInsets>
-                        <VBox.margin>
-                            <Insets />
-                        </VBox.margin>
-                        <padding>
-                            <Insets left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <font>
-                            <Font size="18.0" />
-                        </font>
-                    </Label>
-                    <JFXComboBox fx:id="comboBoxCategory" maxWidth="1.7976931348623157E308">
-                        <VBox.margin>
-                            <Insets bottom="10.0" left="10.0" right="10.0" />
-                        </VBox.margin>
-                    </JFXComboBox>
-                    <Label layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" text="Бренд:">
-                        <opaqueInsets>
-                            <Insets />
-                        </opaqueInsets>
-                        <padding>
-                            <Insets left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <font>
-                            <Font size="18.0" />
-                        </font>
-                    </Label>
-                    <VBox fx:id="vBoxBrands">
-                        <padding>
-                            <Insets left="10.0" top="10.0" />
-                        </padding>
+        <BorderPane>
+            <center>
+                <ScrollPane fx:id="scrollPane" style="-fx-background: lightblue; -fx-background-color: lightblue">
+                    <VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="250.0" style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
                         <children>
+                            <Label maxWidth="1.7976931348623157E308" text="Категорія:">
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                                <VBox.margin>
+                                    <Insets />
+                                </VBox.margin>
+                                <padding>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+                            <JFXComboBox fx:id="comboBoxCategory" maxWidth="1.7976931348623157E308">
+                                <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" />
+                                </VBox.margin>
+                            </JFXComboBox>
+                            <Label layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" text="Бренд:">
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                                <padding>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+                            <VBox fx:id="vBoxBrands">
+                                <padding>
+                                    <Insets left="10.0" top="10.0" />
+                                </padding>
+                                <children>
+                                </children>
+                            </VBox>
+                            <Label layoutX="10.0" layoutY="77.0" maxWidth="1.7976931348623157E308" text="Магазин:">
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                                <padding>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+                            <JFXComboBox fx:id="comboBoxShop" layoutX="10.0" layoutY="52.0" maxWidth="1.7976931348623157E308">
+                                <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" />
+                                </VBox.margin>
+                            </JFXComboBox>
+                            <Label layoutX="10.0" layoutY="119.0" maxWidth="1.7976931348623157E308" text="Регіон:">
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                                <padding>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+                            <JFXComboBox fx:id="comboBoxRegion" layoutX="10.0" layoutY="161.0" maxWidth="1.7976931348623157E308">
+                                <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" />
+                                </VBox.margin>
+                            </JFXComboBox>
+                            <Label layoutX="10.0" layoutY="241.0" maxWidth="1.7976931348623157E308" text="Від:">
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                                <padding>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+                            <JFXDatePicker fx:id="datePickerFrom" maxWidth="1.7976931348623157E308">
+                                <VBox.margin>
+                                    <Insets bottom="10.0" left="50.0" right="50.0" />
+                                </VBox.margin>
+                            </JFXDatePicker>
+                            <Label layoutX="10.0" layoutY="333.0" maxWidth="1.7976931348623157E308" text="До:">
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                                <padding>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+                            <JFXDatePicker fx:id="datePickerTo" layoutX="10.0" layoutY="380.0" maxWidth="1.7976931348623157E308">
+                                <VBox.margin>
+                                    <Insets bottom="10.0" left="50.0" right="50.0" />
+                                </VBox.margin>
+                            </JFXDatePicker>
                         </children>
                     </VBox>
-                    <Label layoutX="10.0" layoutY="77.0" maxWidth="1.7976931348623157E308" text="Магазин:">
-                        <opaqueInsets>
-                            <Insets />
-                        </opaqueInsets>
-                        <padding>
-                            <Insets left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <font>
-                            <Font size="18.0" />
-                        </font>
-                    </Label>
-                    <JFXComboBox fx:id="comboBoxShop" layoutX="10.0" layoutY="52.0" maxWidth="1.7976931348623157E308">
-                        <VBox.margin>
-                            <Insets bottom="10.0" left="10.0" right="10.0" />
-                        </VBox.margin>
-                    </JFXComboBox>
-                    <Label layoutX="10.0" layoutY="119.0" maxWidth="1.7976931348623157E308" text="Регіон:">
-                        <opaqueInsets>
-                            <Insets />
-                        </opaqueInsets>
-                        <padding>
-                            <Insets left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <font>
-                            <Font size="18.0" />
-                        </font>
-                    </Label>
-                    <JFXComboBox fx:id="comboBoxRegion" layoutX="10.0" layoutY="161.0" maxWidth="1.7976931348623157E308">
-                        <VBox.margin>
-                            <Insets bottom="10.0" left="10.0" right="10.0" />
-                        </VBox.margin>
-                    </JFXComboBox>
-                    <Label layoutX="10.0" layoutY="241.0" maxWidth="1.7976931348623157E308" text="Від:">
-                        <opaqueInsets>
-                            <Insets />
-                        </opaqueInsets>
-                        <padding>
-                            <Insets left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <font>
-                            <Font size="18.0" />
-                        </font>
-                    </Label>
-                    <JFXDatePicker fx:id="datePickerFrom" maxWidth="1.7976931348623157E308">
-                        <VBox.margin>
-                            <Insets bottom="10.0" left="50.0" right="50.0" />
-                        </VBox.margin>
-                    </JFXDatePicker>
-                    <Label layoutX="10.0" layoutY="333.0" maxWidth="1.7976931348623157E308" text="До:">
-                        <opaqueInsets>
-                            <Insets />
-                        </opaqueInsets>
-                        <padding>
-                            <Insets left="10.0" right="10.0" top="10.0" />
-                        </padding>
-                        <font>
-                            <Font size="18.0" />
-                        </font>
-                    </Label>
-                    <JFXDatePicker fx:id="datePickerTo" layoutX="10.0" layoutY="380.0" maxWidth="1.7976931348623157E308">
-                        <VBox.margin>
-                            <Insets bottom="10.0" left="50.0" right="50.0" />
-                        </VBox.margin>
-                    </JFXDatePicker>
-                    <JFXButton fx:id="buttonTrack" buttonType="RAISED" maxWidth="1.7976931348623157E308" prefHeight="50.0" ripplerFill="#10663fca" style="-fx-background-color: lightgreen;" text="Відстежити зміни" textAlignment="CENTER" underline="true">
-                        <font>
-                            <Font name="System Bold" size="14.0" />
-                        </font>
-                        <VBox.margin>
-                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </VBox.margin>
-                    </JFXButton>
-                </children>
+                </ScrollPane>
+            </center>
+         <bottom>
+            <VBox style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
+               <children>
+                         <JFXButton fx:id="buttonTrack" buttonType="RAISED" prefHeight="50.0" prefWidth="232.0" ripplerFill="#10663fca" style="-fx-background-color: lightgreen;" text="Відстежити зміни" textAlignment="CENTER" underline="true">
+                             <font>
+                                 <Font name="System Bold" size="14.0" />
+                             </font>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                         </JFXButton>
+               </children>
             </VBox>
-        </ScrollPane>
+         </bottom>
+        </BorderPane>
+
 
     </left>
     <top>
@@ -145,41 +156,35 @@
             </menus>
         </MenuBar>
     </top>
-   <bottom>
-      <BorderPane fx:id="borderPaneBottom" BorderPane.alignment="CENTER">
-         <left>
-            <VBox style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
-               <children>
-                  <JFXButton fx:id="loadButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="230.0" style="-fx-background-color: lightgreen;" text="Завантажити дані за сьогодні" wrapText="true">
-                     <font>
-                        <Font name="System Italic" size="14.0" />
-                     </font>
-                     <VBox.margin>
+    <center>
+        <BorderPane fx:id="borderPaneCenter" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <bottom>
+                <HBox style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
+                    <children>
+                        <Label fx:id="timeLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Час завантаження: 00:00 - 00,00%">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font name="System Italic" size="18.0" />
+                            </font>
+                        </Label>
+                        <JFXProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" prefHeight="5.0" progress="0.0" HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets left="30.0" right="30.0" top="22.0" />
+                            </HBox.margin>
+                        </JFXProgressBar>
+                         <JFXButton fx:id="loadButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: lightgreen;" text="Завантажити дані за сьогодні" wrapText="true">
+                             <font>
+                                 <Font name="System Italic" size="14.0" />
+                             </font>
+                     <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </JFXButton>
-               </children>
-            </VBox>
-         </left>
-         <center>
-            <HBox BorderPane.alignment="CENTER">
-               <children>
-                  <Label fx:id="timeLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Час завантаження: ">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" />
                      </HBox.margin>
-                     <font>
-                        <Font name="System Italic" size="18.0" />
-                     </font>
-                  </Label>
-                  <JFXProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" prefHeight="5.0" progress="0.0" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets left="30.0" right="30.0" top="15.0" />
-                     </HBox.margin>
-                  </JFXProgressBar>
-               </children>
-            </HBox>
-         </center>
-      </BorderPane>
-   </bottom>
+                         </JFXButton>
+                    </children>
+                </HBox>
+         </bottom>
+        </BorderPane>
+    </center>
 </BorderPane>
