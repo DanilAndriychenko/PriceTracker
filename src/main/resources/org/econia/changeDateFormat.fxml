@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.econia.ChangeDateFormatController">
+   <Label text="Налаштувати відображення значень на осі дат:" textAlignment="CENTER">
+      <VBox.margin>
+         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+      </VBox.margin>
+      <font>
+         <Font name="System Italic" size="24.0"/>
+      </font>
+   </Label>
+   <GridPane>
+      <columnConstraints>
+         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+         <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+         <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+      </rowConstraints>
+      <children>
+         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Формат місяця:">
+            <font>
+               <Font name="System Italic" size="18.0"/>
+            </font>
+            <GridPane.margin>
+               <Insets/>
+            </GridPane.margin>
+            <padding>
+               <Insets left="20.0"/>
+            </padding>
+         </Label>
+         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Формат року:"
+                GridPane.rowIndex="1">
+            <font>
+               <Font name="System Italic" size="18.0"/>
+            </font>
+            <padding>
+               <Insets left="20.0"/>
+            </padding>
+         </Label>
+         <JFXRadioButton fx:id="radButMonthLetters" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                         text="Буквенний" GridPane.columnIndex="1">
+            <font>
+               <Font name="System Bold" size="14.0"/>
+            </font>
+         </JFXRadioButton>
+         <JFXRadioButton fx:id="radButMonthNums" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                         text="Цифровий" GridPane.columnIndex="2">
+            <font>
+               <Font name="System Bold" size="14.0"/>
+            </font>
+         </JFXRadioButton>
+         <JFXRadioButton fx:id="radButYearNums" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                         text="Цифрами" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+               <Font name="System Bold" size="14.0"/>
+            </font>
+         </JFXRadioButton>
+         <JFXRadioButton fx:id="radButYearNone" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                         text="Не відображати" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <font>
+               <Font name="System Bold" size="14.0"/>
+            </font>
+         </JFXRadioButton>
+         <JFXButton fx:id="butSave" style="-fx-background-color: lightgreen;" text="Зберегти налаштування"
+                    textAlignment="CENTER" underline="true" GridPane.columnSpan="3" GridPane.halignment="CENTER"
+                    GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <font>
+               <Font name="System Italic" size="18.0"/>
+            </font>
+            <GridPane.margin>
+               <Insets top="15.0"/>
+            </GridPane.margin>
+         </JFXButton>
+      </children>
+      <padding>
+         <Insets bottom="20.0" left="10.0" right="10.0"/>
+      </padding>
+   </GridPane>
+</VBox>

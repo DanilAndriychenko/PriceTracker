@@ -29,108 +29,129 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The type Controller.
  */
 public class Controller {
 
+    private LineChart<Number, Number> lineChart;
+    private final NumberAxis dateAxis = new NumberAxis();
+    private final NumberAxis priceAxis = new NumberAxis();
+    private ScrapeProcessor scrapeProcessor;
+    private DBProcessor.AccessLevel accessLevel;
+    private String ip;
+    private String dateFormatPattern;
+
     private static final String COMBO_BOX_CATEGORY_PROMPT_TEXT = "Оберіть категорію";
     private static final String COMBO_BOX_SHOP_PROMPT_TEXT = "Оберіть магазин";
     private static final String COMBO_BOX_REGION_PROMPT_TEXT = "Оберіть регіон";
     private static final String BRANDS_CHOOSE_CATEGORY = "Спочатку оберіть категорію ↑";
     private static final String BRANDS_CHOOSE_ALL = "Обрати всі / Скасувати";
-    private static final double FREQUENCY = 10_000.0;
     private static final String APP_ICON = "appIcon1.jpg";
-    private ScrapeProcessor scrapeProcessor;
+    private static final String SYSTEM_ITALIC = "System Italic";
 
-    private static List<Category> categoryArrayList;
-    private static List<String> categoriesNames;
-    private static List<Brand> brandArrayList;
-    private static List<String> brandsNames;
-    private static List<JFXCheckBox> checkBoxesBrands;
-    private static List<Shop> shopArrayList;
-    private static List<String> shopsNames;
-    private static List<Region> regionArrayList;
-    private static List<String> regionsNames;
+    private List<Category> categoryArrayList;
+    private List<String> categoriesNames;
+    private List<Brand> brandArrayList;
+    private List<String> brandsNames;
+    private List<JFXCheckBox> checkBoxesBrands;
+    private List<Shop> shopArrayList;
+    private List<String> shopsNames;
+    private List<Region> regionArrayList;
+    private List<String> regionsNames;
 
-    public static List<Category> getCategoryArrayList() {
+    public List<Category> getCategoryArrayList() {
         return categoryArrayList;
     }
 
-    public static List<String> getCategoriesNames() {
+    public List<String> getCategoriesNames() {
         return categoriesNames;
     }
 
-    public static List<Brand> getBrandArrayList() {
+    public List<Brand> getBrandArrayList() {
         return brandArrayList;
     }
 
-    public static List<String> getBrandsNames() {
+    public List<String> getBrandsNames() {
         return brandsNames;
     }
 
-    public static List<JFXCheckBox> getCheckBoxesBrands() {
+    public List<JFXCheckBox> getCheckBoxesBrands() {
         return checkBoxesBrands;
     }
 
-    public static List<Shop> getShopArrayList() {
+    public List<Shop> getShopArrayList() {
         return shopArrayList;
     }
 
-    public static List<String> getShopsNames() {
+    public List<String> getShopsNames() {
         return shopsNames;
     }
 
-    public static List<Region> getRegionArrayList() {
+    public List<Region> getRegionArrayList() {
         return regionArrayList;
     }
 
-    public static List<String> getRegionsNames() {
+    public List<String> getRegionsNames() {
         return regionsNames;
     }
 
-    @FXML
-    public JFXComboBox<String> comboBoxCategory;
-    @FXML
-    public VBox vBoxBrands;
-    @FXML
-    public JFXComboBox<String> comboBoxShop;
-    @FXML
-    public JFXComboBox<String> comboBoxRegion;
-    @FXML
-    public JFXDatePicker datePickerFrom;
-    @FXML
-    public JFXDatePicker datePickerTo;
-    @FXML
-    public JFXButton buttonTrack;
-    @FXML
-    public MenuItem addProduct;
-    @FXML
-    public Label timeLabel;
-    @FXML
-    public JFXProgressBar progressBar;
-    @FXML
-    public JFXButton loadButton;
-    @FXML
-    public BorderPane borderPane;
-    @FXML
-    public BorderPane borderPaneCenter;
-    @FXML
-    public ScrollPane scrollPane;
+    public String getIp() {
+        return ip;
+    }
 
-    private LineChart<Number, Number> lineChart;
-    private final NumberAxis dateAxis = new NumberAxis();
-    private final NumberAxis priceAxis = new NumberAxis();
+    public DBProcessor.AccessLevel getAccessLevel() {
+        return accessLevel;
+    }
 
-    private static void initializeLists() {
+    public String getDateFormatPattern() {
+        return dateFormatPattern;
+    }
+
+    @FXML
+    private JFXComboBox<String> comboBoxCategory;
+    @FXML
+    private VBox vBoxBrands;
+    @FXML
+    private JFXComboBox<String> comboBoxShop;
+    @FXML
+    private JFXComboBox<String> comboBoxRegion;
+    @FXML
+    private JFXDatePicker datePickerFrom;
+    @FXML
+    private JFXDatePicker datePickerTo;
+    @FXML
+    private JFXButton buttonTrack;
+    @FXML
+    private MenuItem addProduct;
+    @FXML
+    private Label timeLabel;
+    @FXML
+    private JFXProgressBar progressBar;
+    @FXML
+    private JFXButton loadButton;
+    @FXML
+    private BorderPane borderPaneCenter;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private MenuItem dateFormatMenuItem;
+    @FXML
+    private MenuItem accessMenuItem;
+
+    private void initializeLists() {
         categoryArrayList = DBProcessor.getAllCategories();
         categoriesNames = DBProcessor.getCategoriesNames(categoryArrayList);
         brandArrayList = DBProcessor.getAllBrands();
@@ -164,16 +185,18 @@ public class Controller {
             @Override
             protected Void call() {
                 Platform.runLater(() -> {
-                    timeLabel.setText("Можливість оновлювати ціни примусово завантажується...");
-                    timeLabel.setFont(new Font("System Italic", 14));
+                    timeLabel.setText("Можливість \"Оновити ціни примусово\" завантажується...");
+                    timeLabel.setFont(new Font(SYSTEM_ITALIC, 14));
                     timeLabel.setVisible(true);
                 });
                 scrapeProcessor = new ScrapeProcessor();
                 Platform.runLater(() -> {
                     timeLabel.setText("Час завантаження: 00:00 - 00,00%");
-                    timeLabel.setFont(new Font("System Italic", 18));
+                    timeLabel.setFont(new Font(SYSTEM_ITALIC, 18));
                     timeLabel.setVisible(false);
-                    loadButton.setDisable(false);
+                    if (accessLevel.isForceUpdateToggleButtonEnabled()) {
+                        loadButton.setDisable(false);
+                    }
                 });
                 return null;
             }
@@ -203,8 +226,8 @@ public class Controller {
                 @Override
                 protected Void call() {
                     clock.play();
-                    scrapeProcessor.scrapePricesInRange(0, 1000);
-                    clock.stop();
+                    scrapeProcessor.scrapePricesInRange(350, 1000);
+                    clock.stop();//TODO doesn't stop
                     return null;
                 }
             };
@@ -228,12 +251,71 @@ public class Controller {
         }).start());
     }
 
-    /**
-     * Initialize.
-     */
-    @FXML
-    public void initialize() {
+    public void refreshAccess() {
+        accessLevel = DBProcessor.getAccessLevel(ip);
+        if (accessLevel != null) {
+            addProduct.setDisable(!accessLevel.isAddSKUToggleButtonEnabled());
+            loadButton.setDisable(!accessLevel.isForceUpdateToggleButtonEnabled());
+            if (accessLevel.isAutoUpdateToggleButtonEnabled()) {
+                DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                java.util.Date date = null;
+                try {
+                    date = dateFormatter.parse("2020-08-26 15:06:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Timer timer = new Timer();
+//                int period = accessLevel.getPeriod()*24*60*60*1000;
+                int period = accessLevel.getPeriod()*1000;
+                timer.schedule(new AutoUpdateTimerTask(), date, period);
+                //TODO stop timer
+            }
+        }
+    }
 
+    private class AutoUpdateTimerTask extends TimerTask{
+        @Override
+        public void run() {
+//            loadButton.fire();
+//            System.out.println("fire");
+        }
+    }
+
+    private void configureIP() {
+        try {
+            ip = InetAddress.getLocalHost().toString();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void configureControlAccessMenuItem() {
+        accessMenuItem.setOnAction(accessItemEvent -> {
+            try {
+                AccessController accessController = new AccessController();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("accessControl.fxml"));
+                fxmlLoader.setController(accessController);
+                Parent root = fxmlLoader.load();
+                Stage stage = new Stage();
+                stage.setTitle("Налаштування доступу");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.getIcons().add(new Image(getClass().getResourceAsStream(APP_ICON)));
+                stage.setScene(new Scene(root));
+                stage.setOnCloseRequest(closeEvent -> {
+                    DBProcessor.setAccessLevel(App.getController().getIp(),
+                            new DBProcessor.AccessLevel(accessController.getUnlockToggleButton().isSelected(), accessController.getAddSKUToggleButton().isSelected(),
+                                    accessController.getForceUpdateToggleButton().isSelected(), accessController.getAutoUpdateToggleButton().isSelected(),
+                                    (int) accessController.getSliderFrequency().getValue()));
+                    App.getController().refreshAccess();
+                });
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void configureScrollPane() {
         scrollPane.fitToWidthProperty().set(true);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
         final double SPEED = 0.1;
@@ -242,20 +324,33 @@ public class Controller {
             scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
         });
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
+    }
 
+    /**
+     * Initialize.
+     */
+    @FXML
+    public void initialize() {
+
+        configureIP();
+        configureControlAccessMenuItem();
+        App.setController(this);
+        configureScrollPane();
+        refreshAccess();
         configureLoadButton();
-
         initializeLists();
-
         configureLineChart();
-
-        //blockAllComboBoxes while user don't choose Category
-        //set default values for comboBoxes
+        /*
+        BlockAllComboBoxes while user don't choose Category.
+        Set default values for comboBoxes.
+         */
         configurePanel();
+        //Tuning datePickers and logic how they interact.
+        configureDatePickers();
+        defineActionAddProductMenuItem();
+        defineDateFormatMenuItemAction();
 
-        //Category <---> SetOnAction
         comboBoxCategory.setOnAction(eventCategoryAction -> {
-            //Unlock Shops ComboBox and load available shops.
             comboBoxShop.setDisable(false);
             comboBoxShop.getItems().setAll(shopsNames);
             comboBoxShop.setOnAction(eventShopAction -> {
@@ -325,8 +420,6 @@ public class Controller {
             }
         });
 
-        //Tuning datePickers and logic how they interact.
-        configureDatePickers();
 
         buttonTrack.setOnAction(eventTrack -> {
             //building query for selected parameters.
@@ -360,8 +453,8 @@ public class Controller {
             } catch (SQLException throwable) {
                 throwable.printStackTrace();
             }
-            int minDate = Integer.MAX_VALUE;
-            int maxDate = Integer.MIN_VALUE;
+//            long minDate = Integer.MAX_VALUE;
+//            long maxDate = Integer.MIN_VALUE;
             lineChart.getData().clear();
             for (Product product : products) {
                 String queryRecords = String.format("SELECT * FROM Records WHERE product_id = %d AND date >= '%s' AND date <= '%s';",
@@ -371,14 +464,12 @@ public class Controller {
                 series.setName(brandArrayList.get(product.getBrand_id() - 1).getName());
                 try (ResultSet resultSet = DBProcessor.getConnection().createStatement().executeQuery(queryRecords)) {
                     while (resultSet.next()) {
-                        String dateStr = resultSet.getDate("date").toString().replace("-", "").substring(2, 8);
-                        int date = Integer.parseInt(dateStr.substring(4, 6) + dateStr.substring(2, 4) + dateStr.substring(0, 2));
-                        observableList.add(new XYChart.Data<>(date, resultSet.getDouble("price")));
-                        if (date > maxDate) {
-                            maxDate = date;
-                        } else if (date < minDate) {
-                            minDate = date;
-                        }
+                        Date dateSQL = resultSet.getDate("date");
+                        long daysSince = dateSQL.getTime() / 1_000 / 24 / 3_600 + 1;
+                        XYChart.Data<Number, Number> data = new XYChart.Data<>(daysSince, resultSet.getDouble("price"));
+                        observableList.add(data);
+//                        if (daysSince < minDate) minDate = daysSince;
+//                        if (daysSince > maxDate) maxDate = daysSince;
                     }
                 } catch (SQLException throwable) {
                     throwable.printStackTrace();
@@ -386,12 +477,124 @@ public class Controller {
                 series.setData(observableList);
                 lineChart.getData().add(series);
             }
-            dateAxis.setLowerBound(minDate - FREQUENCY);
-            dateAxis.setUpperBound(maxDate + FREQUENCY);
+//            If we want to see days from calendar.
+            long daysFromSince = dateFrom.getTime() / 1000 / 24 / 3600;
+            long daysToSince = dateTo.getTime() / 1000 / 24 / 3600 + 2;
+            dateAxis.setLowerBound(daysFromSince);
+            dateAxis.setUpperBound(daysToSince);
+
+//            If we want to see min and max date.
+//            dateAxis.setLowerBound(minDate-1.0);
+//            dateAxis.setUpperBound(maxDate+1.0);
+
             lineChart.setTitle(comboBoxCategory.getValue());
+
+            for (XYChart.Series<Number, Number> series : lineChart.getData()) {
+                for (XYChart.Data<Number, Number> data : series.getData()) {
+                    Tooltip tooltip = new Tooltip();
+                    tooltip.setText("Дата: " + data.getXValue() + "\nЦіна: " + data.getYValue());
+                    tooltip.setFont(new Font(SYSTEM_ITALIC, 14));
+                    hackTooltipStartTiming(tooltip);
+                    Tooltip.install(data.getNode(), tooltip);
+                }
+            }
         });
 
-        defineActionAddProductMenuItem();
+    }
+
+    private static void hackTooltipStartTiming(Tooltip tooltip) {
+        try {
+            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            fieldBehavior.setAccessible(true);
+            Object objBehavior = fieldBehavior.get(tooltip);
+            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
+            fieldTimer.setAccessible(true);
+            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(1)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void defineDateFormatMenuItemAction() {
+        dateFormatMenuItem.setOnAction(dateFormatEvent -> {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("changeDateFormat.fxml"));
+                Stage stage = new Stage();
+                stage.setTitle("Формат дати");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.getIcons().add(new Image(getClass().getResourceAsStream(APP_ICON)));
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    List<String> lineColorsArray = Arrays.asList("255, 0, 0", "255, 127, 0", "255, 255, 0", "127, 255, 0", "0, 255, 0",
+            "0, 255, 127", "0,255,255", "0,127,255", "0,0,255", "127,0,255", "255,0,255", "255,0,127");
+
+    private void setSeriesColors(LineChart<Number, Number> chart) {
+        Platform.runLater(() -> {
+            Collections.shuffle(lineColorsArray);
+            Node line;
+            String rgb;
+            ObservableList<XYChart.Series<Number, Number>> list = chart.getData();
+            for (int i = 0; i < list.size(); i++) {
+                line = list.get(i).getNode().lookup(".chart-series-line");
+                rgb = lineColorsArray.get(i % lineColorsArray.size());
+                Set<Node> nodes = chart.lookupAll(".series" + i);
+                for (Node n : nodes) {
+                    n.setStyle("-fx-background-color: rgb(" + rgb + ")" + ", white;");
+                }
+                line.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+            }
+        });
+
+    }
+
+    public void setDateFormatPattern(String dateFormatPattern) {
+        this.dateFormatPattern = dateFormatPattern;
+        dateAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                long ms = number.longValue() * 1000 * 24 * 3600;
+                java.util.Date date = new java.util.Date(ms);
+                return new SimpleDateFormat(dateFormatPattern).format(date);
+            }
+
+            @Override
+            public Number fromString(String string) {
+                /*
+                We can't write universal method,
+                especially if take into account that there can be no year in the end of the string.
+                */
+                return null;
+            }
+        });
+    }
+
+
+    private void configureLineChart() {
+        dateAxis.setLabel("Дата");
+        priceAxis.setLabel("Ціна, грн");
+        priceAxis.setMinorTickVisible(false);
+        dateAxis.setStyle("-fx-font-size: 16");
+        priceAxis.setStyle("-fx-font-size: 16");
+        dateAxis.setTickLabelFont(new Font(SYSTEM_ITALIC, 12));
+        priceAxis.setTickLabelFont(new Font(SYSTEM_ITALIC, 12));
+        dateAxis.setTickLabelRotation(60);
+        dateAxis.setForceZeroInRange(false);
+        dateAxis.setAutoRanging(false);
+        dateAxis.setTickUnit(1);
+        dateAxis.setMinorTickVisible(false);
+        setDateFormatPattern("dd MMM yy");
+        lineChart = new LineChart<>(dateAxis, priceAxis);
+        lineChart.setAnimated(false);
+        borderPaneCenter.setCenter(lineChart);
     }
 
     private void configureDatePickers() {
@@ -446,33 +649,6 @@ public class Controller {
                 e.printStackTrace();
             }
         });
-    }
-
-    private void configureLineChart() {
-        dateAxis.setForceZeroInRange(false);
-        dateAxis.setAutoRanging(false);
-        dateAxis.setTickUnit(FREQUENCY);
-        dateAxis.setMinorTickVisible(false);
-        dateAxis.setTickLabelFormatter(new StringConverter<Number>() {
-            //input: 180820
-            @Override
-            public String toString(Number number) {
-                String numStr = number.toString();
-                if (numStr.length() >= 6) {
-                    return numStr.substring(0, 2) + "." + numStr.substring(2, 4) + "." + numStr.substring(4, 6);
-                } else {
-                    return null;
-                }
-            }
-
-            //input: 18.08.20
-            @Override
-            public Number fromString(String string) {
-                return Integer.parseInt(string.replace(".", ""));
-            }
-        });
-        lineChart = new LineChart<>(dateAxis, priceAxis);
-        borderPaneCenter.setCenter(lineChart);
     }
 
     private boolean allDataSelected() {

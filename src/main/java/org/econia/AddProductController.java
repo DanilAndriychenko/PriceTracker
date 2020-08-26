@@ -49,21 +49,21 @@ public class AddProductController {
         comboBoxShop.setPromptText(COMBO_BOX_PROMPT_TEXT);
         comboBoxRegion.setPromptText(COMBO_BOX_PROMPT_TEXT);
 
-        comboBoxCategory.getItems().setAll(Controller.getCategoriesNames());
+        comboBoxCategory.getItems().setAll(App.getController().getCategoriesNames());
 
         comboBoxCategory.setOnAction(eventCategoryAction -> {
             comboBoxBrand.setDisable(false);
 
             //Get category and get brands that compete in this category.
             String category = comboBoxCategory.getValue();
-            int categoryID = Controller.getCategoriesNames().indexOf(category) + 1;
+            int categoryID = App.getController().getCategoriesNames().indexOf(category) + 1;
             List<Integer> brandsIDs = DBProcessor.getBrandsAccordingToCategory(categoryID);
 
             //Clear checkBoxBrand and set those brands there
             //Also set value of previous brand if new list of brands contains it.
             String brandPrev = comboBoxBrand.getValue();
             comboBoxBrand.getItems().clear();
-            for (Brand brand : Controller.getBrandArrayList()) {
+            for (Brand brand : App.getController().getBrandArrayList()) {
                 if (brandsIDs.contains(brand.getBrand_id())) {
                     comboBoxBrand.getItems().add(brand.getName());
                     if (brand.getName().equals(brandPrev)) {
@@ -75,11 +75,11 @@ public class AddProductController {
 
             comboBoxBrand.setOnAction(eventBrandAction -> {
                 comboBoxShop.setDisable(false);
-                comboBoxShop.getItems().setAll(Controller.getShopsNames());
+                comboBoxShop.getItems().setAll(App.getController().getShopsNames());
 
                 comboBoxShop.setOnAction(eventShopAction -> {
                     comboBoxRegion.setDisable(false);
-                    comboBoxRegion.getItems().setAll(Controller.getRegionsNames());
+                    comboBoxRegion.getItems().setAll(App.getController().getRegionsNames());
 
                     comboBoxRegion.setOnAction(eventRegionAction -> buttonAddProduct.setDisable(false));
                 });
@@ -103,10 +103,10 @@ public class AddProductController {
                 comboBoxBrand.setUnFocusColor(BLACK);
                 textFieldLink.setUnFocusColor(BLACK);
 
-                int catId = Controller.getCategoriesNames().indexOf(comboBoxCategory.getValue()) + 1;
-                int brandId = Controller.getBrandsNames().indexOf(comboBoxBrand.getValue()) + 1;
-                int shopId = Controller.getShopsNames().indexOf(comboBoxShop.getValue()) + 1;
-                int regionId = Controller.getRegionsNames().indexOf(comboBoxRegion.getValue()) + 1;
+                int catId = App.getController().getCategoriesNames().indexOf(comboBoxCategory.getValue()) + 1;
+                int brandId = App.getController().getBrandsNames().indexOf(comboBoxBrand.getValue()) + 1;
+                int shopId = App.getController().getShopsNames().indexOf(comboBoxShop.getValue()) + 1;
+                int regionId = App.getController().getRegionsNames().indexOf(comboBoxRegion.getValue()) + 1;
                 String link = textFieldLink.getText();
 
                 //check if record for this product already exists.

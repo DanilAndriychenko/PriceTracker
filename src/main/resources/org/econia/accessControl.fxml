@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXToggleButton fx:id="unlockToggleButton" contentDisplay="RIGHT" focusTraversable="false" size="12.0" text="Розблокувати функції запису до Бази Даних" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </JFXToggleButton>
+      <JFXToggleButton fx:id="addSKUToggleButton" contentDisplay="RIGHT" focusTraversable="false" text="Додати SKU до БД">
+         <font>
+            <Font name="System Italic" size="16.0" />
+         </font>
+      </JFXToggleButton>
+      <JFXToggleButton fx:id="forceUpdateToggleButton" contentDisplay="RIGHT" focusTraversable="false" text="Примусово оновити дані за сьогодні">
+         <font>
+            <Font name="System Italic" size="15.0" />
+         </font>
+      </JFXToggleButton>
+      <JFXToggleButton fx:id="autoUpdateToggleButton" contentDisplay="RIGHT" focusTraversable="false" text="Автозавантаження даних " textAlignment="CENTER" toggleColor="RED" toggleLineColor="#ff8989" wrapText="true">
+         <font>
+            <Font name="System Italic" size="16.0" />
+         </font>
+      </JFXToggleButton>
+      <Label text="(не рекомендується вмикати цю опцію на усіх інших пристроях, окрім сервера)">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </VBox.margin>
+      </Label>
+      <HBox>
+         <children>
+            <Label text="Частота оновлення (днів)">
+               <font>
+                  <Font name="System Italic" size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Label>
+            <JFXSlider fx:id="sliderFrequency" blockIncrement="1.0" majorTickUnit="1.0" max="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="3.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="5.0" />
+               </HBox.margin>
+            </JFXSlider>
+         </children>
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

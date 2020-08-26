@@ -68,9 +68,10 @@ public class ScrapeProcessor {
         ScrapeProcessor scrapeProcessor = new ScrapeProcessor();
 
 //        scrapProcessor.scrapePricesInRange(635, 680);
-
-        System.out.println(scrapeProcessor.scrapePrice(13, "https://rost.kh.ua/catalog/produktovaya_gruppa-detskoe_pitanie-pyure_dlya_detei/4308989/"));
-        System.out.println(scrapeProcessor.scrapePrice(13, "https://rost.kh.ua/catalog/produktovaya_gruppa-detskoe_pitanie-pyure_dlya_detei/4038103/"));
+        try{
+            System.out.println(scrapeProcessor.scrapePrice(4, "https://apteka911.com.ua/shop/pyure-fruktove-detskoe-rudolfs-rudolfs-desert-iz-yabloka-i-klubniki-s-pechenem-i-slivkami-s-6-ti-mesyatsev-organicheskoe-190-g-p65200"));
+        }catch (IndexOutOfBoundsException ignored){
+        }
     }
 
     public ScrapeProcessor() {
@@ -219,7 +220,7 @@ public class ScrapeProcessor {
     }
 
 
-    public Double scrapePrice(int shopId, String url) {
+    public Double scrapePrice(int shopId, String url) throws IndexOutOfBoundsException{
         Document document = new Document(url);
         if (shopId != 2 && shopId != 7 && shopId != 8 && shopId != 9) {
             document = scrapeJSoup(url);

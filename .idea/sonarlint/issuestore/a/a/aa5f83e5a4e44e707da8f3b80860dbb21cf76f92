@@ -1,5 +1,5 @@
 
-i
-java:S1128"GRemove this unused import 'javafx.beans.property.SimpleDoubleProperty'.(Ğ†Üıúÿÿÿÿ8˜Çü¿À.
+W
+java:S1144…"4Remove this unused private "setSeriesColors" method.(Æ¨œÆÿÿÿÿÿ8öªğÏÂ.
 u
-java:S3776ß"RRefactor this method to reduce its Cognitive Complexity from 61 to the 15 allowed.(·òşÿÿÿÿ8Æ¦¤×À.
+java:S3776¶"RRefactor this method to reduce its Cognitive Complexity from 61 to the 15 allowed.(·òşÿÿÿÿ8û¾Ô¥Â.

@@ -33,8 +33,6 @@ H
 src/META-INF/MANIFEST.MF,e\4\e4b1fd2293ba1e598e6bec4e0ee3b6b6851eb5a2
 T
 $.idea/artifacts/PriceTracker_jar.xml,e\8\e864d2eb3076848641919d2ea3524634e1889ded
-\
-,src/main/java/org/econia/ScrapProcessor.java,a\d\ad36b1962a4d5e48d83de5c6df1456aada5babc8
 ;
 output.html,9\d\9d7c2aacedd5020cf6e13eb106e7a0cf22b71f1e
 ;
@@ -189,3 +187,21 @@ V
 +src/main/java/dateAxis/ZoomableXYChart.java,2\c\2c7924d42f430a8dbf18cdd38ea84fb88c633845
 ]
 -src/main/resources/org/econia/addProduct.fxml,2\a\2a4b8eed3857055f263dd4c0f833b00daef31eeb
+j
+:.idea/dataSources/0026a984-3df8-4a62-89bf-817c8acef53d.xml,c\d\cda003bed95a6af882f3b323e799188b2e6ec917
+ù
+m.idea/dataSources/0026a984-3df8-4a62-89bf-817c8acef53d/storage_v2/_src_/schema/information_schema.FNRwLQ.meta,3\e\3e7c7b9360b1d044c411a7c479367950b0537996
+M
+src/main/META-INF/MANIFEST.MF,8\0\8005b9742c5d3cd335563716dae4d34dd6265c2b
+W
+'src/main/resources/org/econia/chart.css,0\c\0c5348a145777b00bf8277e2b5433d6ac82c4e1a
+]
+-src/main/java/org/econia/ScrapeProcessor.java,e\c\ecf5b70f8f955595e263e9e624d550d4f06f0fab
+h
+8src/main/java/org/econia/ChangeDateFormatController.java,7\5\758edabaca85a51fb2c7b5305ae2e613037bdfa9
+]
+-src/main/java/org/econia/LoginController.java,2\c\2cddb538758851643361c2d6d6601b63f68579dc
+^
+.src/main/java/org/econia/AccessController.java,2\7\2737e1f8c4098a6c22d41d9a55aeb51b21ff5d64
+R
+"src/main/java/org/econia/Test.java,1\5\15b94b3ada43ccffbf3178de8f33f466fb1456f2
