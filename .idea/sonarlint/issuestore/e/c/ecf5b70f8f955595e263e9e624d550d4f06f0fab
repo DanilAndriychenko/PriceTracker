@@ -1,9 +1,6 @@
 
-]	java:S125F"<This block of commented-out lines of code should be removed.(Íìãöüÿÿÿÿ8´á°ƒÁ.
-[	java:S106É"9Replace this use of System.out or System.err by a logger.(­â×éûÿÿÿÿ8ÀœÜ‰Á.
+[	java:S106ó"9Replace this use of System.out or System.err by a logger.(­â×éûÿÿÿÿ8ùùøØÂ.
 P
-java:S1135¾"2Complete the task associated to this TODO comment.(ñï´Ä8ÀœÜ‰Á.
+java:S1135â"2Complete the task associated to this TODO comment.(ñï´Ä8ùùøØÂ.
 u
-java:S3776Ş"RRefactor this method to reduce its Cognitive Complexity from 29 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8ÀœÜ‰Á.
-U	java:S106I"9Replace this use of System.out or System.err by a logger.(ßÏ¸Ã8´á°ƒÁ.
-Z	java:S106H"9Replace this use of System.out or System.err by a logger.(Å¼Ê„øÿÿÿÿ8’ƒç…Á.
+java:S3776ò"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8Ôù§ØÂ.

@@ -226,8 +226,12 @@ public class Controller {
                 @Override
                 protected Void call() {
                     clock.play();
-                    scrapeProcessor.scrapePricesInRange(350, 1000);
-                    clock.stop();//TODO doesn't stop
+                    try {
+                        scrapeProcessor.scrapePricesInRange(0, 1000);
+                    }catch (RuntimeException runtimeException){
+                        runtimeException.printStackTrace();
+                    }
+                    clock.stop();
                     return null;
                 }
             };
@@ -251,6 +255,8 @@ public class Controller {
         }).start());
     }
 
+    private Timer timer = new Timer();
+
     public void refreshAccess() {
         accessLevel = DBProcessor.getAccessLevel(ip);
         if (accessLevel != null) {
@@ -260,15 +266,23 @@ public class Controller {
                 DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 java.util.Date date = null;
                 try {
-                    date = dateFormatter.parse("2020-08-26 15:06:00");
+                    Calendar c = Calendar.getInstance();
+                    java.util.Date today = new java.util.Date(System.currentTimeMillis());
+                    c.setTime(today);
+                    c.add(Calendar.DATE, 1);
+                    today = c.getTime();
+                    date = dateFormatter.parse("2020-08-26 18:51:00");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Timer timer = new Timer();
-//                int period = accessLevel.getPeriod()*24*60*60*1000;
-                int period = accessLevel.getPeriod()*1000;
+                try {
+                    timer.cancel();
+                    timer = new Timer();
+                }catch (IllegalStateException illegalStateException){
+                }
+                int period = accessLevel.getPeriod()*24*60*60*1000;
+//                int period = accessLevel.getPeriod()*1000;
                 timer.schedule(new AutoUpdateTimerTask(), date, period);
-                //TODO stop timer
             }
         }
     }
@@ -276,7 +290,7 @@ public class Controller {
     private class AutoUpdateTimerTask extends TimerTask{
         @Override
         public void run() {
-//            loadButton.fire();
+            loadButton.fire();
 //            System.out.println("fire");
         }
     }
@@ -334,7 +348,7 @@ public class Controller {
 
         configureIP();
         configureControlAccessMenuItem();
-        App.setController(this);
+//        App.setController(this);
         configureScrollPane();
         refreshAccess();
         configureLoadButton();
@@ -492,7 +506,7 @@ public class Controller {
             for (XYChart.Series<Number, Number> series : lineChart.getData()) {
                 for (XYChart.Data<Number, Number> data : series.getData()) {
                     Tooltip tooltip = new Tooltip();
-                    tooltip.setText("Дата: " + data.getXValue() + "\nЦіна: " + data.getYValue());
+                    tooltip.setText("Дата: " + dateAxis.getTickLabelFormatter().toString(data.getXValue()) + "\nЦіна: " + data.getYValue());
                     tooltip.setFont(new Font(SYSTEM_ITALIC, 14));
                     hackTooltipStartTiming(tooltip);
                     Tooltip.install(data.getNode(), tooltip);

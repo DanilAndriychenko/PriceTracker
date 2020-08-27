@@ -5,6 +5,7 @@ import com.mysql.cj.jdbc.Driver;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
@@ -172,11 +173,11 @@ public class DBProcessor {
         }
         System.out.println(query);
         if (price != 0.0) {
-//            try (Statement statement = connection.createStatement()) {
-//                statement.execute(query);
-//            } catch (SQLException throwable) {
-//                throwable.printStackTrace();
-//            }
+            try (Statement statement = connection.createStatement()) {
+                statement.execute(query);
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
         }
     }
 
@@ -301,16 +302,19 @@ public class DBProcessor {
     }
 
     public static void main(String[] args) {
-//        List<Integer> gaps = gaps("2020-08-20");
-//        for (Integer integer : gaps){
-//            System.out.print(integer + ", ");
-//        }
+        List<Integer> gaps = gaps("2020-08-27");
+        System.out.println(gaps.size());
+        for (Integer integer : gaps){
+            System.out.print(integer + ", ");
+        }
 
 
-//        try {
-//            System.out.println(InetAddress.getLocalHost());
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//        }
+        /*try {
+            System.out.println(InetAddress.getLocalHost());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }*/
+
+//        System.out.println(LocalDate.now());
     }
 }

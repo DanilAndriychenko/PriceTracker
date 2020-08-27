@@ -1,10 +1,10 @@
 
-P
-java:S1135¨"2Complete the task associated to this TODO comment.(ÜâÆÁ8Äè›®À.
-V	java:S106®"9Replace this use of System.out or System.err by a logger.(Šğš8µ³œİÀ.
-f
-java:S1192L"IDefine a constant instead of duplicating this literal "brand_id" 3 times.(áü²°8§­¶À.
-L
-java:S1144¸")Remove this unused private "gaps" method.(œ×¸Øÿÿÿÿÿ8ıÜ¦Â.
+V	java:S106­"9Replace this use of System.out or System.err by a logger.(Šğš8µ³œİÀ.
 U
-java:S1135§"2Complete the task associated to this TODO comment.(ºË°ôşÿÿÿÿ8Äè›®À.
+java:S1135¦"2Complete the task associated to this TODO comment.(ºË°ôşÿÿÿÿ8Äè›®À.
+P
+java:S1135§"2Complete the task associated to this TODO comment.(ÜâÆÁ8Äè›®À.
+f
+java:S1192K"IDefine a constant instead of duplicating this literal "brand_id" 3 times.(áü²°8§­¶À.
+L
+java:S1144·")Remove this unused private "gaps" method.(œ×¸Øÿÿÿÿÿ8õÙÂ.
