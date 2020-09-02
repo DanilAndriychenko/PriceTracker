@@ -17,7 +17,7 @@ public class App extends Application {
     private static final String FXML = "main.fxml";
     private static final String APP_ICON = "appIcon1.jpg";
     private static final String TITLE = "Моніторинг цін";
-    private static Controller controller = new Controller();
+    private static final Controller controller = new Controller();
 
     public static Controller getController() {
         return controller;

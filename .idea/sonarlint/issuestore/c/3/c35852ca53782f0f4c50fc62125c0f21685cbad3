@@ -1,0 +1,9 @@
+
+]
+java:S1068";Remove this unused "SCRAPE_PROCESSOR_LOGGER" private field.(ÁÍ¢ÿúÿÿÿÿ8¿é¦žÄ.
+r
+java:S1450"URemove the "driver" field and declare it as a local variable in the relevant methods.(°¹µè8¿é¦žÄ.
+J
+java:S1068"(Remove this unused "wait" private field.(Ñ•×Šùÿÿÿÿ8¿é¦žÄ.
+u
+java:S1450"SRemove the "wait" field and declare it as a local variable in the relevant methods.(Ñ•×Šùÿÿÿÿ8¿é¦žÄ.

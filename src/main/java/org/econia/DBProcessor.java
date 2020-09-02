@@ -2,16 +2,17 @@ package org.econia;
 
 import com.mysql.cj.jdbc.Driver;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBProcessor {
+
+    private static final Logger DB_PROCESSOR_LOGGER = Logger.getLogger("DBProcessor Logger");
 
     private static final String USERNAME = "econiadj_pricemonitoring";
     private static final String PASSWORD = "PriceMonitoring";
@@ -58,6 +59,20 @@ public class DBProcessor {
         return categoryArrayList;
     }
 
+    public static List<Category> getAllSubcategories(){
+        String query = "SELECT * FROM Subcategory ORDER BY subcat_id ASC;";
+        ArrayList<Category> subcategoryArrayList = new ArrayList<>();
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                subcategoryArrayList.add(new Category(resultSet.getInt("subcat_id"), resultSet.getString("name")));
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return subcategoryArrayList;
+    }
+
 
     public static List<String> getCategoriesNames(List<Category> categoryArrayList) {
         ArrayList<String> categoriesNames = new ArrayList<>();
@@ -65,6 +80,14 @@ public class DBProcessor {
             categoriesNames.add(category.getName());
         }
         return categoriesNames;
+    }
+
+    public static List<String> getSubcategoriesNames(List<Category> subcategoryArrayList){
+        ArrayList<String> subcategoriesNames = new ArrayList<>();
+        for (Category category : subcategoryArrayList) {
+            subcategoriesNames.add(category.getName());
+        }
+        return subcategoriesNames;
     }
 
     public static List<Brand> getAllBrands() {
@@ -79,6 +102,15 @@ public class DBProcessor {
             throwable.printStackTrace();
         }
         return brandsArrayList;
+    }
+
+    public static List<String> getOurBrands(List<Brand> brandsArrayList){
+        ArrayList<String> ourBrandsNames = new ArrayList<>();
+        ourBrandsNames.add(brandsArrayList.get(0).getName());
+        ourBrandsNames.add(brandsArrayList.get(21).getName());
+        ourBrandsNames.add(brandsArrayList.get(26).getName());
+        ourBrandsNames.add(brandsArrayList.get(27).getName());
+        return ourBrandsNames;
     }
 
     public static List<String> getBrandsNames(List<Brand> brandArrayList) {
@@ -101,6 +133,20 @@ public class DBProcessor {
             throwable.printStackTrace();
         }
         return brandsCat;
+    }
+
+    public static List<Integer> getSubcategoriesAccordingToBrand(int brandId){
+        String query = "SELECT * FROM ConnectionsAvailability WHERE brand_id = " + brandId + " ORDER BY subcat_id ASC;";
+        ArrayList<Integer> subcategoriesArrayList = new ArrayList<>();
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                subcategoriesArrayList.add(resultSet.getInt("subcat_id"));
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return subcategoriesArrayList;
     }
 
     public static List<Shop> getAllShops() {
@@ -171,12 +217,11 @@ public class DBProcessor {
         try (Formatter formatter = new Formatter(Locale.US)) {
             query = formatter.format("INSERT INTO Records (product_id, date, price) VALUES (%d, '%s', %.2f);", productId, date.toString(), price).toString();
         }
-        System.out.println(query);
         if (price != 0.0) {
             try (Statement statement = connection.createStatement()) {
                 statement.execute(query);
             } catch (SQLException throwable) {
-                throwable.printStackTrace();
+                DB_PROCESSOR_LOGGER.log(Level.SEVERE, throwable.getMessage());
             }
         }
     }
@@ -301,7 +346,7 @@ public class DBProcessor {
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         List<Integer> gaps = gaps("2020-08-27");
         System.out.println(gaps.size());
         for (Integer integer : gaps){
@@ -309,12 +354,12 @@ public class DBProcessor {
         }
 
 
-        /*try {
-            System.out.println(InetAddress.getLocalHost());
+        *//*try {
+            System.out.println(InetAddress.getLocalHost().getHostName());
         } catch (UnknownHostException e) {
             e.printStackTrace();
-        }*/
+        }*//*
 
 //        System.out.println(LocalDate.now());
-    }
+    }*/
 }

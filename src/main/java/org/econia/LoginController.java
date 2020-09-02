@@ -28,7 +28,7 @@ public class LoginController {
     @FXML
     public void initialize(){
         signIn.setOnAction(signInEvent ->{
-            if (loginField.getText().equals("1") && passwordField.getText().equals("1")){
+            if (loginField.getText().equals(DBProcessor.getUSERNAME()) && passwordField.getText().equals(DBProcessor.getPASSWORD())){
                 accessController.getUnlockToggleButton().setSelected(true);
                 accessController.getAddSKUToggleButton().setDisable(false);
                 accessController.getForceUpdateToggleButton().setDisable(false);

@@ -1,6 +1,6 @@
 
-[	java:S106ó"9Replace this use of System.out or System.err by a logger.(­â×éûÿÿÿÿ8ùùøØÂ.
+[	java:S106ó"9Replace this use of System.out or System.err by a logger.(å“ÅÚúÿÿÿÿ8ÄœûøÂ.
+u
+java:S3776ñ"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8Ôù§ØÂ.
 P
 java:S1135â"2Complete the task associated to this TODO comment.(ñï´Ä8ùùøØÂ.
-u
-java:S3776ò"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8Ôù§ØÂ.

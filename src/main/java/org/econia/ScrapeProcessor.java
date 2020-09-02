@@ -25,7 +25,7 @@ public class ScrapeProcessor {
 
     private WebDriver driver = null;
     private WebDriverWait wait = null;
-    private static final Logger logger = Logger.getLogger("ScrapeProcessor Logger");
+    private static final Logger SCRAPE_PROCESSOR_LOGGER = Logger.getLogger("ScrapeProcessor Logger");
     private int rsSize = 0;
     private int rsLoaded = 0;
 
@@ -106,7 +106,7 @@ public class ScrapeProcessor {
         Creating driver and wait based on options above.
          */
         driver = new ChromeDriver(chromeOptions);
-        wait = new WebDriverWait(driver, 20);
+        wait = new WebDriverWait(driver, 10);
     }
 
     private Double getPriceSilpo(String url) {
@@ -124,7 +124,7 @@ public class ScrapeProcessor {
                 driver.findElement(By.tagName(SILPO_SUBMIT_BUTTON)).click();
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_CURRENT_INTEGER)));
             } catch (TimeoutException e) {
-                logger.log(Level.SEVERE, "Silpo: timeout exception. Price 0.0 returned.");
+                SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Silpo: timeout exception. Price 0.0 returned.");
                 return 0.0;
             }
         }
@@ -133,7 +133,7 @@ public class ScrapeProcessor {
             String currentFraction = driver.findElement(By.className(SILPO_CURRENT_FRACTION)).getText();
             return Double.parseDouble(currentInteger + "." + currentFraction);
         } catch (NoSuchElementException e) {
-            logger.log(Level.SEVERE, "Silpo: NoSuchElementException. Price 0.0 returned.");
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Silpo: NoSuchElementException. Price 0.0 returned.");
             return 0.0;
         }
     }
@@ -143,7 +143,7 @@ public class ScrapeProcessor {
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(By.className(ANTOSHKA_PRICE_BLOCK)));
         } catch (TimeoutException e) {
-            logger.log(Level.SEVERE, "Antoshka: timeout exception.");
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Antoshka: timeout exception.");
             return 0.0;
         }
         if (!driver.findElements(By.className(ANTOSHKA_PRICE)).isEmpty() &&
@@ -151,7 +151,7 @@ public class ScrapeProcessor {
             String text = driver.findElement(By.className(ANTOSHKA_PRICE)).getText();
             return Double.parseDouble(formatText(text, 4));
         }
-        logger.log(Level.SEVERE, "Antoshka: price block not found. Price 0.0 returned.");
+        SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Antoshka: price block not found. Price 0.0 returned.");
         return 0.0;
     }
 
@@ -171,7 +171,7 @@ public class ScrapeProcessor {
                 driver.findElement(By.tagName(FORA_SUBMIT_BUTTON)).click();
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.className(FORA_PRICE_CLASS)));
             } catch (TimeoutException e) {
-                logger.log(Level.SEVERE, "Fora: timeout exception. Price 0.0 returned.");
+                SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Fora: timeout exception. Price 0.0 returned.");
                 return 0.0;
             }
         }
@@ -180,7 +180,7 @@ public class ScrapeProcessor {
             String text = elements.get(0).findElements(By.tagName(FORA_PRICE_SPAN)).get(0).getText();
             return Double.parseDouble(formatText(text, 4));
         } catch (NoSuchElementException | IndexOutOfBoundsException | NumberFormatException e) {
-            logger.log(Level.SEVERE, "Fora: price not found or can''t parse that string. Price 0.0 returned.");
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Fora: price not found or can''t parse that string. Price 0.0 returned.");
             return 0.0;
         }
     }
@@ -190,7 +190,7 @@ public class ScrapeProcessor {
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(By.className("productDetails_price_actual__12u8E")));
         } catch (TimeoutException e) {
-            logger.log(Level.SEVERE, "Auchan: timeout exception. Price 0.0 returned.");
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Auchan: timeout exception. Price 0.0 returned.");
             return 0.0;
         }
         try {
@@ -198,7 +198,7 @@ public class ScrapeProcessor {
                     .findElement(By.tagName("span")).getText();
             return Double.parseDouble(formatText(text, 4));
         } catch (NoSuchElementException e) {
-            logger.log(Level.SEVERE, "Auchan: price not found. Price 0.0 returned.");
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Auchan: price not found. Price 0.0 returned.");
             return 0.0;
         }
     }
@@ -207,7 +207,7 @@ public class ScrapeProcessor {
         if (!document.select(SELECT_ZAKAZ).isEmpty()) {
             return Double.parseDouble(formatText(document.select(SELECT_ZAKAZ).get(0).text(), 0));
         } else {
-            logger.log(Level.SEVERE, "Zakaz: price not found. Price 0.0 returned.");
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Zakaz: price not found. Price 0.0 returned.");
             return 0.0;
         }
 //        Here can be problem with links like this: https://novus.zakaz.ua/uk/products/00883314734126/plate-luminarc/
@@ -245,7 +245,7 @@ public class ScrapeProcessor {
             jsoup++;
         }
         if (shopId > 15 || shopId < 1) {
-            logger.log(Level.SEVERE, "Shop id is greater than 15 or smaller than 1. Price 0.0 returned.");
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Shop id is greater than 15 or smaller than 1. Price 0.0 returned.");
             return 0.0;
         }
         String text = "";
@@ -256,7 +256,7 @@ public class ScrapeProcessor {
                     text = document.select(SELECT_PAMPIK).get(0).text();
                     return Double.parseDouble(formatText(text, 0));
                 }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
-                    logger.log(Level.SEVERE, "Pampik: price not found or can''t parse that string. Price 0.0 returned.");
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Pampik: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 2:
@@ -266,7 +266,7 @@ public class ScrapeProcessor {
                     text = document.select(SELECT_ROZETKA_PRICE).get(0).text();
                     return Double.parseDouble(formatText(text, 1));
                 }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
-                    logger.log(Level.SEVERE, "Rozetka: price not found or can''t parse that string. Price 0.0 returned.");
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Rozetka: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 4:
@@ -274,7 +274,7 @@ public class ScrapeProcessor {
                     text = document.select(SELECT_APTEKA911).get(0).text();
                     return Double.parseDouble(formatText(text, 5));
                 }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
-                    logger.log(Level.SEVERE, "Apteka911: price not found or can''t parse that string. Price 0.0 returned.");
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Apteka911: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 5:
@@ -282,7 +282,7 @@ public class ScrapeProcessor {
                     text = document.select(SELECT_MEGAMARKET_PRICE).get(0).text();
                     return Double.parseDouble(formatText(text, 3));
                 }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
-                    logger.log(Level.SEVERE, "Megamarket: price not found or can''t parse that string. Price 0.0 returned.");
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Megamarket: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 6:
@@ -313,7 +313,7 @@ public class ScrapeProcessor {
                     text = document.select(SELECT_EPICENTR_PRICE_WRAPPER).get(0).text();
                     return Double.parseDouble(formatText(text, 0));
                 }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
-                    logger.log(Level.SEVERE, "Epicentr: price not found or can''t parse that string. Price 0.0 returned.");
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Epicentr: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 12:
@@ -321,7 +321,7 @@ public class ScrapeProcessor {
                     text = document.select(SELECT_TAVRIAV_SALE_PRICE).get(0).text();
                     return Double.parseDouble(formatText(text, 1));
                 }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
-                    logger.log(Level.SEVERE, "TavriaV: price not found or can''t parse that string. Price 0.0 returned.");
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "TavriaV: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 13:
@@ -329,7 +329,7 @@ public class ScrapeProcessor {
                     text = document.select(SELECT_ROST_PRICE + " > span").get(0).text() + "." + document.select(SELECT_ROST_PRICE + " > sup").get(0).text();
                     return Double.parseDouble(formatText(text, 0));
                 }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
-                    logger.log(Level.SEVERE, "ROST: price not found or can''t parse that string. Price 0.0 returned.");
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "ROST: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 14:
@@ -337,11 +337,11 @@ public class ScrapeProcessor {
                     text = document.select(SELECT_KOPEYKA_FULL_ADD).select(SELECT_KOPEYKA_PRICE).get(0).text();
                     return Double.parseDouble(formatText(text, 3));
                 }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
-                    logger.log(Level.SEVERE, "Kopeyka: price not found or can''t parse that string. Price 0.0 returned.");
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Kopeyka: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             default:
-                logger.log(Level.SEVERE, "Default block: something went wrong in method ScrapProcessor#scrapePrice" +
+                SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Default block: something went wrong in method ScrapProcessor#scrapePrice" +
                         "Problems occurred in switch, please, ensure to fix this problem. Price 0.0 returned.");
                 return 0.0;
         }
@@ -368,10 +368,9 @@ public class ScrapeProcessor {
         for (Product product : products) {
             rsLoaded++;
             Double price = scrapePrice(product.getShop_id(), product.getLink());
-            System.out.print(product.getLink() + "\t");
+            System.out.println(product.getLink() + "\tproductID: " + product.getProduct_id() + "\tprice: " + price);
             DBProcessor.makeRecord(product.getProduct_id(), Date.valueOf(LocalDate.now()), price);
         }
-        System.out.println(jsoup);
         rsLoaded = 0;
     }
 

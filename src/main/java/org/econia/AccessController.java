@@ -61,15 +61,23 @@ public class AccessController {
             if (accessLevel.isAddSKUToggleButtonEnabled()){
                 addSKUToggleButton.setDisable(false);
                 addSKUToggleButton.setSelected(true);
+            }else{
+                addSKUToggleButton.setSelected(false);
             }
             if (accessLevel.isForceUpdateToggleButtonEnabled()){
                 forceUpdateToggleButton.setDisable(false);
                 forceUpdateToggleButton.setSelected(true);
+            }else{
+                forceUpdateToggleButton.setSelected(false);
             }
             if (accessLevel.isAutoUpdateToggleButtonEnabled()){
                 autoUpdateToggleButton.setDisable(false);
                 autoUpdateToggleButton.setSelected(true);
                 sliderFrequency.setValue(accessLevel.getPeriod());
+            }else{
+                autoUpdateToggleButton.setSelected(false);
+                sliderFrequency.setValue(FREQUENCY_DEFAULT);
+                sliderFrequency.setDisable(true);
             }
         }else {
             addSKUToggleButton.setDisable(true);

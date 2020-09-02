@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefWidth="300.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.econia.AddAvailabilityController">
+   <children>
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Бренд:">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="15.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Italic" size="16.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="comboBoxBrand" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </JFXComboBox>
+      <Label text="Категорія:">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="10.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Italic" size="16.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="comboBoxSubcategory" layoutX="10.0" layoutY="27.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </JFXComboBox>
+      <Label layoutX="10.0" layoutY="52.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Магазин:">
+         <font>
+            <Font name="System Italic" size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="10.0" />
+         </VBox.margin>
+      </Label>
+      <JFXComboBox fx:id="comboBoxShop" layoutX="10.0" layoutY="69.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </JFXComboBox>
+      <Label text="Посилання:">
+         <font>
+            <Font name="System Italic" size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="10.0" />
+         </VBox.margin>
+      </Label>
+      <JFXTextField fx:id="textFieldLink">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </JFXTextField>
+      <JFXButton fx:id="buttonAdd" contentDisplay="CENTER" style="-fx-background-color: lightgreen;" text="Додати/Оновити" textAlignment="CENTER" underline="true">
+         <VBox.margin>
+            <Insets bottom="10.0" left="56.0" right="56.0" top="15.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </JFXButton>
+      <Label fx:id="labelStatus" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" />
+         </VBox.margin>
+      </Label>
+   </children>
+</VBox>

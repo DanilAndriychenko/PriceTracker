@@ -15,8 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="861.0" prefWidth="1220.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="861.0" prefWidth="1220.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <left>
         <BorderPane>
             <center>
@@ -154,6 +153,7 @@
                         <MenuItem fx:id="addProduct" mnemonicParsing="false" text="Додати продукцію" />
                   <MenuItem fx:id="dateFormatMenuItem" mnemonicParsing="false" text="Формат дати" />
                   <MenuItem fx:id="accessMenuItem" mnemonicParsing="false" text="Контроль доступу" />
+                  <MenuItem fx:id="addAvailability" mnemonicParsing="false" text="Додати наявність" />
                     </items>
                 </Menu>
             </menus>

@@ -191,8 +191,6 @@ j
 :.idea/dataSources/0026a984-3df8-4a62-89bf-817c8acef53d.xml,c\d\cda003bed95a6af882f3b323e799188b2e6ec917
 ù
 m.idea/dataSources/0026a984-3df8-4a62-89bf-817c8acef53d/storage_v2/_src_/schema/information_schema.FNRwLQ.meta,3\e\3e7c7b9360b1d044c411a7c479367950b0537996
-M
-src/main/META-INF/MANIFEST.MF,8\0\8005b9742c5d3cd335563716dae4d34dd6265c2b
 W
 'src/main/resources/org/econia/chart.css,0\c\0c5348a145777b00bf8277e2b5433d6ac82c4e1a
 ]
@@ -209,3 +207,9 @@ c
 3src/main/resources/org/econia/changeDateFormat.fxml,2\7\2740f8190631c963e8ad23ec52be387692d63a1f
 X
 (src/main/resources/org/econia/login.fxml,7\c\7cf8e42a0bb5c3e8ace4444e89e8ff07bf58d855
+W
+'src/main/resources/org/econia/main.fxml,5\4\54c0bcc45750c78fae0f7d62d816cf8bde2833f4
+g
+7src/main/java/org/econia/AddAvailabilityController.java,8\8\883dd9560d4fd8271ac7d75323d71993f68520c5
+c
+3src/main/java/org/econia/AvailabilityProcessor.java,c\3\c35852ca53782f0f4c50fc62125c0f21685cbad3
