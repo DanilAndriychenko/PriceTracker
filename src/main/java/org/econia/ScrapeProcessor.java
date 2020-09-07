@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.print.Doc;
 import java.io.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -128,6 +129,10 @@ public class ScrapeProcessor {
                 return 0.0;
             }
         }
+        if (!driver.findElements(By.className("no-data__content")).isEmpty()) {
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Silpo: NoSuchElementException. Price 0.0 returned.");
+            return 0.0;
+        }
         try {
             String currentInteger = driver.findElement(By.className(SILPO_CURRENT_INTEGER)).getText();
             String currentFraction = driver.findElement(By.className(SILPO_CURRENT_FRACTION)).getText();
@@ -229,8 +234,6 @@ public class ScrapeProcessor {
         return text.trim().substring(0, text.length() - numOfCutChars).replace(',', '.').replace(" ", "").trim();
     }
 
-
-    int jsoup = 0;
     /**
      * Scrape price double.
      *
@@ -238,11 +241,10 @@ public class ScrapeProcessor {
      * @param url    the url
      * @return the double
      */
-    public Double scrapePrice(int shopId, String url){
+    public Double scrapePrice(int shopId, String url) {
         Document document = new Document(url);
         if (shopId != 2 && shopId != 7 && shopId != 8 && shopId != 9) {
             document = scrapeJSoup(url);
-            jsoup++;
         }
         if (shopId > 15 || shopId < 1) {
             SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Shop id is greater than 15 or smaller than 1. Price 0.0 returned.");
@@ -252,36 +254,36 @@ public class ScrapeProcessor {
         Elements elements;
         switch (shopId) {
             case 1:
-                try{
+                try {
                     text = document.select(SELECT_PAMPIK).get(0).text();
                     return Double.parseDouble(formatText(text, 0));
-                }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
+                } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Pampik: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 2:
                 return getPriceAntoshka(url);
             case 3:
-                try{
+                try {
                     text = document.select(SELECT_ROZETKA_PRICE).get(0).text();
                     return Double.parseDouble(formatText(text, 1));
-                }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
+                } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Rozetka: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 4:
-                try{
+                try {
                     text = document.select(SELECT_APTEKA911).get(0).text();
                     return Double.parseDouble(formatText(text, 5));
-                }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
+                } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Apteka911: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 5:
-                try{
+                try {
                     text = document.select(SELECT_MEGAMARKET_PRICE).get(0).text();
                     return Double.parseDouble(formatText(text, 3));
-                }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
+                } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Megamarket: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
@@ -309,34 +311,34 @@ public class ScrapeProcessor {
             case 15:
                 return getPriceZakaz(document);
             case 11:
-                try{
+                try {
                     text = document.select(SELECT_EPICENTR_PRICE_WRAPPER).get(0).text();
                     return Double.parseDouble(formatText(text, 0));
-                }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
+                } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Epicentr: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 12:
-                try{
+                try {
                     text = document.select(SELECT_TAVRIAV_SALE_PRICE).get(0).text();
                     return Double.parseDouble(formatText(text, 1));
-                }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
+                } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "TavriaV: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 13:
-                try{
+                try {
                     text = document.select(SELECT_ROST_PRICE + " > span").get(0).text() + "." + document.select(SELECT_ROST_PRICE + " > sup").get(0).text();
                     return Double.parseDouble(formatText(text, 0));
-                }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
+                } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "ROST: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
             case 14:
-                try{
+                try {
                     text = document.select(SELECT_KOPEYKA_FULL_ADD).select(SELECT_KOPEYKA_PRICE).get(0).text();
                     return Double.parseDouble(formatText(text, 3));
-                }catch (IndexOutOfBoundsException | NumberFormatException runtimeException){
+                } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Kopeyka: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
                 }
@@ -345,6 +347,98 @@ public class ScrapeProcessor {
                         "Problems occurred in switch, please, ensure to fix this problem. Price 0.0 returned.");
                 return 0.0;
         }
+    }
+
+    public String scrapeAvailability(String url, int shopId) {
+        if (shopId == 1) return getAvailabilityPampik(url);
+        else if (shopId == 2) return getAvailabilityAntoshka(url);
+        else if (shopId == 3) return getAvailabilityRozetka(url);
+        else {
+            if (scrapePrice(shopId, url) != 0.0) return "Available";
+            else return "OutOfStock";
+        }
+    }
+
+    private String getAvailabilityPampik(String url) {
+        Document document = scrapeJSoup(url);
+        if (!document.select("span.availabily").isEmpty()) {
+            return "Available";
+        } else {
+            return "NotAvailable";
+        }
+    }
+
+    private String getAvailabilityAntoshka(String url){
+        driver.navigate().to(url);
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.className(ANTOSHKA_PRICE_BLOCK)));
+        } catch (TimeoutException e) {
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Antoshka: timeout exception.");
+            return "OutOfStock";
+        }
+        if (driver.findElements(By.className("product-outofstock-text")).isEmpty()) {
+            return "Available";
+        }
+        return "NotAvailable";
+    }
+
+    private String getAvailabilityRozetka(String url){
+        Document document = scrapeJSoup(url);
+        if (!document.select("p.product__status_color_gray").isEmpty()){
+            return "NotAvailable";
+        }else if (!document.select("p.product__status_color_green").isEmpty()){
+            return "Available";
+        }
+        return "OutOfStock";
+    }
+
+    public static void main(String[] args) {
+        ScrapeProcessor scrapeProcessor = new ScrapeProcessor();
+
+        System.out.println(scrapeProcessor.scrapeAvailability("https://pampik.com/catalog/pyure-malyatko-brokkoli-90-g?ga_content=brand_198", 1));
+        System.out.println(scrapeProcessor.scrapeAvailability("https://pampik.com/catalog/detskoe-pechene-malyatko-vanilnoe-100-g-srok-godnosti-do-18012019?ga_content=brand_198", 1));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("https://antoshka.ua/pit-evaja-voda-maljatko-0-33-l.html", 2));
+        System.out.println(scrapeProcessor.scrapeAvailability("https://antoshka.ua/kasha-bezmolochnaja-kukuruznaja-200-g.html", 2));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("https://rozetka.com.ua/malyatko_4820123510578_0/p100920577/", 3));
+        System.out.println(scrapeProcessor.scrapeAvailability("https://rozetka.com.ua/malyatko_cok_4820123511148/p100911109/", 3));
+
+        /*System.out.println(scrapeProcessor.scrapeAvailability("", 4));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 4));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 5));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 5));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 6));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 6));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 7));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 7));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 8));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 8));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 9));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 9));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 10));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 10));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 11));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 11));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 12));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 12));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 13));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 13));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 14));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 14));
+
+        System.out.println(scrapeProcessor.scrapeAvailability("", 15));
+        System.out.println(scrapeProcessor.scrapeAvailability("", 15));*/
     }
 
     /**
@@ -380,7 +474,7 @@ public class ScrapeProcessor {
      * @return the progress
      */
     public double getProgress() {
-        double progress = (double) (rsLoaded-1) / rsSize;
+        double progress = (double) (rsLoaded - 1) / rsSize;
         return Math.max(progress, 0.0);
     }
 }

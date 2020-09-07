@@ -43,10 +43,6 @@ T
 $src/main/java/org/econia/Record.java,5\a\5a68e9a1b09a2cef9f6d24021a7c791922487cf3
 U
 %src/main/java/org/econia/Product.java,7\b\7b1b616f7fe361208565223bdb7839057e7566bf
-T
-$src/main/java/dateAxis/DateAxis.java,9\c\9c29870f0effc96056ed34ab573811798d1a8095
-R
-"src/main/java/dateAxis/IChart.java,2\5\25b0c97fadf1801f03c941942a30d8d0e86ca7a1
 d
 4.idea/libraries/Maven__com_beust_jcommander_1_72.xml,e\1\e131d5fb9f7bab4af039d7a1502ac3a805eaac89
 p
@@ -177,14 +173,6 @@ c
 3.idea/libraries/Maven__xerces_xercesImpl_2_10_0.xml,8\4\842455ecd150419bdd460ce2ecb230d8dc766066
 c
 3.idea/libraries/Maven__xml_apis_xml_apis_1_4_01.xml,e\a\eaffff6e8560244bebcc92a5d8fbbb79d2a4bb10
-U
-%src/main/java/dateAxis/MouseMode.java,d\f\df9a02fc35da2e05744adb95bf73de7af256c823
-[
-+src/main/java/dateAxis/ReflectionUtils.java,d\9\d94681a116d599521ffaea6c508777d26ed344d9
-V
-&src/main/java/dateAxis/XYBarChart.java,6\4\6495828d86deaf8f1364dc4968fd26b592bed43c
-[
-+src/main/java/dateAxis/ZoomableXYChart.java,2\c\2c7924d42f430a8dbf18cdd38ea84fb88c633845
 ]
 -src/main/resources/org/econia/addProduct.fxml,2\a\2a4b8eed3857055f263dd4c0f833b00daef31eeb
 j
@@ -213,3 +201,7 @@ g
 7src/main/java/org/econia/AddAvailabilityController.java,8\8\883dd9560d4fd8271ac7d75323d71993f68520c5
 c
 3src/main/java/org/econia/AvailabilityProcessor.java,c\3\c35852ca53782f0f4c50fc62125c0f21685cbad3
+b
+2src/main/resources/org/econia/addAvailability.fxml,4\3\439047ba3e502c88919e3dc60b2eec5b2956e4f1
+\
+,.idea/inspectionProfiles/Project_Default.xml,4\9\496a238a6afa168dbaf6efd37bb459331589579c

@@ -11,6 +11,7 @@ import org.apache.commons.validator.routines.UrlValidator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 public class AddAvailabilityController {
@@ -46,12 +47,19 @@ public class AddAvailabilityController {
         comboBoxShop.setPromptText(COMBO_BOX_PROMPT_TEXT);
 
         comboBoxBrand.getItems().setAll(App.getController().getOurBrandsNames());
+        comboBoxShop.getItems().setAll(App.getController().getShopsNames());
 
         comboBoxBrand.setOnAction(eventCategoryAction -> {
             comboBoxSubcategory.setDisable(false);
 //            Get brand from comboBox and get subcategories that this brand has.
-            String brand = comboBoxBrand.getValue();
-            int brandId = App.getController().getBrandsNames().indexOf(brand) + 1;
+            String brandStr = comboBoxBrand.getValue();
+            int brandId = 0;
+            for (Brand brand : App.getController().getBrandArrayList()){
+                if (brand.getName().equals(brandStr)){
+                    brandId = brand.getBrand_id();
+                    break;
+                }
+            }
             List<Integer> subcategoriesIds = DBProcessor.getSubcategoriesAccordingToBrand(brandId);
             //Clear checkBoxBrand and set those brands there
             comboBoxSubcategory.getItems().clear();
@@ -63,6 +71,10 @@ public class AddAvailabilityController {
             comboBoxSubcategory.setPromptText(COMBO_BOX_PROMPT_TEXT);
         });
 
+        comboBoxSubcategory.setOnAction(subcategoryEvent -> comboBoxShop.setDisable(false));
+
+        comboBoxShop.setOnAction(shopEvent -> buttonAdd.setDisable(false));
+
         buttonAdd.setOnAction(eventButton -> {
             if (!dataSelectedCorrectly()) {
                 if (!URL_VALIDATOR.isValid(textFieldLink.getText())) {
@@ -70,42 +82,61 @@ public class AddAvailabilityController {
                 } else {
                     textFieldLink.setUnFocusColor(BLACK);
                 }
-                if (comboBoxBrand.getValue() == null) {
-                    comboBoxBrand.setUnFocusColor(RED);
+                if (comboBoxSubcategory.getValue() == null) {
+                    comboBoxSubcategory.setUnFocusColor(RED);
                 } else {
-                    comboBoxBrand.setUnFocusColor(BLACK);
+                    comboBoxSubcategory.setUnFocusColor(BLACK);
                 }
             } else {
                 //change color on black if successful
                 comboBoxBrand.setUnFocusColor(BLACK);
                 textFieldLink.setUnFocusColor(BLACK);
 
-                int catId = App.getController().getCategoriesNames().indexOf(comboBoxSubcategory.getValue()) + 1;
-                int brandId = App.getController().getBrandsNames().indexOf(comboBoxBrand.getValue()) + 1;
-                int shopId = App.getController().getShopsNames().indexOf(comboBoxShop.getValue()) + 1;
+                int brandId = 0;
+                int subcategoryId = 0;
+                int shopId = 0;
+                for (Brand brand : App.getController().getBrandArrayList()){
+                    if (brand.getName().equals(comboBoxBrand.getValue())){
+                        brandId = brand.getBrand_id();
+                        break;
+                    }
+                }
+                for (Category category : App.getController().getSubcategoryArrayList()){
+                    if (category.getName().equals(comboBoxSubcategory.getValue())){
+                        subcategoryId = category.getCat_id();
+                        break;
+                    }
+                }
+                for (Shop shop : App.getController().getShopArrayList()){
+                    if (shop.getName().equals(comboBoxShop.getValue())){
+                        shopId = shop.getShop_id();
+                        break;
+                    }
+                }
                 String link = textFieldLink.getText();
 
                 //check if record for this product already exists.
                 //If exist --> update link, else insert as new Product.
-                String querySelect = String.format("SELECT * FROM Products WHERE cat_id = %d AND brand_id = %d AND shop_id = %d AND region_id = %d",
-                        catId, brandId, shopId);
+                String querySelect = String.format("SELECT * FROM ProductsAvailability WHERE brand_id = %d AND subcat_id = %d AND shop_id = %d;",
+                        brandId, subcategoryId, shopId);
                 int productIDSelected = getProductID(querySelect);
                 if (productIDSelected != -1) {
-                    String queryUpdate = String.format("UPDATE Products SET link = '%s' WHERE product_id = %d;", link, productIDSelected);
+                    String queryUpdate = String.format("UPDATE ProductsAvailability SET link = '%s' WHERE product_id = %d;", link, productIDSelected);
                     try {
                         DBProcessor.getConnection().createStatement().executeUpdate(queryUpdate);
                     } catch (SQLException throwable) {
                         throwable.printStackTrace();
                     }
                 } else {
-                    String queryInsert = String.format("INSERT INTO Products (cat_id, brand_id, shop_id, region_id, link) VALUES (%d, %d, %d, %d, '%s');",
-                            catId, brandId, shopId, link);
+                    String queryInsert = String.format("INSERT INTO ProductsAvailability (brand_id, subcat_id, shop_id, link) VALUES (%d, %d, %d, '%s');",
+                            brandId, subcategoryId, shopId, link);
                     try {
                         DBProcessor.getConnection().createStatement().executeUpdate(queryInsert);
                     } catch (SQLException throwable) {
                         throwable.printStackTrace();
                     }
                 }
+
                 new Thread(() -> {
                     Platform.runLater(() -> {
                         labelStatus.setText("Продукт додано.");
@@ -136,6 +167,6 @@ public class AddAvailabilityController {
     }
 
     private boolean dataSelectedCorrectly() {
-        return new UrlValidator().isValid(textFieldLink.getText()) && comboBoxBrand.getValue() != null;
+        return new UrlValidator().isValid(textFieldLink.getText()) && comboBoxSubcategory.getValue() != null;
     }
 }

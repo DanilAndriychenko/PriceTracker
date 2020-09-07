@@ -3,6 +3,7 @@ package org.econia;
 import com.mysql.cj.jdbc.Driver;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
@@ -40,6 +41,10 @@ public class DBProcessor {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void ping(){
+        getAllShops();
     }
 
     private DBProcessor() {
@@ -226,6 +231,18 @@ public class DBProcessor {
         }
     }
 
+    public static void makeRecordAvailability(int productId, Date date, String availability) {
+        String query = String.format("INSERT INTO RecordsAvailability (product_id, date, availability) VALUES (%d, '%s', '%s');",
+                productId, date.toString(), availability);
+        if (!availability.equals("")) {
+            try (Statement statement = connection.createStatement()) {
+                statement.execute(query);
+            } catch (SQLException throwable) {
+                DB_PROCESSOR_LOGGER.log(Level.SEVERE, throwable.getMessage());
+            }
+        }
+    }
+
     private static List<Integer> gaps(String date) {
         List<Integer> gaps = new ArrayList<>();
         List<Product> products = getProductsSetPartly(0, 1000);
@@ -347,18 +364,19 @@ public class DBProcessor {
     }
 
     /*public static void main(String[] args) {
-        List<Integer> gaps = gaps("2020-08-27");
+        *//*List<Integer> gaps = gaps("2020-09-03");
         System.out.println(gaps.size());
         for (Integer integer : gaps){
             System.out.print(integer + ", ");
         }
 
 
-        *//*try {
+        try {
             System.out.println(InetAddress.getLocalHost().getHostName());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }*//*
+
 
 //        System.out.println(LocalDate.now());
     }*/

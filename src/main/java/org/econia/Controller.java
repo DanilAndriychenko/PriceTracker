@@ -206,6 +206,16 @@ public class Controller {
 //        Set actions when user choose something in combo boxes on panel.
         configureComboBoxes();
 
+//        Schedule ping to DataBase every 6 hours.
+        Timer pingTimer = new Timer();
+        long period = 6 * 60 * 60 * 1_000L;
+        pingTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                DBProcessor.ping();
+            }
+        }, period, period);
+
         buttonTrack.setOnAction(eventTrack -> {
             //building query for selected parameters.
             int catId = categoriesNames.indexOf(comboBoxCategory.getValue()) + 1;
@@ -261,6 +271,15 @@ public class Controller {
                 }
                 series.setData(observableList);
                 lineChart.getData().add(series);
+                for (XYChart.Data<Number, Number> data : series.getData()) {
+                    Tooltip tooltip = new Tooltip();
+                    tooltip.setText("Бренд: " + brandArrayList.get(product.getBrand_id() - 1).getName() +
+                            "\nДата: " + dateAxis.getTickLabelFormatter().toString(data.getXValue()) +
+                            "\nЦіна: " + data.getYValue());
+                    tooltip.setFont(new Font(SYSTEM_ITALIC, 14));
+                    hackTooltipStartTiming(tooltip);
+                    Tooltip.install(data.getNode(), tooltip);
+                }
             }
 //            If we want to see days from calendar.
             long daysFromSince = dateFrom.getTime() / 1000 / 24 / 3600;
@@ -274,7 +293,7 @@ public class Controller {
 
             lineChart.setTitle(comboBoxCategory.getValue());
 
-            for (XYChart.Series<Number, Number> series : lineChart.getData()) {
+            /*for (XYChart.Series<Number, Number> series : lineChart.getData()) {
                 for (XYChart.Data<Number, Number> data : series.getData()) {
                     Tooltip tooltip = new Tooltip();
                     tooltip.setText("Дата: " + dateAxis.getTickLabelFormatter().toString(data.getXValue()) + "\nЦіна: " + data.getYValue());
@@ -282,7 +301,7 @@ public class Controller {
                     hackTooltipStartTiming(tooltip);
                     Tooltip.install(data.getNode(), tooltip);
                 }
-            }
+            }*/
         });
     }
 
@@ -466,7 +485,7 @@ public class Controller {
             protected Void call() {
                 clock.play();
                 try {
-                    scrapeProcessor.scrapeAllPrices();
+                    scrapeProcessor.scrapePricesInRange(463, 494);
                 } catch (RuntimeException runtimeException) {
                     runtimeException.printStackTrace();
                 }
@@ -538,6 +557,7 @@ public class Controller {
         lineChart = new LineChart<>(dateAxis, priceAxis);
         lineChart.setAnimated(false);
         borderPaneCenter.setCenter(lineChart);
+        //TODO бренд на тултипах.
     }
 
     private void configurePanel() {

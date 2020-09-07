@@ -1,7 +1,5 @@
 
-7
-java:S2275Z"Not enough arguments.(›ÑéŞÿÿÿÿÿ8Üù€¥Ä.
 t
-java:S3776&"RRefactor this method to reduce its Cognitive Complexity from 32 to the 15 allowed.(·òşÿÿÿÿ8“»€¤Ä.
-7
-java:S2275e"Not enough arguments.(¡öÀˆùÿÿÿÿ8œå€¥Ä.
+java:S3776'"RRefactor this method to reduce its Cognitive Complexity from 58 to the 15 allowed.(·òşÿÿÿÿ8Î±‚õÄ.
+T
+java:S1128"2Remove this unused import 'java.util.Collections'.(¢³ïÓşÿÿÿÿ8è¨¡ÈÅ.
