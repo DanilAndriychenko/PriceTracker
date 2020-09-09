@@ -29,6 +29,8 @@ public class ScrapeProcessor {
     private static final Logger SCRAPE_PROCESSOR_LOGGER = Logger.getLogger("ScrapeProcessor Logger");
     private int rsSize = 0;
     private int rsLoaded = 0;
+    private int rsAvailabilitySize = 0;
+    private int rsAvailabilityLoaded = 0;
 
     /**
      * Gets rs size.
@@ -56,7 +58,7 @@ public class ScrapeProcessor {
     private static final String SELECT_MEGAMARKET_PRICE = "div.price";
     private static final String SELECT_ATB = "span.price";
     private static final String SILPO_ACTIVE_INPUT = "active-input";
-    private static final String SILPO_ADDRESS = "Tarasa Shevchenka Boulevard, Kyiv 26/4";
+    private static final String SILPO_ADDRESS = "Тараса Шевченка бульвар 26";
     private static final String SILPO_COMBOBOX_KIEV = "store-select__autocomplete-item";
     private static final String SILPO_DELIVERY_CHECKBOX = "extra-delivery-item";
     private static final String SILPO_SUBMIT_BUTTON = "button";
@@ -70,19 +72,12 @@ public class ScrapeProcessor {
     private static final String FORA_SUBMIT_BUTTON = "button";
     private static final String FORA_PRICE_CLASS = "price";
     private static final String FORA_PRICE_SPAN = "span";
-    private static final String SELECT_ZAKAZ = "span.jsx-2148813386.big-product-card__price-value";
+    private static final String SELECT_ZAKAZ = "span.Price__value_title";
     private static final String SELECT_EPICENTR_PRICE_WRAPPER = "span.price-wrapper";
     private static final String SELECT_TAVRIAV_SALE_PRICE = "span.sale-price";
     private static final String SELECT_ROST_PRICE = "span.price";
     private static final String SELECT_KOPEYKA_FULL_ADD = "div.full-add";
     private static final String SELECT_KOPEYKA_PRICE = "li.new-prc";
-
-
-    /*public static void main(String[] args) {
-        ScrapeProcessor scrapeProcessor = new ScrapeProcessor();
-
-        scrapeProcessor.scrapePricesInRange(581, 1000);
-    }*/
 
     /**
      * Instantiates a new Scrape processor.
@@ -349,13 +344,20 @@ public class ScrapeProcessor {
         }
     }
 
+    /**
+     * Scrape availability string.
+     *
+     * @param url    the url
+     * @param shopId the shop id
+     * @return the string
+     */
     public String scrapeAvailability(String url, int shopId) {
         if (shopId == 1) return getAvailabilityPampik(url);
         else if (shopId == 2) return getAvailabilityAntoshka(url);
         else if (shopId == 3) return getAvailabilityRozetka(url);
         else {
             if (scrapePrice(shopId, url) != 0.0) return "Available";
-            else return "OutOfStock";
+            else return "NotAvailable";
         }
     }
 
@@ -392,17 +394,26 @@ public class ScrapeProcessor {
         return "OutOfStock";
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         ScrapeProcessor scrapeProcessor = new ScrapeProcessor();
 
-        System.out.println(scrapeProcessor.scrapeAvailability("https://pampik.com/catalog/pyure-malyatko-brokkoli-90-g?ga_content=brand_198", 1));
+        scrapeProcessor.scrapeAllAvailability();
+
+//        scrapeProcessor.scrapeAllAvailability();
+
+        /*System.out.println(scrapeProcessor.scrapeAvailability("https://pampik.com/catalog/pyure-malyatko-brokkoli-90-g?ga_content=brand_198", 1));
         System.out.println(scrapeProcessor.scrapeAvailability("https://pampik.com/catalog/detskoe-pechene-malyatko-vanilnoe-100-g-srok-godnosti-do-18012019?ga_content=brand_198", 1));
 
         System.out.println(scrapeProcessor.scrapeAvailability("https://antoshka.ua/pit-evaja-voda-maljatko-0-33-l.html", 2));
         System.out.println(scrapeProcessor.scrapeAvailability("https://antoshka.ua/kasha-bezmolochnaja-kukuruznaja-200-g.html", 2));
 
         System.out.println(scrapeProcessor.scrapeAvailability("https://rozetka.com.ua/malyatko_4820123510578_0/p100920577/", 3));
-        System.out.println(scrapeProcessor.scrapeAvailability("https://rozetka.com.ua/malyatko_cok_4820123511148/p100911109/", 3));
+        System.out.println(scrapeProcessor.scrapeAvailability("https://rozetka.com.ua/malyatko_cok_4820123511148/p100911109/", 3));*/
 
         /*System.out.println(scrapeProcessor.scrapeAvailability("", 4));
         System.out.println(scrapeProcessor.scrapeAvailability("", 4));
@@ -450,6 +461,15 @@ public class ScrapeProcessor {
     }
 
     /**
+     * Scrape all availability.
+     */
+    public void scrapeAllAvailability() {
+        //TODO replace 1000 -> actual size
+        scrapeAvailabilityInRange(0, 1000);
+    }
+
+
+    /**
      * Scrape prices in range.
      *
      * @param beginProd the begin prod
@@ -466,6 +486,25 @@ public class ScrapeProcessor {
             DBProcessor.makeRecord(product.getProduct_id(), Date.valueOf(LocalDate.now()), price);
         }
         rsLoaded = 0;
+    }
+
+    /**
+     * Scrape availability in range.
+     *
+     * @param beginProd the begin prod
+     * @param endProd   the end prod
+     */
+    public void scrapeAvailabilityInRange(int beginProd, int endProd) {
+        List<Product> products = DBProcessor.getProductsAvailabilitySetPartly(beginProd, endProd);
+        rsAvailabilitySize = products.size();
+        rsAvailabilityLoaded = 0;
+        for (Product product : products) {
+            rsAvailabilityLoaded++;
+            String availability = scrapeAvailability(product.getLink(), product.getShop_id());
+            System.out.println(product.getLink() + "\nproductID: " + product.getProduct_id() + "\tprice: " + availability + "\n");
+            DBProcessor.makeRecordAvailability(product.getProduct_id(), Date.valueOf(LocalDate.now()), availability);
+        }
+        rsAvailabilityLoaded = 0;
     }
 
     /**

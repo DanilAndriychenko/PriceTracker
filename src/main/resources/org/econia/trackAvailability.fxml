@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox fx:id="vBox" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0"
+      style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.econia.TrackAvailability">
+   <children>
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Від:" textAlignment="CENTER">
+         <font>
+            <Font name="System Italic" size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+         </VBox.margin>
+      </Label>
+      <JFXDatePicker fx:id="pickerFrom" maxWidth="1.7976931348623157E308">
+         <VBox.margin>
+            <Insets left="60.0" right="40.0" />
+         </VBox.margin>
+      </JFXDatePicker>
+      <Label maxWidth="1.7976931348623157E308" text="До:">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" top="10.0" />
+         </VBox.margin>
+      </Label>
+      <JFXDatePicker fx:id="pickerTo" layoutX="10.0" layoutY="27.0" maxWidth="1.7976931348623157E308">
+         <VBox.margin>
+            <Insets left="60.0" right="40.0" />
+         </VBox.margin>
+      </JFXDatePicker>
+      <JFXButton fx:id="trackButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: lightgreen;" text="Моніторити наявність" textAlignment="CENTER" underline="true" wrapText="true">
+         <VBox.margin>
+            <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </JFXButton>
+   </children>
+</VBox>

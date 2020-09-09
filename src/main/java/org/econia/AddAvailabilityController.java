@@ -122,6 +122,7 @@ public class AddAvailabilityController {
                 int productIDSelected = getProductID(querySelect);
                 if (productIDSelected != -1) {
                     String queryUpdate = String.format("UPDATE ProductsAvailability SET link = '%s' WHERE product_id = %d;", link, productIDSelected);
+                    System.out.println(queryUpdate);
                     try {
                         DBProcessor.getConnection().createStatement().executeUpdate(queryUpdate);
                     } catch (SQLException throwable) {

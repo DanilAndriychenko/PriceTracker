@@ -150,10 +150,11 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Налаштування">
                     <items>
-                        <MenuItem fx:id="addProduct" mnemonicParsing="false" text="Додати продукцію" />
-                  <MenuItem fx:id="dateFormatMenuItem" mnemonicParsing="false" text="Формат дати" />
-                  <MenuItem fx:id="accessMenuItem" mnemonicParsing="false" text="Контроль доступу" />
-                  <MenuItem fx:id="addAvailability" mnemonicParsing="false" text="Додати наявність" />
+                        <MenuItem fx:id="addProduct" mnemonicParsing="false" text="Додати товар для моніторингу цін" />
+                  <MenuItem fx:id="dateFormatMenuItem" mnemonicParsing="false" text="Формат дати на горизонтальній вісі" />
+                  <MenuItem fx:id="accessMenuItem" mnemonicParsing="false" text="Контроль доступу користувачів" />
+                  <MenuItem fx:id="addAvailability" mnemonicParsing="false" text="Додати товар для моніторингу наявність" />
+                  <MenuItem fx:id="trackAvailability" mnemonicParsing="false" text="Моніторинг наявності" />
                     </items>
                 </Menu>
             </menus>

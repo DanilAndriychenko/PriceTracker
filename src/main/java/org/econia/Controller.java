@@ -36,6 +36,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -165,6 +166,8 @@ public class Controller {
     private MenuItem accessMenuItem;
     @FXML
     private MenuItem addAvailability;
+    @FXML
+    private MenuItem trackAvailability;
 
     /**
      * Initialize.
@@ -202,6 +205,7 @@ public class Controller {
         configureControlAccessMenuItem();
         configureDateFormatMenuItem();
         configureAddAvailability();
+        configureTrackAvailabilityMenuItem();
 
 //        Set actions when user choose something in combo boxes on panel.
         configureComboBoxes();
@@ -213,6 +217,7 @@ public class Controller {
             @Override
             public void run() {
                 DBProcessor.ping();
+                System.out.println("Ping\t" + LocalDateTime.now() + "\t+3hours");
             }
         }, period, period);
 
@@ -312,6 +317,23 @@ public class Controller {
                 root = FXMLLoader.load(getClass().getResource("addAvailability.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle("Додати наявність");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.getIcons().add(new Image(getClass().getResourceAsStream(APP_ICON)));
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void configureTrackAvailabilityMenuItem() {
+        trackAvailability.setOnAction(trackItemEvent -> {
+            Parent root;
+            try {
+                root = FXMLLoader.load(getClass().getResource("trackAvailability.fxml"));
+                Stage stage = new Stage();
+                stage.setTitle("Наявність");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.getIcons().add(new Image(getClass().getResourceAsStream(APP_ICON)));
                 stage.setScene(new Scene(root));
@@ -455,7 +477,6 @@ public class Controller {
             Timeline clock = getClockTimeLine();
             Task<Void> loadPrices = getTaskLoadPrices(clock);
             loadPrices.run();
-
             showLabelDataLoaded();
         }).start());
     }
@@ -485,8 +506,11 @@ public class Controller {
             protected Void call() {
                 clock.play();
                 try {
-                    scrapeProcessor.scrapePricesInRange(463, 494);
-                } catch (RuntimeException runtimeException) {
+                    if (!DBProcessor.getConnection().isValid(10)){
+                        DBProcessor.setupConnection();
+                    }
+                    scrapeProcessor.scrapePricesInRange(0, 1000);
+                } catch (RuntimeException | SQLException runtimeException) {
                     runtimeException.printStackTrace();
                 }
                 clock.stop();
@@ -577,6 +601,20 @@ public class Controller {
     }
 
     private void configureDatePickers() {
+        configureDatePickersValueBorders(datePickerFrom, datePickerTo);
+        datePickerFrom.setOnAction(eventDateFrom -> {
+            if (allDataSelected()) {
+                buttonTrack.setDisable(false);
+            }
+        });
+        datePickerTo.setOnAction(eventDateTo -> {
+            if (allDataSelected()) {
+                buttonTrack.setDisable(false);
+            }
+        });
+    }
+
+    public static void configureDatePickersValueBorders(JFXDatePicker datePickerFrom, JFXDatePicker datePickerTo){
         datePickerFrom.setDayCellFactory(d -> new DateCell() {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
@@ -610,16 +648,6 @@ public class Controller {
                     setDisable(item.isAfter(to));
                 }
             });
-        });
-        datePickerFrom.setOnAction(eventDateFrom -> {
-            if (allDataSelected()) {
-                buttonTrack.setDisable(false);
-            }
-        });
-        datePickerTo.setOnAction(eventDateTo -> {
-            if (allDataSelected()) {
-                buttonTrack.setDisable(false);
-            }
         });
     }
 

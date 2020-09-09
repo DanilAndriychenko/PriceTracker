@@ -35,6 +35,10 @@ public class DBProcessor {
     }
 
     static {
+        setupConnection();
+    }
+
+    public static void setupConnection(){
         try {
             DriverManager.registerDriver(new Driver());
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -213,6 +217,43 @@ public class DBProcessor {
             throwable.printStackTrace();
         }
         return products;
+    }
+
+    public static List<Product> getProductsAvailabilitySetPartly(int beginProd, int endProd) {
+        ArrayList<Product> products = new ArrayList<>();
+        String query = String.format("SELECT * FROM ProductsAvailability WHERE product_id >= %d AND product_id <= %d ORDER BY product_id ASC;", beginProd, endProd);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                Product product = new Product(resultSet.getInt("product_id"), resultSet.getInt("subcat_id"),
+                        resultSet.getInt("brand_id"), resultSet.getInt("shop_id"),
+                        -1, resultSet.getString("link"));
+                products.add(product);
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return products;
+    }
+
+    public static List<RecordAvailability> getRecordsAvailability(String fromDate, String toDate){
+        ArrayList<RecordAvailability> recordAvailabilityArrayList = new ArrayList<>();
+        String query = String.format("SELECT RecordsAvailability.product_id, ProductsAvailability.subcat_id, ProductsAvailability.shop_id, " +
+                        "RecordsAvailability.date, RecordsAvailability.availability FROM RecordsAvailability INNER JOIN ProductsAvailability " +
+                        "ON RecordsAvailability.product_id=ProductsAvailability.product_id WHERE date >= '%s' AND date <= '%s';",
+                fromDate, toDate);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                RecordAvailability recordAvailability = new RecordAvailability(resultSet.getInt("product_id"),
+                        resultSet.getInt("subcat_id"), resultSet.getInt("brand_id"),
+                        resultSet.getDate("date"), resultSet.getString("availability"));
+                recordAvailabilityArrayList.add(recordAvailability);
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return recordAvailabilityArrayList;
     }
 
     //TODO read about using batch
