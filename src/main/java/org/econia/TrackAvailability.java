@@ -64,7 +64,8 @@ public class TrackAvailability {
 
             }
             try (FileOutputStream out = new FileOutputStream(
-                    new File(pickerFrom.getValue().toString() + pickerTo.getValue().toString() + ".xlsx"))){
+                    new File(pickerFrom.getValue().toString().replace("-", ".")
+                            + " - " + pickerTo.getValue().toString().replace("-", ".") + ".xlsx"))){
                 workbook.write(out);
             } catch (IOException e) {
                 e.printStackTrace();
