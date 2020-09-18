@@ -11,7 +11,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import javax.print.Doc;
 import java.io.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -456,15 +455,13 @@ public class ScrapeProcessor {
      * Scrape all prices.
      */
     public void scrapeAllPrices() {
-        //TODO replace 1000 -> actual size
-        scrapePricesInRange(0, 1000);
+        scrapePricesInRange(0, 2000);
     }
 
     /**
      * Scrape all availability.
      */
     public void scrapeAllAvailability() {
-        //TODO replace 1000 -> actual size
         scrapeAvailabilityInRange(0, 1000);
     }
 
@@ -505,6 +502,27 @@ public class ScrapeProcessor {
             DBProcessor.makeRecordAvailability(product.getProduct_id(), Date.valueOf(LocalDate.now()), availability);
         }
         rsAvailabilityLoaded = 0;
+    }
+
+    public void scrapePriceAndAvailability(){
+        rsSize = 0;
+        List<Product> productsPrices = DBProcessor.getProductsSetPartly(0, 2000);
+        rsSize += productsPrices.size();
+        List<Product> productsAvailability = DBProcessor.getProductsAvailabilitySetPartly(0, 1000);
+        rsSize += productsAvailability.size();
+        rsLoaded = 0;
+        for (Product product : productsPrices) {
+            rsLoaded++;
+            Double price = scrapePrice(product.getShop_id(), product.getLink());
+            System.out.println(product.getLink() + "\tproductID: " + product.getProduct_id() + "\tprice: " + price);
+            DBProcessor.makeRecord(product.getProduct_id(), Date.valueOf(LocalDate.now()), price);
+        }
+        for (Product product : productsAvailability) {
+            rsLoaded++;
+            String availability = scrapeAvailability(product.getLink(), product.getShop_id());
+            System.out.println(product.getLink() + "\nproductID: " + product.getProduct_id() + "\tprice: " + availability + "\n");
+            DBProcessor.makeRecordAvailability(product.getProduct_id(), Date.valueOf(LocalDate.now()), availability);
+        }
     }
 
     /**

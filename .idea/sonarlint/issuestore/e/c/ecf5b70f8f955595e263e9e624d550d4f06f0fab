@@ -1,19 +1,15 @@
 
-u
-java:S3776ï"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8ÇÃ–ÈÆ.
-ƒ
-java:S1450 "aRemove the "rsAvailabilitySize" field and declare it as a local variable in the relevant methods.(ú‡ôöûÿÿÿÿ8â‘—ÈÆ.
-P
-java:S1135Ó"2Complete the task associated to this TODO comment.(ñï´Ä8Õ¾åËÆ.
-X
-java:S1068 "6Remove this unused "rsAvailabilitySize" private field.(ú‡ôöûÿÿÿÿ8ÇÃ–ÈÆ.
 p
-java:S1192è"MDefine a constant instead of duplicating this literal "NotAvailable" 4 times.(÷É¶¯øÿÿÿÿ8Ä¬îÀÆ.
-…
-java:S1450!"cRemove the "rsAvailabilityLoaded" field and declare it as a local variable in the relevant methods.(äà’îýÿÿÿÿ8’°—ÈÆ.
-N
-java:S1128",Remove this unused import 'javax.print.Doc'.(ö«‘™ýÿÿÿÿ8“¨Ã½Æ.
-P
-java:S1135Ë"2Complete the task associated to this TODO comment.(ñï´Ä8Õ¾åËÆ.
+java:S1192ç"MDefine a constant instead of duplicating this literal "NotAvailable" 4 times.(÷É¶¯øÿÿÿÿ8Ä¬îÀÆ.
 m
-java:S1192ç"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8ä…ÒÀÆ.
+java:S1192æ"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8ä…ÒÀÆ.
+X
+java:S1068"6Remove this unused "rsAvailabilitySize" private field.(ú‡ôöûÿÿÿÿ8ÇÃ–ÈÆ.
+m
+java:S1192â"JDefine a constant instead of duplicating this literal "\tprice: " 4 times.(å“ÅÚúÿÿÿÿ8÷ÄÇµÉ.
+u
+java:S3776î"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8ÇÃ–ÈÆ.
+…
+java:S1450 "cRemove the "rsAvailabilityLoaded" field and declare it as a local variable in the relevant methods.(äà’îýÿÿÿÿ8úÔÄµÉ.
+ƒ
+java:S1450"aRemove the "rsAvailabilitySize" field and declare it as a local variable in the relevant methods.(ú‡ôöûÿÿÿÿ8…¤ÀµÉ.

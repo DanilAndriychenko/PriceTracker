@@ -4,22 +4,24 @@ import java.sql.Date;
 
 public class RecordAvailability {
 
-    private int product_id;
+    private int productId;
     private int subcatId;
-    private int brand_id;
+    private int brandId;
+    private int shopId;
     private Date date;
     private String availability;
 
-    public RecordAvailability(int product_id, int subcatId, int brand_id, Date date, String availability) {
-        this.product_id = product_id;
+    public RecordAvailability(int productId, int subcatId, int brandId, int shopId, Date date, String availability) {
+        this.productId = productId;
         this.subcatId = subcatId;
-        this.brand_id = brand_id;
+        this.brandId = brandId;
+        this.shopId = shopId;
         this.date = date;
         this.availability = availability;
     }
 
-    public int getProduct_id() {
-        return product_id;
+    public int getProductId() {
+        return productId;
     }
 
     public Date getDate() {
@@ -30,8 +32,12 @@ public class RecordAvailability {
         return subcatId;
     }
 
-    public int getBrand_id() {
-        return brand_id;
+    public int getBrandId() {
+        return brandId;
+    }
+
+    public int getShopId(){
+        return shopId;
     }
 
     public String getAvailability() {
@@ -41,9 +47,9 @@ public class RecordAvailability {
     @Override
     public String toString() {
         return "RecordAvailability{" +
-                "product_id=" + product_id +
+                "product_id=" + productId +
                 ", subcatId=" + subcatId +
-                ", brand_id=" + brand_id +
+                ", brand_id=" + brandId +
                 ", date=" + date +
                 ", availability='" + availability + '\'' +
                 '}';

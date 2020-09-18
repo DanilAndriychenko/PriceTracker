@@ -216,7 +216,6 @@ public class Controller {
         pingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                DBProcessor.ping();
                 System.out.println("Ping\t" + LocalDateTime.now() + "\t+3hours");
             }
         }, period, period);
@@ -243,6 +242,13 @@ public class Controller {
                     catId, shopId, regionId, brandPartOfQuery.substring(0, brandPartOfQuery.toString().length() - 4));
 
             ArrayList<Product> products = new ArrayList<>();
+            try{
+                if (!DBProcessor.getConnection().isValid(10)){
+                    DBProcessor.setupConnection();
+                }
+            }catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
             try (ResultSet resultSet = DBProcessor.getConnection().createStatement().executeQuery(query)) {
                 while (resultSet.next()) {
                     Product product = new Product(resultSet.getInt("product_id"), resultSet.getInt("cat_id"),
@@ -350,6 +356,13 @@ public class Controller {
             //Get category and get brands that compete in this category.
             String category = comboBoxCategory.getValue();
             int categoryID = categoriesNames.indexOf(category) + 1;
+            try{
+                if (!DBProcessor.getConnection().isValid(10)){
+                    DBProcessor.setupConnection();
+                }
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
             List<Integer> brandsIDs = DBProcessor.getBrandsAccordingToCategory(categoryID);
             /*
             Yeah, we already disable button track when configuring the panel,
@@ -383,7 +396,7 @@ public class Controller {
         regionsNames = DBProcessor.getRegionsNames(regionArrayList);
         subcategoryArrayList = DBProcessor.getAllSubcategories();
         subcategoryStrings = DBProcessor.getSubcategoriesNames(subcategoryArrayList);
-        ourBrandsNames = DBProcessor.getOurBrands(brandArrayList);
+        ourBrandsNames = DBProcessor.getOurBrandsNames(brandArrayList);
     }
 
     private void configureIP() {
@@ -407,6 +420,13 @@ public class Controller {
                 stage.getIcons().add(new Image(getClass().getResourceAsStream(APP_ICON)));
                 stage.setScene(new Scene(root));
                 stage.setOnCloseRequest(closeEvent -> {
+                    try{
+                        if (!DBProcessor.getConnection().isValid(10)){
+                            DBProcessor.setupConnection();
+                        }
+                    } catch (SQLException throwable) {
+                        throwable.printStackTrace();
+                    }
                     DBProcessor.setAccessLevel(App.getController().getIp(),
                             new DBProcessor.AccessLevel(accessController.getUnlockToggleButton().isSelected(), accessController.getAddSKUToggleButton().isSelected(),
                                     accessController.getForceUpdateToggleButton().isSelected(), accessController.getAutoUpdateToggleButton().isSelected(),
@@ -432,6 +452,13 @@ public class Controller {
     }
 
     public void refreshAccess() {
+        try{
+            if (!DBProcessor.getConnection().isValid(10)){
+                DBProcessor.setupConnection();
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
         accessLevel = DBProcessor.getAccessLevel(ip);
         if (accessLevel != null) {
             addProduct.setDisable(!accessLevel.isAddSKUToggleButtonEnabled());
@@ -509,7 +536,7 @@ public class Controller {
                     if (!DBProcessor.getConnection().isValid(10)){
                         DBProcessor.setupConnection();
                     }
-                    scrapeProcessor.scrapePricesInRange(0, 1000);
+                    scrapeProcessor.scrapePriceAndAvailability();
                 } catch (RuntimeException | SQLException runtimeException) {
                     runtimeException.printStackTrace();
                 }
@@ -581,7 +608,6 @@ public class Controller {
         lineChart = new LineChart<>(dateAxis, priceAxis);
         lineChart.setAnimated(false);
         borderPaneCenter.setCenter(lineChart);
-        //TODO бренд на тултипах.
     }
 
     private void configurePanel() {

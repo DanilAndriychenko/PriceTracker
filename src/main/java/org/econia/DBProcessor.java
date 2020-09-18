@@ -113,7 +113,15 @@ public class DBProcessor {
         return brandsArrayList;
     }
 
-    public static List<String> getOurBrands(List<Brand> brandsArrayList){
+    public static List<Brand> getOurBrands(List<Brand> brandsArrayList){
+        ArrayList<Brand> ourBrands = new ArrayList<>();
+        ourBrands.add(brandsArrayList.get(0));
+        ourBrands.add(brandsArrayList.get(21));
+        ourBrands.add(brandsArrayList.get(26));
+        ourBrands.add(brandsArrayList.get(27));
+        return ourBrands;
+    }
+    public static List<String> getOurBrandsNames(List<Brand> brandsArrayList){
         ArrayList<String> ourBrandsNames = new ArrayList<>();
         ourBrandsNames.add(brandsArrayList.get(0).getName());
         ourBrandsNames.add(brandsArrayList.get(21).getName());
@@ -156,6 +164,47 @@ public class DBProcessor {
             throwable.printStackTrace();
         }
         return subcategoriesArrayList;
+    }
+
+    public static int getBrandIdAccordingToSubcategory(int subcategoryId){
+        String query = "SELECT * FROM ConnectionsAvailability WHERE subcat_id = " + subcategoryId + " ORDER BY brand_id ASC;";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            resultSet.next();
+            return resultSet.getInt("brand_id");
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static List<AvailabilityConnection> getAvailabilityConnections(){
+        String query = "SELECT * FROM ConnectionsAvailability ORDER BY brand_id ASC;";
+        List<AvailabilityConnection> availabilityConnections = new ArrayList<>();
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()){
+                availabilityConnections.add(new AvailabilityConnection(resultSet.getInt("brand_id"), resultSet.getInt("subcat_id")));
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return availabilityConnections;
+    }
+
+    public static List<String> getAllDistinctDatesInRange(String dateFrom, String dateTo){
+        String query = String.format("SELECT DISTINCT RecordsAvailability.date FROM RecordsAvailability where date >= '%s' AND date <= '%s';",
+                dateFrom, dateTo);
+        ArrayList<String> dates = new ArrayList<>();
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                dates.add(resultSet.getDate("date").toString());
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return dates;
     }
 
     public static List<Shop> getAllShops() {
@@ -238,16 +287,18 @@ public class DBProcessor {
 
     public static List<RecordAvailability> getRecordsAvailability(String fromDate, String toDate){
         ArrayList<RecordAvailability> recordAvailabilityArrayList = new ArrayList<>();
-        String query = String.format("SELECT RecordsAvailability.product_id, ProductsAvailability.subcat_id, ProductsAvailability.shop_id, " +
-                        "RecordsAvailability.date, RecordsAvailability.availability FROM RecordsAvailability INNER JOIN ProductsAvailability " +
-                        "ON RecordsAvailability.product_id=ProductsAvailability.product_id WHERE date >= '%s' AND date <= '%s';",
+        String query = String.format("SELECT RecordsAvailability.product_id, ProductsAvailability.subcat_id, ProductsAvailability.brand_id, " +
+                        "ProductsAvailability.shop_id, RecordsAvailability.date, RecordsAvailability.availability FROM RecordsAvailability " +
+                        "INNER JOIN ProductsAvailability ON RecordsAvailability.product_id=ProductsAvailability.product_id " +
+                        "WHERE date >= '%s' AND date <= '%s';",
                 fromDate, toDate);
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
                 RecordAvailability recordAvailability = new RecordAvailability(resultSet.getInt("product_id"),
                         resultSet.getInt("subcat_id"), resultSet.getInt("brand_id"),
-                        resultSet.getDate("date"), resultSet.getString("availability"));
+                        resultSet.getInt("shop_id"), resultSet.getDate("date"),
+                        resultSet.getString("availability"));
                 recordAvailabilityArrayList.add(recordAvailability);
             }
         } catch (SQLException throwable) {
