@@ -1,15 +1,9 @@
 
-p
-java:S1192ç"MDefine a constant instead of duplicating this literal "NotAvailable" 4 times.(÷É¶¯øÿÿÿÿ8Ä¬îÀÆ.
 m
-java:S1192æ"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8ä…ÒÀÆ.
-X
-java:S1068"6Remove this unused "rsAvailabilitySize" private field.(ú‡ôöûÿÿÿÿ8ÇÃ–ÈÆ.
-m
-java:S1192â"JDefine a constant instead of duplicating this literal "\tprice: " 4 times.(å“ÅÚúÿÿÿÿ8÷ÄÇµÉ.
+java:S1192§"JDefine a constant instead of duplicating this literal "\tprice: " 4 times.(å“ÅÚúÿÿÿÿ8Üå¯Ê.
 u
-java:S3776î"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8ÇÃ–ÈÆ.
-…
-java:S1450 "cRemove the "rsAvailabilityLoaded" field and declare it as a local variable in the relevant methods.(äà’îıÿÿÿÿ8úÔÄµÉ.
-ƒ
-java:S1450"aRemove the "rsAvailabilitySize" field and declare it as a local variable in the relevant methods.(ú‡ôöûÿÿÿÿ8…¤ÀµÉ.
+java:S3776ì"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8ü‘«Ê.
+m
+java:S1192ä"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8ü‘«Ê.
+p
+java:S1192å"MDefine a constant instead of duplicating this literal "NotAvailable" 4 times.(÷É¶¯øÿÿÿÿ8ü‘«Ê.

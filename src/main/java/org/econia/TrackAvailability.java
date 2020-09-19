@@ -2,8 +2,6 @@ package org.econia;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import org.apache.poi.ss.usermodel.*;

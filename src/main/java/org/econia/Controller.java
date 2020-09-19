@@ -462,6 +462,7 @@ public class Controller {
         accessLevel = DBProcessor.getAccessLevel(ip);
         if (accessLevel != null) {
             addProduct.setDisable(!accessLevel.isAddSKUToggleButtonEnabled());
+            addAvailability.setDisable(!accessLevel.isAddSKUToggleButtonEnabled());
             loadButton.setDisable(!accessLevel.isForceUpdateToggleButtonEnabled());
             if (accessLevel.isAutoUpdateToggleButtonEnabled()) {
                 long currTime = System.currentTimeMillis();
@@ -536,7 +537,7 @@ public class Controller {
                     if (!DBProcessor.getConnection().isValid(10)){
                         DBProcessor.setupConnection();
                     }
-                    scrapeProcessor.scrapePriceAndAvailability();
+                    scrapeProcessor.scrapeAllAvailability();
                 } catch (RuntimeException | SQLException runtimeException) {
                     runtimeException.printStackTrace();
                 }
