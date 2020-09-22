@@ -1,5 +1,5 @@
 
-T
-java:S1128"2Remove this unused import 'java.util.Collections'.(в│я╙■    8шиб╚┼.
 t
 java:S3776'"RRefactor this method to reduce its Cognitive Complexity from 58 to the 15 allowed.(Н╖ЮЄ■    8╬▒Вї─.
+T
+java:S1128"2Remove this unused import 'java.util.Collections'.(в│я╙■    8шиб╚┼.
