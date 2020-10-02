@@ -95,6 +95,7 @@ public class ScrapeProcessor {
          */
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
+        //some comment
         /*
         Creating driver and wait based on options above.
          */
