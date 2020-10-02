@@ -55,7 +55,7 @@ public class ScrapeProcessor {
     private static final String SELECT_MEGAMARKET_PRICE = "div.price";
     private static final String SELECT_ATB = "span.price";
     private static final String SILPO_ACTIVE_INPUT = "active-input";
-    private static final String SILPO_ADDRESS = "Тараса Шевченка бульвар 26";
+    private static final String SILPO_ADDRESS = "просп. Бандери Степана, 36";
     private static final String SILPO_COMBOBOX_KIEV = "store-select__autocomplete-item";
     private static final String SILPO_DELIVERY_CHECKBOX = "extra-delivery-item";
     private static final String SILPO_SUBMIT_BUTTON = "button";
@@ -105,14 +105,17 @@ public class ScrapeProcessor {
     private Double getPriceSilpo(String url) {
         driver.navigate().to(url);
         if (!driver.findElements(By.className(SILPO_ACTIVE_INPUT)).isEmpty()) {
-            driver.findElement(By.className(SILPO_ACTIVE_INPUT)).sendKeys(SILPO_ADDRESS);
-            try {
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_COMBOBOX_KIEV)));
-                driver.findElement(By.className(SILPO_COMBOBOX_KIEV)).click();
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_DELIVERY_CHECKBOX)));
 //            This work if our cursor isn't on the browser screen.
-                driver.findElement(By.className(SILPO_DELIVERY_CHECKBOX)).click();
-                driver.findElement(By.className(SILPO_DELIVERY_CHECKBOX)).click();
+            driver.findElements(By.className("button-switch-item")).get(1).click();
+            driver.findElements(By.className("button-switch-item")).get(1).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.className("store-select__store")));
+            driver.findElement(By.className("store-select__store")).sendKeys(SILPO_ADDRESS);
+            try {
+//                wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_COMBOBOX_KIEV)));
+//                driver.findElement(By.className(SILPO_COMBOBOX_KIEV)).click();
+//                wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_DELIVERY_CHECKBOX)));
+                wait.until(ExpectedConditions.presenceOfElementLocated(By.className("root-page__holder")));
+                driver.findElement(By.className("root-page__holder")).click();
                 wait.until(ExpectedConditions.elementToBeClickable(By.tagName(SILPO_SUBMIT_BUTTON)));
                 driver.findElement(By.tagName(SILPO_SUBMIT_BUTTON)).click();
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_CURRENT_INTEGER)));
@@ -356,6 +359,10 @@ public class ScrapeProcessor {
             if (scrapePrice(shopId, url) != 0.0) return "Available";
             else return "NotAvailable";
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new ScrapeProcessor().getPriceSilpo("https://shop.silpo.ua/detail/758193"));
     }
 
     private String getAvailabilityPampik(String url) {

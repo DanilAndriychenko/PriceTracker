@@ -1,9 +1,9 @@
 
 m
-java:S1192"MDefine a constant instead of duplicating this literal "NotAvailable" 4 times.(÷É¶¯øÿÿÿÿ8Üªò®Ê.
-j
-java:S1192"JDefine a constant instead of duplicating this literal "\tprice: " 4 times.(å“ÅÚúÿÿÿÿ8Üªò®Ê.
-j
-java:S1192"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8Üªò®Ê.
-r
-java:S3776"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8Üªò®Ê.
+java:S1192«"JDefine a constant instead of duplicating this literal "\tprice: " 4 times.(å“ÅÚúÿÿÿÿ8Üªò®Ê.
+p
+java:S1192å"MDefine a constant instead of duplicating this literal "NotAvailable" 4 times.(÷É¶¯øÿÿÿÿ8Üªò®Ê.
+u
+java:S3776ì"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8Üªò®Ê.
+m
+java:S1192ä"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8Üªò®Ê.
