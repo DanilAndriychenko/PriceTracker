@@ -1,13 +1,13 @@
 
 m
-java:S1192ç"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8Üªò®Ê.
-W
-java:S1068<";Remove this unused "SILPO_DELIVERY_CHECKBOX" private field.(›¶Ü[8ÌûêÎÎ.
-T
-java:S1068;"7Remove this unused "SILPO_COMBOBOX_KIEV" private field.(ö«¥’8ŽîÎÎ.
-m
-java:S1192®"JDefine a constant instead of duplicating this literal "\tprice: " 4 times.(å“ÅÚúÿÿÿÿ8Üªò®Ê.
+java:S1192ª"JDefine a constant instead of duplicating this literal "\tprice: " 4 times.(å“ÅÚúÿÿÿÿ8Üªò®Ê.
 p
 java:S1192è"MDefine a constant instead of duplicating this literal "NotAvailable" 4 times.(÷É¶¯øÿÿÿÿ8Üªò®Ê.
 u
 java:S3776ï"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8Üªò®Ê.
+W
+java:S1068<";Remove this unused "SILPO_DELIVERY_CHECKBOX" private field.(›¶Ü[8ÌûêÎÎ.
+m
+java:S1192ç"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8Üªò®Ê.
+T
+java:S1068;"7Remove this unused "SILPO_COMBOBOX_KIEV" private field.(ö«¥’8ŽîÎÎ.

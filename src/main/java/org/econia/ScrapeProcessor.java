@@ -146,10 +146,14 @@ public class ScrapeProcessor {
             SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Antoshka: timeout exception.");
             return 0.0;
         }
-        if (!driver.findElements(By.className(ANTOSHKA_PRICE)).isEmpty() &&
-                driver.findElements(By.className(ANTOSHKA_PRICE)).contains(driver.findElement(By.className(ANTOSHKA_PRICE)))) {
-            String text = driver.findElement(By.className(ANTOSHKA_PRICE)).getText();
-            return Double.parseDouble(formatText(text, 4));
+        if (!driver.findElements(By.cssSelector("div.price")).isEmpty()) {
+            try{
+                String text = driver.findElement(By.cssSelector("div.price")).getText();
+                return Double.parseDouble(formatText(text, 4));
+            } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
+                SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Antoshka: price not found or can''t parse that string. Price 0.0 returned.");
+                return 0.0;
+            }
         }
         SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Antoshka: price block not found. Price 0.0 returned.");
         return 0.0;
