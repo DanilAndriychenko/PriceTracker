@@ -70,7 +70,7 @@ public class ScrapeProcessor {
     private static final String FORA_PRICE_CLASS = "price";
     private static final String FORA_PRICE_SPAN = "span";
     private static final String SELECT_ZAKAZ = "span.Price__value_title";
-    private static final String SELECT_EPICENTR_PRICE_WRAPPER = "span.price-wrapper";
+    private static final String SELECT_EPICENTR_PRICE_WRAPPER = "div.p-price__main";
     private static final String SELECT_TAVRIAV_SALE_PRICE = "span.sale-price";
     private static final String SELECT_ROST_PRICE = "span.price";
     private static final String SELECT_KOPEYKA_FULL_ADD = "div.full-add";
@@ -95,7 +95,6 @@ public class ScrapeProcessor {
          */
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
-        //some comment
         /*
         Creating driver and wait based on options above.
          */
@@ -109,9 +108,9 @@ public class ScrapeProcessor {
 //            This work if our cursor isn't on the browser screen.
             driver.findElements(By.className("button-switch-item")).get(1).click();
             driver.findElements(By.className("button-switch-item")).get(1).click();
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.className("store-select__store")));
-            driver.findElement(By.className("store-select__store")).sendKeys(SILPO_ADDRESS);
             try {
+                wait.until(ExpectedConditions.presenceOfElementLocated(By.className("store-select__store")));
+                driver.findElement(By.className("store-select__store")).sendKeys(SILPO_ADDRESS);
 //                wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_COMBOBOX_KIEV)));
 //                driver.findElement(By.className(SILPO_COMBOBOX_KIEV)).click();
 //                wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_DELIVERY_CHECKBOX)));
@@ -360,10 +359,6 @@ public class ScrapeProcessor {
             if (scrapePrice(shopId, url) != 0.0) return "Available";
             else return "NotAvailable";
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new ScrapeProcessor().getPriceSilpo("https://shop.silpo.ua/detail/758193"));
     }
 
     private String getAvailabilityPampik(String url) {
