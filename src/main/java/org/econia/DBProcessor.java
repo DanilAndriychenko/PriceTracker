@@ -3,7 +3,6 @@ package org.econia;
 import com.mysql.cj.jdbc.Driver;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;

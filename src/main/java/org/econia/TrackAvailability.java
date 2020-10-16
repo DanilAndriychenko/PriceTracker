@@ -13,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class TrackAvailability {
@@ -44,6 +45,13 @@ public class TrackAvailability {
         });
         trackButton.setOnAction(trackEvent ->{
             long start = System.currentTimeMillis();
+            try{
+                if (!DBProcessor.getConnection().isValid(10)){
+                    DBProcessor.setupConnection();
+                }
+            }catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
             List<RecordAvailability> recordAvailabilityArrayList =
                     DBProcessor.getRecordsAvailability(pickerFrom.getValue().toString(), pickerTo.getValue().toString());
             XSSFWorkbook workbook = new XSSFWorkbook();

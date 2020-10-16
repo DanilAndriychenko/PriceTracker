@@ -207,6 +207,10 @@ public class ScrapeProcessor {
         }
     }
 
+    /*public static void main(String[] args) {
+        System.out.println(new ScrapeProcessor().scrapeAvailability("https://auchan.ua/detskoe-pjure-maljatko-chernosliv-90-g-263509/", 9));
+    }*/
+
     private Double getPriceZakaz(Document document) {
         if (!document.select(SELECT_ZAKAZ).isEmpty()) {
             return Double.parseDouble(formatText(document.select(SELECT_ZAKAZ).get(0).text(), 0));
