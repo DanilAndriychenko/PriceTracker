@@ -138,6 +138,10 @@ public class ScrapeProcessor {
         }
     }
 
+    public static void main(String[] args) {
+        System.out.println(new ScrapeProcessor().scrapeAvailability("https://shop.silpo.ua/detail/386912", 7));
+    }
+
     private Double getPriceAntoshka(String url) {
         driver.navigate().to(url);
         try {

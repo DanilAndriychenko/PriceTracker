@@ -537,8 +537,7 @@ public class Controller {
                     if (!DBProcessor.getConnection().isValid(10)){
                         DBProcessor.setupConnection();
                     }
-//                    scrapeProcessor.scrapePriceAndAvailability();
-                    scrapeProcessor.scrapeAvailabilityInRange(224, 400);
+                    scrapeProcessor.scrapePriceAndAvailability();
                 } catch (RuntimeException | SQLException runtimeException) {
                     runtimeException.printStackTrace();
                 }
