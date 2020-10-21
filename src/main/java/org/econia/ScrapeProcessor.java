@@ -15,6 +15,7 @@ import java.io.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -86,7 +87,6 @@ public class ScrapeProcessor {
     private void setupDriver() {
         /*
         Setup chromeDriver.
-        CHECK if it works on other pc, especially if there is no chrome installed on pc.
          */
         WebDriverManager.chromedriver().setup();
         /*
@@ -95,10 +95,14 @@ public class ScrapeProcessor {
          */
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
+        chromeOptions.addArguments("--disable-gpu");
+        chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         /*
         Creating driver and wait based on options above.
          */
         driver = new ChromeDriver(chromeOptions);
+        driver.manage().timeouts().pageLoadTimeout(30L, TimeUnit.SECONDS);
+        driver.manage().timeouts().setScriptTimeout(3L, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, 10);
     }
 
@@ -139,7 +143,7 @@ public class ScrapeProcessor {
     }
 
     public static void main(String[] args) {
-        System.out.println(new ScrapeProcessor().scrapeAvailability("https://shop.silpo.ua/detail/386912", 7));
+        System.out.println(new ScrapeProcessor().scrapePrice(2, "https://antoshka.ua/pit-evaja-voda-maljatko-0-33-l.html"));
     }
 
     private Double getPriceAntoshka(String url) {

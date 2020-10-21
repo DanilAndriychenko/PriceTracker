@@ -17,7 +17,7 @@ public class DBProcessor {
     private static final String USERNAME = "econiadj_pricemonitoring";
     private static final String PASSWORD = "PriceMonitoring";
     private static final String URL =
-            "jdbc:mysql://54.36.173.35:3306/econiadj_pricemonitoring?useSSL=false&serverTimezone=UTC";
+            "jdbc:mysql://54.36.173.35:3306/econiadj_pricemonitoring?useSSL=false&serverTimezone=UTC&autoReconnect=true&tcpKeepAlive=true";
 
     public static String getUSERNAME() {
         return USERNAME;
@@ -317,7 +317,7 @@ public class DBProcessor {
             try (Statement statement = connection.createStatement()) {
                 statement.execute(query);
             } catch (SQLException throwable) {
-                DB_PROCESSOR_LOGGER.log(Level.SEVERE, throwable.getMessage());
+                throwable.printStackTrace();
             }
         }
     }

@@ -65,8 +65,6 @@ v
 F.idea/libraries/Maven__io_github_bonigarcia_webdrivermanager_4_1_0.xml,5\e\5ec45cfee92cf358b20168e9c927d9feabfef216
 p
 @.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml,4\0\40ba00f4fc7ffb1f6019e6b612d1b17aa753577f
-[
-+.idea/libraries/Maven__junit_junit_4_12.xml,a\f\afa6ca72908af2e838d0cb108eb24f143bc62da7
 i
 9.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_7_9.xml,1\1\11544773a181996292e28dcf9906dddccc68432c
 h

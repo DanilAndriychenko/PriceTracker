@@ -1,15 +1,15 @@
 
-c
-java:S1192"HDefine a constant instead of duplicating this literal "shop_id" 4 times.(ÿ›°å8õãÑ½É.
-d
-java:S1192"IDefine a constant instead of duplicating this literal "brand_id" 7 times.(áü²°8Ï±‚õÄ.
-j
-java:S1192"JDefine a constant instead of duplicating this literal "subcat_id" 5 times.(¸À³‰ÿÿÿÿÿ8ÓØ‘ÈÆ.
-k
-java:S1192"KDefine a constant instead of duplicating this literal "product_id" 4 times.(º“·“üÿÿÿÿ8¸¸ŒÈÆ.
-M
-java:S1135"2Complete the task associated to this TODO comment.(ÜâÆÁ8åêêµÉ.
-I
-java:S1144")Remove this unused private "gaps" method.(œ×¸Øÿÿÿÿÿ8åêêµÉ.
-R
-java:S1135"2Complete the task associated to this TODO comment.(ºË°ôşÿÿÿÿ8Ï±‚õÄ.
+f
+java:S1192×"HDefine a constant instead of duplicating this literal "shop_id" 4 times.(ÿ›°å8õãÑ½É.
+U
+java:S1135µ"2Complete the task associated to this TODO comment.(ºË°ôşÿÿÿÿ8Ï±‚õÄ.
+n
+java:S1192ƒ"KDefine a constant instead of duplicating this literal "product_id" 4 times.(º“·“üÿÿÿÿ8¸¸ŒÈÆ.
+P
+java:S1135¶"2Complete the task associated to this TODO comment.(ÜâÆÁ8åêêµÉ.
+f
+java:S1192k"IDefine a constant instead of duplicating this literal "brand_id" 7 times.(áü²°8Ï±‚õÄ.
+L
+java:S1144Ñ")Remove this unused private "gaps" method.(œ×¸Øÿÿÿÿÿ8åêêµÉ.
+l
+java:S1192L"JDefine a constant instead of duplicating this literal "subcat_id" 5 times.(¸À³‰ÿÿÿÿÿ8ÓØ‘ÈÆ.
