@@ -111,12 +111,7 @@ public class ScrapeProcessor {
     }
 
     private Double getPriceSilpo(String url) {
-        try{
-            driver.navigate().to(url);
-        }catch (TimeoutException timeoutException){
-            System.out.println("Antoshka: timeout exception");
-//            timeoutException.printStackTrace();
-        }
+        driver.navigate().to(url);
         if (!driver.findElements(By.className(SILPO_ACTIVE_INPUT)).isEmpty()) {
 //            This work if our cursor isn't on the browser screen.
             driver.findElements(By.className("button-switch-item")).get(1).click();
@@ -155,8 +150,12 @@ public class ScrapeProcessor {
         System.out.println(new ScrapeProcessor().scrapePrice(2, "https://antoshka.ua/pit-evaja-voda-maljatko-0-33-l.html"));
     }
 
-    private Double getPriceAntoshka(String url) {
+    private Double getPriceAntoshka(String url) {try{
         driver.navigate().to(url);
+    }catch (TimeoutException timeoutException){
+        System.out.println("Antoshka: timeout exception");
+//            timeoutException.printStackTrace();
+    }
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(By.className(ANTOSHKA_PRICE_BLOCK)));
         } catch (TimeoutException e) {
@@ -164,7 +163,7 @@ public class ScrapeProcessor {
             return 0.0;
         }
         if (!driver.findElements(By.cssSelector("div.price")).isEmpty()) {
-            try{
+            try {
                 String text = driver.findElement(By.cssSelector("div.price")).getText();
                 return Double.parseDouble(formatText(text, 4));
             } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
@@ -395,7 +394,7 @@ public class ScrapeProcessor {
         }
     }
 
-    private String getAvailabilityAntoshka(String url){
+    private String getAvailabilityAntoshka(String url) {
         driver.navigate().to(url);
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(By.className(ANTOSHKA_PRICE_BLOCK)));
@@ -409,12 +408,12 @@ public class ScrapeProcessor {
         return "NotAvailable";
     }
 
-    private String getAvailabilityRozetka(String url){
+    private String getAvailabilityRozetka(String url) {
         Document document = scrapeJSoup(url);
-        if (!document.select("p.product__status_color_gray").isEmpty()){
+        if (!document.select("p.product__status_color_gray").isEmpty()) {
             return "NotAvailable";
-        }else if (!document.select("p.product__status_color_green").isEmpty() ||
-                !document.select("p.product__status_color_orange").isEmpty()){
+        } else if (!document.select("p.product__status_color_green").isEmpty() ||
+                !document.select("p.product__status_color_orange").isEmpty()) {
             return "Available";
         }
         return "OutOfStock";
@@ -471,7 +470,7 @@ public class ScrapeProcessor {
         }
     }
 
-    public void scrapePriceAndAvailability(){
+    public void scrapePriceAndAvailability() {
         rsSize = 0;
         List<Product> productsPrices = DBProcessor.getProductsSetPartly(0, 2000);
         rsSize += productsPrices.size();
