@@ -85,6 +85,8 @@ public class ScrapeProcessor {
     }
 
     private void setupDriver() {
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\danil\\Documents\\GitHub\\PriceTracker\\src\\main\\resources\\org\\econia\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.silentOutput", "true");
         /*
         Setup chromeDriver.
          */
@@ -97,13 +99,14 @@ public class ScrapeProcessor {
         chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--disable-gpu");
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+        chromeOptions.addArguments("--no-sandbox");
         /*
         Creating driver and wait based on options above.
          */
         driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().pageLoadTimeout(30L, TimeUnit.SECONDS);
-        driver.manage().timeouts().setScriptTimeout(3L, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, 10);
+        driver.manage().timeouts().setScriptTimeout(10L, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, 20);
     }
 
     private Double getPriceSilpo(String url) {

@@ -1,17 +1,17 @@
 
 m
-java:S1192ó"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8Üªò®Ê.
-p
-java:S1192ô"MDefine a constant instead of duplicating this literal "NotAvailable" 4 times.(÷É¶¯øÿÿÿÿ8Üªò®Ê.
-T
-java:S10684"2Remove this unused "ANTOSHKA_PRICE" private field.(”äÿıÿÿÿÿ8“ŒÀĞ.
-T
-java:S1068;"7Remove this unused "SILPO_COMBOBOX_KIEV" private field.(ö«¥’8îÎÎ.
-u
-java:S3776û"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8Üªò®Ê.
-m
-java:S1192¶"JDefine a constant instead of duplicating this literal "\tprice: " 4 times.(å“ÅÚúÿÿÿÿ8Üªò®Ê.
-€
-java:S1192™"]Use already-defined constant 'SELECT_MEGAMARKET_PRICE' instead of duplicating its value here.(Éìşÿÿÿÿ8ŞĞ‰ÀĞ.
+java:S1192º"JDefine a constant instead of duplicating this literal "\tprice: " 4 times.(å“ÅÚúÿÿÿÿ8Üªò®Ê.
 W
-java:S1068<";Remove this unused "SILPO_DELIVERY_CHECKBOX" private field.(›¶Ü[8ÌûêÎÎ.
+java:S1068=";Remove this unused "SILPO_DELIVERY_CHECKBOX" private field.(›¶Ü[8ÌûêÎÎ.
+p
+java:S1192ø"MDefine a constant instead of duplicating this literal "NotAvailable" 4 times.(÷É¶¯øÿÿÿÿ8Üªò®Ê.
+u
+java:S3776ÿ"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ê¶Ò°ûÿÿÿÿ8Üªò®Ê.
+€
+java:S1192"]Use already-defined constant 'SELECT_MEGAMARKET_PRICE' instead of duplicating its value here.(Éìşÿÿÿÿ8ŞĞ‰ÀĞ.
+T
+java:S10685"2Remove this unused "ANTOSHKA_PRICE" private field.(”äÿıÿÿÿÿ8“ŒÀĞ.
+T
+java:S1068<"7Remove this unused "SILPO_COMBOBOX_KIEV" private field.(ö«¥’8îÎÎ.
+m
+java:S1192÷"JDefine a constant instead of duplicating this literal "Available" 4 times.(•ø¶×ùÿÿÿÿ8Üªò®Ê.
