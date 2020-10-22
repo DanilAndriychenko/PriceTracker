@@ -107,7 +107,7 @@ public class ScrapeProcessor {
         driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().pageLoadTimeout(30L, TimeUnit.SECONDS);
         driver.manage().timeouts().setScriptTimeout(10L, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, 20);
+        wait = new WebDriverWait(driver, 30);
     }
 
     private Double getPriceSilpo(String url) {
