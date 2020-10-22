@@ -96,10 +96,11 @@ public class ScrapeProcessor {
         One of them is that selenium shouldn't open each url in a new window.
          */
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--headless");
+//        chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--disable-gpu");
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--disable-browser-side-navigation");
         /*
         Creating driver and wait based on options above.
          */
@@ -110,7 +111,12 @@ public class ScrapeProcessor {
     }
 
     private Double getPriceSilpo(String url) {
-        driver.navigate().to(url);
+        try{
+            driver.navigate().to(url);
+        }catch (TimeoutException timeoutException){
+            System.out.println("Antoshka: timeout exception");
+//            timeoutException.printStackTrace();
+        }
         if (!driver.findElements(By.className(SILPO_ACTIVE_INPUT)).isEmpty()) {
 //            This work if our cursor isn't on the browser screen.
             driver.findElements(By.className("button-switch-item")).get(1).click();
