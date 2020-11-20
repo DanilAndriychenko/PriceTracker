@@ -147,15 +147,16 @@ public class ScrapeProcessor {
     }
 
     public static void main(String[] args) {
-        System.out.println(new ScrapeProcessor().scrapePrice(2, "https://antoshka.ua/pit-evaja-voda-maljatko-0-33-l.html"));
+        System.out.println(new ScrapeProcessor().scrapePrice(3, "https://rozetka.com.ua/malyatko_kasha_8606107543581/p26243649/"));
     }
 
-    private Double getPriceAntoshka(String url) {try{
-        driver.navigate().to(url);
-    }catch (TimeoutException timeoutException){
-        System.out.println("Antoshka: timeout exception");
+    private Double getPriceAntoshka(String url) {
+        try {
+            driver.navigate().to(url);
+        } catch (TimeoutException timeoutException) {
+            System.out.println("Antoshka: timeout exception");
 //            timeoutException.printStackTrace();
-    }
+        }
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(By.className(ANTOSHKA_PRICE_BLOCK)));
         } catch (TimeoutException e) {
@@ -223,10 +224,6 @@ public class ScrapeProcessor {
         }
     }
 
-    /*public static void main(String[] args) {
-        System.out.println(new ScrapeProcessor().scrapeAvailability("https://auchan.ua/detskoe-pjure-maljatko-chernosliv-90-g-263509/", 9));
-    }*/
-
     private Double getPriceZakaz(Document document) {
         if (!document.select(SELECT_ZAKAZ).isEmpty()) {
             return Double.parseDouble(formatText(document.select(SELECT_ZAKAZ).get(0).text(), 0));
@@ -283,13 +280,27 @@ public class ScrapeProcessor {
             case 2:
                 return getPriceAntoshka(url);
             case 3:
+                driver.navigate().to(url);
                 try {
-                    text = document.select(SELECT_ROZETKA_PRICE).get(0).text();
+                    wait.until(ExpectedConditions.presenceOfElementLocated(By.className("product-prices__big")));
+                } catch (TimeoutException e) {
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Rozetka: timeout exception. Price 0.0 returned.");
+                    return 0.0;
+                }
+                try {
+                    text = driver.findElement(By.cssSelector("p.product-prices__big")).getText();
+                    return Double.parseDouble(formatText(text, 1));
+                } catch (NoSuchElementException e) {
+                    SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Rozetka: price not found. Price 0.0 returned.");
+                    return 0.0;
+                }
+                /*try {
+                    text = document.select(SELECT_ROZETKA_PRICE).text();
                     return Double.parseDouble(formatText(text, 1));
                 } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Rozetka: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
-                }
+                }*/
             case 4:
                 try {
                     text = document.select(SELECT_APTEKA911).get(0).text();
