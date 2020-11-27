@@ -147,7 +147,7 @@ public class ScrapeProcessor {
     }
 
     public static void main(String[] args) {
-        System.out.println(new ScrapeProcessor().scrapePrice(3, "https://rozetka.com.ua/malyatko_kasha_8606107543581/p26243649/"));
+        System.out.println(new ScrapeProcessor().scrapeAvailability("https://rozetka.com.ua/malyatko_4820123510080/p98013892/", 3));
     }
 
     private Double getPriceAntoshka(String url) {
@@ -420,14 +420,25 @@ public class ScrapeProcessor {
     }
 
     private String getAvailabilityRozetka(String url) {
-        Document document = scrapeJSoup(url);
+        /*Document document = scrapeJSoup(url);
         if (!document.select("p.product__status_color_gray").isEmpty()) {
             return "NotAvailable";
         } else if (!document.select("p.product__status_color_green").isEmpty() ||
                 !document.select("p.product__status_color_orange").isEmpty()) {
             return "Available";
         }
-        return "OutOfStock";
+        return "OutOfStock";*/
+        driver.navigate().to(url);
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("p.product__status")));
+        } catch (TimeoutException e) {
+            SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Rozetka: timeout exception.");
+            return "OutOfStock";
+        }
+        if (driver.findElements(By.cssSelector("p.product__status_color_gray")).isEmpty()) {
+            return "Available";
+        }
+        return "NotAvailable";
     }
 
     /**
