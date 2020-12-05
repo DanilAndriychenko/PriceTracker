@@ -112,7 +112,7 @@ public class ScrapeProcessor {
 
     private Double getPriceSilpo(String url) {
         driver.navigate().to(url);
-        if (!driver.findElements(By.className(SILPO_ACTIVE_INPUT)).isEmpty()) {
+        if (!driver.findElements(By.className("address-resolver-exp")).isEmpty()) {
 //            This work if our cursor isn't on the browser screen.
             driver.findElements(By.className("button-switch-item")).get(1).click();
             driver.findElements(By.className("button-switch-item")).get(1).click();
@@ -147,7 +147,9 @@ public class ScrapeProcessor {
     }
 
     public static void main(String[] args) {
-        System.out.println(new ScrapeProcessor().scrapeAvailability("https://rozetka.com.ua/malyatko_4820123510080/p98013892/", 3));
+        ScrapeProcessor scrapeProcessor = new ScrapeProcessor();
+        System.out.println(scrapeProcessor.scrapePrice(7, "https://shop.silpo.ua/detail/740170"));
+        System.out.println(scrapeProcessor.scrapePrice(7, "https://shop.silpo.ua/detail/799119"));
     }
 
     private Double getPriceAntoshka(String url) {
