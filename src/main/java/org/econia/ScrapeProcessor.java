@@ -24,6 +24,13 @@ import java.util.logging.Logger;
  */
 public class ScrapeProcessor {
 
+    public static void main(String[] args) {
+        ScrapeProcessor scrapeProcessor = new ScrapeProcessor();
+        scrapeProcessor.scrapeAvailabilityInRange(282, 304);
+//        System.out.println(scrapeProcessor.scrapeAvailability("https://shop.silpo.ua/detail/386913", 7));
+//        System.out.println(scrapeProcessor.scrapeAvailability("https://shop.silpo.ua/detail/386912", 7));
+    }
+
     private WebDriver driver = null;
     private WebDriverWait wait = null;
     private static final Logger SCRAPE_PROCESSOR_LOGGER = Logger.getLogger("ScrapeProcessor Logger");
@@ -72,7 +79,7 @@ public class ScrapeProcessor {
     private static final String FORA_PRICE_SPAN = "span";
     private static final String SELECT_ZAKAZ = "span.Price__value_title";
     private static final String SELECT_EPICENTR_PRICE_WRAPPER = "div.p-price__main";
-    private static final String SELECT_TAVRIAV_SALE_PRICE = "span.sale-price";
+    private static final String SELECT_TAVRIAV_SALE_PRICE = "p.price__current";
     private static final String SELECT_ROST_PRICE = "span.price";
     private static final String SELECT_KOPEYKA_FULL_ADD = "div.full-add";
     private static final String SELECT_KOPEYKA_PRICE = "li.new-prc";
@@ -137,6 +144,7 @@ public class ScrapeProcessor {
             return 0.0;
         }
         try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.className(SILPO_CURRENT_INTEGER)));
             String currentInteger = driver.findElement(By.className(SILPO_CURRENT_INTEGER)).getText();
             String currentFraction = driver.findElement(By.className(SILPO_CURRENT_FRACTION)).getText();
             return Double.parseDouble(currentInteger + "." + currentFraction);
@@ -144,12 +152,6 @@ public class ScrapeProcessor {
             SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "Silpo: NoSuchElementException. Price 0.0 returned.");
             return 0.0;
         }
-    }
-
-    public static void main(String[] args) {
-        ScrapeProcessor scrapeProcessor = new ScrapeProcessor();
-        System.out.println(scrapeProcessor.scrapePrice(7, "https://shop.silpo.ua/detail/740170"));
-        System.out.println(scrapeProcessor.scrapePrice(7, "https://shop.silpo.ua/detail/799119"));
     }
 
     private Double getPriceAntoshka(String url) {
@@ -352,8 +354,8 @@ public class ScrapeProcessor {
                 }
             case 12:
                 try {
-                    text = document.select(SELECT_TAVRIAV_SALE_PRICE).get(0).text();
-                    return Double.parseDouble(formatText(text, 1));
+                    text = document.select(SELECT_TAVRIAV_SALE_PRICE).get(1).text();
+                    return Double.parseDouble(formatText(text, 6));
                 } catch (IndexOutOfBoundsException | NumberFormatException runtimeException) {
                     SCRAPE_PROCESSOR_LOGGER.log(Level.SEVERE, "TavriaV: price not found or can''t parse that string. Price 0.0 returned.");
                     return 0.0;
